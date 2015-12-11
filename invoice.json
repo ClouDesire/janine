@@ -1,0 +1,33 @@
+{
+    "holder":
+    {
+        "email": "sal@caz.zo"
+    },
+    "recipient":
+    {
+        "email": "bu@diu.lo"
+    },
+    "lines":
+    [
+        {
+            "description": "Custom vendor fee",
+            "price": {
+                "currency": "EUR",
+                "price": "100.0000",
+                "vat": 22.0
+            },
+            "quantity": 2.0,
+            "unit": "un"
+        },
+        {
+            "description": "Another custom vendor fee",
+            "price": {
+                "currency": "EUR",
+                "price": "23.4567",
+                "vat": 22.0
+            },
+            "quantity": 1.0,
+            "unit": "sm"
+        }
+    ]
+}
