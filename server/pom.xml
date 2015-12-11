@@ -37,7 +37,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -45,8 +44,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
+			<groupId>com.liberologico</groupId>
+			<artifactId>invoice-api-client</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -54,7 +54,6 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.jclouds.provider</groupId>
 			<artifactId>rackspace-cloudfiles-uk</artifactId>
