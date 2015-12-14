@@ -1,6 +1,7 @@
 package com.liberologico.invoice_api.entities;
 
 import com.liberologico.invoice_api.MathConfiguration;
+import io.gsonfire.annotations.ExposeMethodResult;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ public class Price
 
     private String currency;
 
+    @ExposeMethodResult( "total" )
     public BigDecimal getTotal()
     {
         final BigDecimal value = price.add( price.divide( new BigDecimal( 100 ) ).multiply( VAT ) );
@@ -59,7 +61,7 @@ public class Price
     @Override
     public String toString()
     {
-        return "PriceDTO [price=" + price + ", VAT=" + VAT + "%, currency=" + currency + "]";
+        return "Price [price=" + price + ", VAT=" + VAT + "%, currency=" + currency + "]";
     }
 
     @Override

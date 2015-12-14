@@ -1,7 +1,7 @@
 package com.liberologico.invoice_api.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liberologico.invoice_api.MathConfiguration;
+import io.gsonfire.annotations.ExposeMethodResult;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
@@ -20,7 +20,7 @@ public class Line
     @Length( max = 1024 )
     private String description;
 
-    @JsonProperty( value = "totalPrice" )
+    @ExposeMethodResult( "totalPrice" )
     public BigDecimal calculateTotalPrice()
     {
         if ( price == null ) return BigDecimal.ZERO;
@@ -93,7 +93,7 @@ public class Line
     @Override
     public String toString()
     {
-        return "OrderLineDTO [price=" + price + ", quantity=" + quantity + ", unit=" + unit + ", description="
-                + description + ", total=" + calculateTotalPrice() + "]";
+        return "Line [price=" + price + ", quantity=" + quantity + ", unit=" + unit + ", description=" + description
+                + ", total=" + calculateTotalPrice() + "]";
     }
 }
