@@ -1,5 +1,7 @@
 package com.liberologico.invoice_api.entities;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ public class Invoice
     @Valid
     private Person recipient;
 
-    @NotNull
+    @NotEmpty
     @Valid
     private List<Line> lines = new ArrayList<>();
 

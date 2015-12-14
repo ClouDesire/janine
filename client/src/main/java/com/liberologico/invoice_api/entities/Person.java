@@ -1,5 +1,7 @@
 package com.liberologico.invoice_api.entities;
 
+import org.hibernate.validator.constraints.Email;
+
 import javax.validation.constraints.NotNull;
 
 public class Person
@@ -8,6 +10,7 @@ public class Person
 
     private String lastName;
 
+    @Email
     @NotNull
     private String email;
 
