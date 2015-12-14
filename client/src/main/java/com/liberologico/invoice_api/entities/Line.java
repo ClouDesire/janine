@@ -4,6 +4,7 @@ import com.liberologico.invoice_api.MathConfiguration;
 import io.gsonfire.annotations.ExposeMethodResult;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -13,8 +14,11 @@ public class Line
     @NotNull
     private Price price;
 
+    @DecimalMin( "0.01" )
+    @NotNull
     private BigDecimal quantity = BigDecimal.ONE;
 
+    @NotNull
     private String unit = "un";
 
     @Length( max = 1024 )
