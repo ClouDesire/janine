@@ -1,5 +1,6 @@
 package com.liberologico.invoice_api.entities;
 
+import com.google.gson.annotations.Expose;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
@@ -9,6 +10,9 @@ import java.util.List;
 
 public class Invoice
 {
+    @Expose( deserialize = false )
+    private String number;
+
     @NotNull
     @Valid
     private Person holder;
@@ -16,6 +20,17 @@ public class Invoice
     @NotNull
     @Valid
     private Person recipient;
+
+    public String getNumber()
+    {
+        return number;
+    }
+
+    public Invoice setNumber( String number )
+    {
+        this.number = number;
+        return this;
+    }
 
     @NotEmpty
     @Valid

@@ -5,11 +5,15 @@ import com.liberologico.invoice_api.entities.Invoice;
 import com.liberologico.invoice_api.entities.Line;
 import com.liberologico.invoice_api.entities.Person;
 import com.liberologico.invoice_api.entities.Price;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import redis.clients.jedis.Jedis;
 import retrofit.Call;
 import retrofit.Response;
 
@@ -29,15 +33,26 @@ import static org.junit.Assert.assertTrue;
 public class InvoiceApiApplicationTests
 {
     private static final String ROOT = "http://localhost:8080";
+    private static final String PREFIX = "TEST";
 
     private final InvoiceService service = new InvoiceClient( ROOT ).getService();
+
+    @Autowired
+    private JedisConnectionFactory jedisConnectionFactory;
+
+    @Before
+    public void reset()
+    {
+        Jedis jedis = new Jedis( jedisConnectionFactory.getShardInfo() );
+        jedis.flushAll();
+    }
 
     @Test
     public void emptyBody() throws IOException
     {
         Date now = new Date();
 
-        Call<Invoice> call = service.validate( new Invoice() );
+        Call<Invoice> call = service.validate( PREFIX, new Invoice() );
 
         Response<Invoice> response = call.execute();
         assertFalse( response.isSuccess() );
@@ -53,21 +68,30 @@ public class InvoiceApiApplicationTests
     @Test
     public void simpleInvoice() throws IOException
     {
-        Invoice invoice = new Invoice()
-                .setHolder( new Person().setEmail( "bu@del.lo" ) )
-                .setRecipient( new Person().setEmail( "di@tu.ma" ) )
-                .setLines( Arrays.asList(
-                    new Line().setDescription( "Riga 1" )
-                              .setPrice( new Price().setPrice( BigDecimal.TEN ).setCurrency( "EUR" ) ),
-                    new Line().setDescription( "Riga 2" )
-                              .setPrice( new Price().setPrice( BigDecimal.ONE ).setCurrency( "EUR" ) )
-                ) );
+        Invoice invoice = getInvoice(
+                new Line().setDescription( "Riga 1" )
+                          .setPrice( new Price().setPrice( BigDecimal.TEN ).setCurrency( "EUR" ) ),
+                new Line().setDescription( "Riga 2" )
+                          .setPrice( new Price().setPrice( BigDecimal.ONE ).setCurrency( "EUR" ) )
+        );
 
-        Call<Invoice> call = service.validate( invoice );
+        Call<Invoice> call = service.generate( PREFIX, invoice );
 
         Response<Invoice> response = call.execute();
         assertTrue( response.isSuccess() );
         assertEquals( 200, response.code() );
-        assertNotNull( response.body() );
+
+        invoice = response.body();
+        assertNotNull( invoice );
+        assertNotNull( invoice.getNumber() );
+        assertEquals( PREFIX + "1", invoice.getNumber() );
+    }
+
+    public Invoice getInvoice( Line... lines )
+    {
+        return new Invoice()
+                .setHolder( new Person().setEmail( "bu@del.lo" ) )
+                .setRecipient( new Person().setEmail( "di@tu.ma" ) )
+                .setLines( Arrays.asList( lines ) );
     }
 }
