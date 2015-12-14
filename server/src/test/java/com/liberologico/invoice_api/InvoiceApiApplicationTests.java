@@ -37,7 +37,7 @@ public class InvoiceApiApplicationTests
     {
         Date now = new Date();
 
-        Call<Invoice> call = service.post( new Invoice() );
+        Call<Invoice> call = service.validate( new Invoice() );
 
         Response<Invoice> response = call.execute();
         assertFalse( response.isSuccess() );
@@ -63,7 +63,7 @@ public class InvoiceApiApplicationTests
                               .setPrice( new Price().setPrice( BigDecimal.ONE ).setCurrency( "EUR" ) )
                 ) );
 
-        Call<Invoice> call = service.post( invoice );
+        Call<Invoice> call = service.validate( invoice );
 
         Response<Invoice> response = call.execute();
         assertTrue( response.isSuccess() );

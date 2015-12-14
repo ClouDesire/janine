@@ -11,8 +11,8 @@ import javax.validation.Valid;
 @RestController
 public class InvoiceController
 {
-    @RequestMapping( value = "/", method = RequestMethod.POST, consumes = "application/json" )
-    Invoice post( @RequestBody @Valid Invoice invoice )
+    @RequestMapping( value = "/validate", method = RequestMethod.POST, consumes = "application/json" )
+    Invoice validate( @RequestBody @Valid Invoice invoice )
     {
         return invoice;
     }

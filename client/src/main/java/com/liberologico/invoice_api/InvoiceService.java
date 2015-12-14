@@ -7,6 +7,6 @@ import retrofit.http.POST;
 
 public interface InvoiceService
 {
-    @POST("/")
-    Call<Invoice> post( @Body Invoice invoice );
+    @POST( "/validate" )
+    Call<Invoice> validate( @Body Invoice invoice );
 }
