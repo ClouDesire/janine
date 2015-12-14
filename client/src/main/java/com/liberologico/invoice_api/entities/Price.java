@@ -1,6 +1,6 @@
 package com.liberologico.invoice_api.entities;
 
-import com.liberologico.invoice_api.conf.MathConfiguration;
+import com.liberologico.invoice_api.MathConfiguration;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;

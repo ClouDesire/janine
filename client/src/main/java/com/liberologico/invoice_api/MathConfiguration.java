@@ -1,4 +1,4 @@
-package com.liberologico.invoice_api.conf;
+package com.liberologico.invoice_api;
 
 import java.math.RoundingMode;
 

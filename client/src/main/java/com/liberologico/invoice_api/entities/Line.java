@@ -1,7 +1,7 @@
 package com.liberologico.invoice_api.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.liberologico.invoice_api.conf.MathConfiguration;
+import com.liberologico.invoice_api.MathConfiguration;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
