@@ -5,8 +5,6 @@ if [ -z $BUILD_NUMBER ]; then
 fi
 docker login --email="jenkins@cloudesire.com" --password=$REGISTRY_PASSWORD --username=$REGISTRY_USERNAME $REGISTRY_HOST
 
-mvn -e -U clean package
-
 BASE_NAME=$REGISTRY_HOST"/invoice-api"
 BUILD_VERSION=$BASE_NAME:$BUILD_NUMBER
 BUILD_LATEST=$BASE_NAME:latest
