@@ -5,6 +5,8 @@ import com.liberologico.invoice_api.entities.Invoice;
 import com.liberologico.invoice_api.entities.Line;
 import com.liberologico.invoice_api.entities.Person;
 import com.liberologico.invoice_api.entities.Price;
+import com.squareup.okhttp.ResponseBody;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,11 +24,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith( SpringJUnit4ClassRunner.class )
 @SpringApplicationConfiguration( classes = InvoiceApiApplication.class )
@@ -80,16 +84,33 @@ public class InvoiceApiApplicationTests
                           .setPrice( new Price().setPrice( BigDecimal.ONE ).setCurrency( "EUR" ) )
         );
 
-        Call<Invoice> call = service.generate( PREFIX, invoice );
+        Call<ResponseBody> call = service.generate( PREFIX, invoice );
 
-        Response<Invoice> response = call.execute();
+        Response<ResponseBody> response = call.execute();
         assertTrue( response.isSuccess() );
         assertEquals( 200, response.code() );
+        assertNotNull( response.body() );
 
-        invoice = response.body();
-        assertNotNull( invoice );
-        assertNotNull( invoice.getNumber() );
-        assertEquals( PREFIX + "1", invoice.getNumber() );
+        try ( PDDocument pdf = PDDocument.load( response.body().bytes() ) )
+        {
+            assertTrue( pdf.isEncrypted() );
+        }
+        catch ( IOException e )
+        {
+            fail( e.getMessage() );
+        }
+    }
+
+    @Test
+    public void getFields() throws IOException
+    {
+        Call<List<String>> call = service.getFields();
+        Response<List<String>> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( 200, response.code() );
+        final List<String> fields = response.body();
+        assertNotNull( fields );
+        assertFalse( fields.isEmpty() );
     }
 
     public Invoice getInvoice( Line... lines )

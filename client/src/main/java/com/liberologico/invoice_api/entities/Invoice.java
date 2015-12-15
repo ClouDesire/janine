@@ -1,17 +1,23 @@
 package com.liberologico.invoice_api.entities;
 
 import com.google.gson.annotations.Expose;
+import io.gsonfire.annotations.ExposeMethodResult;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Invoice
 {
     @Expose( deserialize = false )
     private String number;
+
+    @Expose( deserialize = false )
+    private Date date = new Date();
 
     @NotNull
     @Valid
@@ -21,6 +27,12 @@ public class Invoice
     @Valid
     private Person recipient;
 
+    @ExposeMethodResult( "total" )
+    public BigDecimal getTotal()
+    {
+        return lines.stream().map( Line::calculateTotalPrice ).reduce( BigDecimal.ZERO, BigDecimal::add );
+    }
+
     public String getNumber()
     {
         return number;
@@ -29,6 +41,17 @@ public class Invoice
     public Invoice setNumber( String number )
     {
         this.number = number;
+        return this;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public Invoice setDate( Date date )
+    {
+        this.date = date;
         return this;
     }
 
