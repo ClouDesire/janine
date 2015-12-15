@@ -9,10 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import redis.clients.jedis.Jedis;
 import retrofit.Call;
 import retrofit.Response;
@@ -29,13 +30,16 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith( SpringJUnit4ClassRunner.class )
 @SpringApplicationConfiguration( classes = InvoiceApiApplication.class )
-@WebAppConfiguration
+@WebIntegrationTest ("server.port=0")
 public class InvoiceApiApplicationTests
 {
-    private static final String ROOT = "http://localhost:8080";
+    private static final String ROOT = "http://localhost";
     private static final String PREFIX = "TEST";
 
-    private final InvoiceService service = new InvoiceClient( ROOT ).getService();
+    @Value ("${local.server.port}")
+    int port;
+
+    private InvoiceService service;
 
     @Autowired
     private JedisConnectionFactory jedisConnectionFactory;
@@ -43,6 +47,7 @@ public class InvoiceApiApplicationTests
     @Before
     public void reset()
     {
+        service = new InvoiceClient( ROOT + ":" + port ).getService();
         Jedis jedis = new Jedis( jedisConnectionFactory.getShardInfo() );
         jedis.flushAll();
     }
