@@ -12,7 +12,6 @@ import redis.clients.jedis.Jedis;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -62,7 +61,7 @@ public class InvoiceServiceImpl implements InvoiceService
         try
         {
             ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
-            return blobStoreService.uploadFile( out.toByteArray(), MessageFormat.format( "{0}.pdf", id ), prefix );
+            return blobStoreService.uploadFile( out.toByteArray(), id, prefix );
         }
         catch ( IOException e )
         {

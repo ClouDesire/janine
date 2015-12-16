@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,8 +34,8 @@ public class BlobStoreServiceImpl implements BlobStoreService
 
     @Value ( "${blob.enabled}" )
     private Boolean blobUploadEnabled;
-    @Value ( "${blob.container_name}" )
-    protected String containerName;
+    @Value ( "${blob.containers-prefix}" )
+    protected String containersPrefix;
 
     private Map<String, URL> urlCache = new ConcurrentHashMap<>();
 
@@ -118,13 +119,21 @@ public class BlobStoreServiceImpl implements BlobStoreService
     }
 
     @Override
-    public URL uploadFile( byte[] object, String filename, String container ) throws IOException
+    public synchronized URL uploadFile( byte[] pdf, Long id, String prefix ) throws IOException
     {
+        final String filename = MessageFormat.format( "{0}.pdf", id );
+        final String container = containersPrefix + prefix;
+
         if ( api.getContainerApi( REGION ).get( container ) == null )
         {
             this.createPrivateContainer( container );
         }
 
+        return uploadFile( pdf, filename, container );
+    }
+
+    private URL uploadFile( byte[] object, String filename, String container ) throws IOException
+    {
         ObjectApi objectApi = api.getObjectApi( REGION, container );
 
         Payload payload = Payloads.newByteSourcePayload( ByteSource.wrap( object ) );
