@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -21,8 +20,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @SuppressWarnings ( "Duplicates" )
 @Component
@@ -40,8 +37,6 @@ public class BlobStoreServiceImpl implements BlobStoreService
     protected String containerName;
 
     private Map<String, URL> urlCache = new ConcurrentHashMap<>();
-
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Override
     public void createPrivateContainer( String container )
@@ -169,37 +164,5 @@ public class BlobStoreServiceImpl implements BlobStoreService
             return object.getUri().toURL();
         }
         return null;
-    }
-
-    @Override
-    public void deleteFile( String filename, String container )
-    {
-        ObjectApi objectApi = api.getObjectApi( REGION, container );
-
-        log.info( "Deleting {} on {}", filename, container );
-
-        objectApi.delete( filename );
-    }
-
-    @Override
-    public void deleteFile( String objectStorageFileName )
-    {
-        if ( blobUploadEnabled )
-        {
-            try
-            {
-                executor.submit( () -> deleteFile( objectStorageFileName, containerName ) );
-            }
-            catch ( Exception e )
-            {
-                log.warn( "Something went wrong while deleting blob!", e );
-            }
-        }
-    }
-
-    @PreDestroy
-    public void destroy()
-    {
-        executor.shutdown();
     }
 }

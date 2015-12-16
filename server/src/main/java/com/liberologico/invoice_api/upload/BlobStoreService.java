@@ -22,10 +22,6 @@ public interface BlobStoreService
 
     URL getFileURL( String filename, String container ) throws IOException;
 
-    void deleteFile( String filename, String container );
-
-    void deleteFile( String objectStorageFileName );
-
     enum ContainerVisibility
     {
         PUBLIC, PRIVATE
