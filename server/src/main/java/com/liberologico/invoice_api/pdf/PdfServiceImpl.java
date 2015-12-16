@@ -32,7 +32,7 @@ public class PdfServiceImpl implements PdfService
     private ResourceLoader resourceLoader;
 
     @Override
-    public List<String> getFields()
+    public List<String> getFields() throws IOException
     {
         Resource resource = resourceLoader.getResource( "classpath:" + TEMPLATE );
 
@@ -42,14 +42,10 @@ public class PdfServiceImpl implements PdfService
             PDAcroForm acroForm = docCatalog.getAcroForm();
             return acroForm.getFields().stream().map( PDField::getFullyQualifiedName ).collect( Collectors.toList() );
         }
-        catch ( IOException e )
-        {
-            throw new RuntimeException( e );
-        }
     }
 
     @Override
-    public ByteArrayOutputStream generate( Invoice invoice )
+    public ByteArrayOutputStream generate( Invoice invoice ) throws IOException
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -71,10 +67,6 @@ public class PdfServiceImpl implements PdfService
             pdfDocument.protect( spp );
 
             pdfDocument.save( out );
-        }
-        catch ( IOException e )
-        {
-            throw new RuntimeException( e );
         }
 
         return out;

@@ -47,7 +47,7 @@ public class InvoiceServiceImpl implements InvoiceService
         {
             return pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
         }
-        catch ( RuntimeException e )
+        catch ( IOException e )
         {
             jedis.decr( prefix );
             throw new InvoiceServiceException( e );
@@ -64,7 +64,7 @@ public class InvoiceServiceImpl implements InvoiceService
             ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
             return blobStoreService.uploadFile( out.toByteArray(), MessageFormat.format( "{0}.pdf", id ), prefix );
         }
-        catch ( IOException | RuntimeException e )
+        catch ( IOException e )
         {
             jedis.decr( prefix );
             throw new InvoiceServiceException( e );
@@ -78,7 +78,7 @@ public class InvoiceServiceImpl implements InvoiceService
         {
             return pdfService.getFields();
         }
-        catch ( RuntimeException e )
+        catch ( IOException e )
         {
             throw new InvoiceServiceException( e );
         }
