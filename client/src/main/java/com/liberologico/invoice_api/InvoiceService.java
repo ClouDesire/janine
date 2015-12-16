@@ -15,7 +15,7 @@ public interface InvoiceService
     @POST( "/{prefix}/validate" )
     Call<Invoice> validate( @Path( "prefix" ) String prefix, @Body Invoice invoice );
 
-    @POST( "/{prefix}" )
+    @POST( "/{prefix}/download" )
     Call<ResponseBody> generate( @Path( "prefix" ) String prefix, @Body Invoice invoice );
 
     @GET( "/fields" )
