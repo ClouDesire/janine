@@ -82,26 +82,30 @@ public class PdfServiceImpl implements PdfService
 
     private PDAcroForm setFields( Invoice invoice, PDAcroForm acroForm ) throws IOException
     {
-        setField( acroForm, "Your Company Name", "ClouDesire.com" );
-        setField( acroForm, "Your Name", invoice.getHolder().getEmail() );
-        setField( acroForm, "Client's Name", invoice.getRecipient().getEmail() );
-        setField( acroForm, "Invoice ID", invoice.getNumber() );
-        setField( acroForm, "Issue Date", DATE_FORMAT.format( invoice.getDate() ) );
+        setField( acroForm, "header", invoice.getHeader() );
+        setField( acroForm, "holderName", invoice.getHolder().toString() );
+        setField( acroForm, "holderAddress1", invoice.getHolder().getAddress().getLineOne() );
+        setField( acroForm, "holderAddress2", invoice.getHolder().getAddress().getLineTwo() );
+        setField( acroForm, "recipientName", invoice.getRecipient().toString() );
+        setField( acroForm, "recipientAddress1", invoice.getRecipient().getAddress().getLineOne() );
+        setField( acroForm, "recipientAddress2", invoice.getRecipient().getAddress().getLineTwo() );
+        setField( acroForm, "number", invoice.getNumber() );
+        setField( acroForm, "date", DATE_FORMAT.format( invoice.getDate() ) );
 
         ListIterator<Line> it = invoice.getLines().listIterator();
         while ( it.hasNext() )
         {
             int itemIndex = it.nextIndex() + 1;
             Line line = it.next();
-            setField( acroForm, "Item " + itemIndex + ": Description", line.getDescription() );
-            setField( acroForm, "Item " + itemIndex + ": Quantity", line.getQuantity().toPlainString() );
-            setField( acroForm, "Item " + itemIndex + ": Unit Price", line.getPrice().getPrice().toPlainString() );
-            setField( acroForm, "Item " + itemIndex + ": Amount", line.calculateTotalPrice().toPlainString() );
+            setField( acroForm, "description" + itemIndex, line.getDescription() );
+            setField( acroForm, "vat" + itemIndex, line.getPrice().getVAT().toPlainString() + "%" );
+            setField( acroForm, "quantity" + itemIndex, line.getQuantity().toPlainString() );
+            setField( acroForm, "price" + itemIndex, line.getPrice().getPrice().toPlainString() );
+            setField( acroForm, "total" + itemIndex, line.calculateTotalPrice().toPlainString() );
         }
 
-        String total = invoice.getTotal().toPlainString();
-        setField( acroForm, "Subtotal", total );
-        setField( acroForm, "Amount Due", total );
+        setField( acroForm, "total", invoice.getTotal().toPlainString() );
+        setField( acroForm, "notes", invoice.getNotes() );
 
         return acroForm;
     }

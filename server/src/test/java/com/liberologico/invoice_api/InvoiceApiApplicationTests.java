@@ -1,6 +1,7 @@
 package com.liberologico.invoice_api;
 
 import com.google.gson.Gson;
+import com.liberologico.invoice_api.entities.Address;
 import com.liberologico.invoice_api.entities.Invoice;
 import com.liberologico.invoice_api.entities.Line;
 import com.liberologico.invoice_api.entities.Person;
@@ -115,9 +116,19 @@ public class InvoiceApiApplicationTests
 
     public Invoice getInvoice( Line... lines )
     {
+        final Person holder = new Person()
+                .setFirstName( "Antanio" )
+                .setLastName( "Divani" )
+                .setEmail( "bu@del.lo" )
+                .setAddress( new Address( "address", "city", "country", "state", "zip" ) );
+        final Person recipient = new Person()
+                .setFirstName( "Brebuzio" )
+                .setLastName( "Sfanti" )
+                .setEmail( "di@tu.ma" )
+                .setAddress( new Address( "address", "city", "country", "state", "zip" ) );
         return new Invoice()
-                .setHolder( new Person().setEmail( "bu@del.lo" ) )
-                .setRecipient( new Person().setEmail( "di@tu.ma" ) )
+                .setHolder( holder )
+                .setRecipient( recipient )
                 .setLines( Arrays.asList( lines ) );
     }
 }

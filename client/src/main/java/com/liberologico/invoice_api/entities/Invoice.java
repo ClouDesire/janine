@@ -2,6 +2,7 @@ package com.liberologico.invoice_api.entities;
 
 import com.google.gson.annotations.Expose;
 import io.gsonfire.annotations.ExposeMethodResult;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
@@ -19,6 +20,12 @@ public class Invoice
     @Expose( deserialize = false )
     private Date date = new Date();
 
+    @Length( max = 64 )
+    private String header;
+
+    @Length( max = 1024 )
+    private String notes;
+
     @NotNull
     @Valid
     private Person holder;
@@ -26,6 +33,10 @@ public class Invoice
     @NotNull
     @Valid
     private Person recipient;
+
+    @NotEmpty
+    @Valid
+    private List<Line> lines = new ArrayList<>();
 
     @ExposeMethodResult( "total" )
     public BigDecimal getTotal()
@@ -55,9 +66,25 @@ public class Invoice
         return this;
     }
 
-    @NotEmpty
-    @Valid
-    private List<Line> lines = new ArrayList<>();
+    public String getHeader()
+    {
+        return header;
+    }
+
+    public void setHeader( String header )
+    {
+        this.header = header;
+    }
+
+    public String getNotes()
+    {
+        return notes;
+    }
+
+    public void setNotes( String notes )
+    {
+        this.notes = notes;
+    }
 
     public List<Line> getLines()
     {

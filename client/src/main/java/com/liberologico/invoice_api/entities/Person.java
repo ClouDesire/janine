@@ -3,11 +3,14 @@ package com.liberologico.invoice_api.entities;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
+import java.text.MessageFormat;
 
 public class Person
 {
+    @NotNull
     private String firstName;
 
+    @NotNull
     private String lastName;
 
     @Email
@@ -16,7 +19,14 @@ public class Person
 
     private String phoneNumber;
 
+    @NotNull
     private Address address;
+
+    @Override
+    public String toString()
+    {
+        return MessageFormat.format( "{0} {1} <{2}>", firstName, lastName, email );
+    }
 
     public String getFirstName()
     {
@@ -59,6 +69,17 @@ public class Person
     public Person setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    public Address getAddress()
+    {
+        return address;
+    }
+
+    public Person setAddress( Address address )
+    {
+        this.address = address;
         return this;
     }
 }
