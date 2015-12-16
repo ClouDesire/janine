@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 
 @RestController
@@ -40,6 +42,21 @@ public class InvoiceController
             return new ResponseEntity<>( out.toByteArray(), HttpStatus.OK );
         }
         catch ( InvoiceServiceException e )
+        {
+            return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR );
+        }
+    }
+
+    @RequestMapping( value = "/{prefix}", method = RequestMethod.POST )
+    ResponseEntity<Void> generateAndUpload( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
+    {
+        try
+        {
+            URL url = service.generateAndUpload( prefix, invoice );
+
+            return ResponseEntity.created( url.toURI() ).build();
+        }
+        catch ( InvoiceServiceException | URISyntaxException e )
         {
             return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR );
         }

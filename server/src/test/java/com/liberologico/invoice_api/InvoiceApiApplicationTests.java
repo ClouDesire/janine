@@ -9,6 +9,7 @@ import com.liberologico.invoice_api.entities.Price;
 import com.squareup.okhttp.ResponseBody;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,25 @@ public class InvoiceApiApplicationTests
         {
             fail( e.getMessage() );
         }
+    }
+
+    @Ignore( "Configure Rackspace credentials" )
+    @Test
+    public void simpleInvoiceUrl() throws IOException
+    {
+        Invoice invoice = getInvoice(
+                new Line().setDescription( "Riga 1" )
+                        .setPrice( new Price().setPrice( BigDecimal.TEN ).setCurrency( "EUR" ) ),
+                new Line().setDescription( "Riga 2" )
+                        .setPrice( new Price().setPrice( BigDecimal.ONE ).setCurrency( "EUR" ) )
+        );
+
+        Call<ResponseBody> call = service.generateAndUpload( PREFIX, invoice );
+
+        Response<ResponseBody> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( 201, response.code() );
+        assertNotNull( response.headers().get( "Location" ) );
     }
 
     @Test

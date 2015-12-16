@@ -55,6 +55,23 @@ public class InvoiceServiceImpl implements InvoiceService
     }
 
     @Override
+    public synchronized URL generateAndUpload( String prefix, Invoice invoice ) throws InvoiceServiceException
+    {
+        Long id = jedis.incr( prefix );
+
+        try
+        {
+            ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
+            return blobStoreService.uploadFile( out.toByteArray(), MessageFormat.format( "{0}.pdf", id ), prefix );
+        }
+        catch ( IOException | RuntimeException e )
+        {
+            jedis.decr( prefix );
+            throw new InvoiceServiceException( e );
+        }
+    }
+
+    @Override
     public List<String> getPdfFields() throws InvoiceServiceException
     {
         try

@@ -125,6 +125,11 @@ public class BlobStoreServiceImpl implements BlobStoreService
     @Override
     public URL uploadFile( byte[] object, String filename, String container ) throws IOException
     {
+        if ( api.getContainerApi( REGION ).get( container ) == null )
+        {
+            this.createPrivateContainer( container );
+        }
+
         ObjectApi objectApi = api.getObjectApi( REGION, container );
 
         Payload payload = Payloads.newByteSourcePayload( ByteSource.wrap( object ) );
