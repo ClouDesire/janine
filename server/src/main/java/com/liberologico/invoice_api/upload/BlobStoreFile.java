@@ -1,17 +1,25 @@
 package com.liberologico.invoice_api.upload;
 
+import java.net.URI;
 import java.text.MessageFormat;
+import java.util.Objects;
 
 public class BlobStoreFile
 {
     public static final String PATTERN = "{0}.pdf";
 
+    private String baseUrl;
+
+    private String prefix;
+
     private String owner;
 
     private Long id;
 
-    public BlobStoreFile( String owner, Long id )
+    public BlobStoreFile( String baseUrl, String prefix, String owner, Long id )
     {
+        this.baseUrl = baseUrl;
+        this.prefix = prefix;
         this.owner = owner;
         this.id = id;
     }
@@ -21,8 +29,31 @@ public class BlobStoreFile
         return MessageFormat.format( PATTERN, id );
     }
 
-    public String getContainer( String prefix )
+    public String getContainer()
     {
         return prefix + owner;
+    }
+
+    public URI getURI()
+    {
+        return URI.create( baseUrl + getContainer() + "/" + getFilename() );
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+        BlobStoreFile that = (BlobStoreFile) o;
+        return Objects.equals( baseUrl, that.baseUrl ) &&
+                Objects.equals( prefix, that.prefix ) &&
+                Objects.equals( owner, that.owner ) &&
+                Objects.equals( id, that.id );
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash( baseUrl, prefix, owner, id );
     }
 }

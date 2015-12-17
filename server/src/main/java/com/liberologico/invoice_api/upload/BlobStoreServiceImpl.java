@@ -33,8 +33,6 @@ public class BlobStoreServiceImpl implements BlobStoreService
 
     @Value ( "${blob.enabled}" )
     private Boolean blobUploadEnabled;
-    @Value ( "${blob.containers-prefix}" )
-    protected String containersPrefix;
 
     private Map<String, URL> urlCache = new ConcurrentHashMap<>();
 
@@ -121,7 +119,7 @@ public class BlobStoreServiceImpl implements BlobStoreService
     public synchronized URL uploadFile( byte[] pdf, BlobStoreFile file ) throws IOException
     {
         final String filename = file.getFilename();
-        final String container = file.getContainer( containersPrefix );
+        final String container = file.getContainer();
 
         if ( api.getContainerApi( REGION ).get( container ) == null )
         {
@@ -147,7 +145,7 @@ public class BlobStoreServiceImpl implements BlobStoreService
     @Override
     public InputStream downloadFile( BlobStoreFile file ) throws IOException
     {
-        return downloadFile( file.getFilename(), file.getContainer( containersPrefix ) );
+        return downloadFile( file.getFilename(), file.getContainer() );
     }
 
     private InputStream downloadFile( String filename, String container ) throws IOException

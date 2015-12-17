@@ -4,6 +4,7 @@ import com.liberologico.invoice_api.entities.Invoice;
 import com.liberologico.invoice_api.exceptions.InvoiceServiceException;
 import com.liberologico.invoice_api.pdf.PdfService;
 import com.liberologico.invoice_api.upload.BlobStoreFile;
+import com.liberologico.invoice_api.upload.BlobStoreFileFactory;
 import com.liberologico.invoice_api.upload.BlobStoreService;
 import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
 
 @Component
 public class InvoiceServiceImpl implements InvoiceService
 {
+    @Autowired
+    private BlobStoreFileFactory blobStoreFileFactory;
+
     @Autowired
     private BlobStoreService blobStoreService;
 
@@ -66,10 +68,11 @@ public class InvoiceServiceImpl implements InvoiceService
         try
         {
             ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
-            URL url = blobStoreService.uploadFile( out.toByteArray(), new BlobStoreFile( prefix, id ) );
-            return url.toURI();
+            final BlobStoreFile file = blobStoreFileFactory.produce( prefix, id );
+            blobStoreService.uploadFile( out.toByteArray(), file );
+            return file.getURI();
         }
-        catch ( IOException | URISyntaxException e )
+        catch ( IOException e )
         {
             jedis.decr( prefix );
             throw new InvoiceServiceException( e );
@@ -81,7 +84,7 @@ public class InvoiceServiceImpl implements InvoiceService
     {
         try
         {
-            InputStream in = blobStoreService.downloadFile( new BlobStoreFile( prefix, id ) );
+            InputStream in = blobStoreService.downloadFile( blobStoreFileFactory.produce( prefix, id ) );
             return IOUtils.toByteArray( in );
         }
         catch ( IOException e )
