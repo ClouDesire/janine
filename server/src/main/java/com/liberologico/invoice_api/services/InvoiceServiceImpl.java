@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class InvoiceServiceImpl implements InvoiceService
@@ -41,7 +42,8 @@ public class InvoiceServiceImpl implements InvoiceService
     @Override
     public synchronized Long getCurrent( String prefix )
     {
-        return Long.parseLong( jedis.get( prefix ) );
+        Optional<String> current = Optional.ofNullable( jedis.get( prefix ) );
+        return Long.parseLong( current.orElse( "0" ) );
     }
 
     @Override
