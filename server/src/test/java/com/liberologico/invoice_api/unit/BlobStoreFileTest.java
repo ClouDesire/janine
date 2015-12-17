@@ -35,4 +35,11 @@ public class BlobStoreFileTest
     {
         assertEquals( URI.create( "http://invoice.api/malte/1.pdf" ), file.getURI() );
     }
+
+    @Test
+    public void testGetURIWithoutTrailingSlashInBaseURL() throws Exception
+    {
+        BlobStoreFile file = new BlobStoreFile( "http://invoice.api", "invoices_", "malte", 1L );
+        assertEquals( URI.create( "http://invoice.api/malte/1.pdf" ), file.getURI() );
+    }
 }

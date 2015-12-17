@@ -36,7 +36,14 @@ public class BlobStoreFile
 
     public URI getURI()
     {
-        return URI.create( baseUrl + owner + "/" + getFilename() );
+        return URI.create( getBaseUrl() + owner + "/" + getFilename() );
+    }
+
+    private String getBaseUrl()
+    {
+        String url = baseUrl;
+        if ( url.charAt( baseUrl.length() - 1 ) != '/' ) url += '/';
+        return url;
     }
 
     @Override
