@@ -36,7 +36,7 @@ public class BlobStoreFile
 
     public URI getURI()
     {
-        return URI.create( baseUrl + getContainer() + "/" + getFilename() );
+        return URI.create( baseUrl + owner + "/" + getFilename() );
     }
 
     @Override

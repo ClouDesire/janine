@@ -33,6 +33,6 @@ public class BlobStoreFileTest
     @Test
     public void testGetURI() throws Exception
     {
-        assertEquals( URI.create( "http://invoice.api/invoices_malte/1.pdf" ), file.getURI() );
+        assertEquals( URI.create( "http://invoice.api/malte/1.pdf" ), file.getURI() );
     }
 }
