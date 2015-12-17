@@ -6,10 +6,11 @@ import com.liberologico.invoice_api.entities.Invoice;
 import com.liberologico.invoice_api.entities.Line;
 import com.liberologico.invoice_api.entities.Person;
 import com.liberologico.invoice_api.entities.Price;
+import com.liberologico.invoice_api.upload.BlobStoreService;
 import com.squareup.okhttp.ResponseBody;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +51,27 @@ public class InvoiceApiApplicationTests
     @Autowired
     private JedisConnectionFactory jedisConnectionFactory;
 
+    @Autowired
+    private BlobStoreService blobStoreService;
+
+    @Value( "${blob.containers-prefix}" )
+    protected String containersPrefix;
+
+    @Value( "${app.baseUrl}" )
+    protected String baseUrl;
+
     @Before
+    @After
     public void reset()
     {
         service = new InvoiceClient( ROOT + ":" + port ).getService();
+
         Jedis jedis = new Jedis( jedisConnectionFactory.getShardInfo() );
         jedis.flushAll();
+        jedis.close();
+
+        final String container = containersPrefix + PREFIX;
+        blobStoreService.flushContainer( container );
     }
 
     @Test
@@ -103,7 +119,6 @@ public class InvoiceApiApplicationTests
         }
     }
 
-    @Ignore( "Configure Rackspace credentials" )
     @Test
     public void simpleInvoiceUrl() throws IOException
     {
@@ -119,7 +134,10 @@ public class InvoiceApiApplicationTests
         Response<ResponseBody> response = call.execute();
         assertTrue( response.isSuccess() );
         assertEquals( 201, response.code() );
-        assertNotNull( response.headers().get( "Location" ) );
+
+        final String location = response.headers().get( "Location" );
+        assertNotNull( location );
+        assertEquals( baseUrl + PREFIX + "/1.pdf", location );
     }
 
     @Test
