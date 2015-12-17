@@ -34,44 +34,25 @@ public class InvoiceController
 
     @RequestMapping( value = "/{prefix}/download", method = RequestMethod.POST )
     ResponseEntity<byte[]> generate( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
+            throws InvoiceServiceException
     {
-        try
-        {
-            ByteArrayOutputStream out = service.generate( prefix, invoice );
+        ByteArrayOutputStream out = service.generate( prefix, invoice );
 
-            return new ResponseEntity<>( out.toByteArray(), HttpStatus.OK );
-        }
-        catch ( InvoiceServiceException e )
-        {
-            return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR );
-        }
+        return new ResponseEntity<>( out.toByteArray(), HttpStatus.OK );
     }
 
     @RequestMapping( value = "/{prefix}", method = RequestMethod.POST )
     ResponseEntity<Void> generateAndUpload( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
+            throws InvoiceServiceException, URISyntaxException
     {
-        try
-        {
-            URL url = service.generateAndUpload( prefix, invoice );
+        URL url = service.generateAndUpload( prefix, invoice );
 
-            return ResponseEntity.created( url.toURI() ).build();
-        }
-        catch ( InvoiceServiceException | URISyntaxException e )
-        {
-            return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR );
-        }
+        return ResponseEntity.created( url.toURI() ).build();
     }
 
     @RequestMapping( value  = "/fields", method = RequestMethod.GET )
-    ResponseEntity<List<String>> getFields()
+    ResponseEntity<List<String>> getFields() throws InvoiceServiceException
     {
-        try
-        {
-            return new ResponseEntity<>( service.getPdfFields(), HttpStatus.OK );
-        }
-        catch ( InvoiceServiceException e )
-        {
-            return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR );
-        }
+        return new ResponseEntity<>( service.getPdfFields(), HttpStatus.OK );
     }
 }
