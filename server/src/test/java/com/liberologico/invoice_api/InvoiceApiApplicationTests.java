@@ -104,6 +104,11 @@ public class InvoiceApiApplicationTests
 
         Call<ResponseBody> call = service.generate( PREFIX, invoice );
 
+        testPdfResponse( call );
+    }
+
+    public void testPdfResponse( Call<ResponseBody> call ) throws IOException
+    {
         Response<ResponseBody> response = call.execute();
         assertTrue( response.isSuccess() );
         assertEquals( 200, response.code() );
@@ -138,6 +143,8 @@ public class InvoiceApiApplicationTests
         final String location = response.headers().get( "Location" );
         assertNotNull( location );
         assertEquals( baseUrl + PREFIX + "/1.pdf", location );
+
+        testPdfResponse( service.download( PREFIX, 1L ) );
     }
 
     @Test
