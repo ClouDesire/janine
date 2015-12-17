@@ -15,5 +15,7 @@ public interface InvoiceService
 
     URI generateAndUpload( String prefix, Invoice invoice ) throws InvoiceServiceException;
 
+    byte[] download( String prefix, Long id ) throws InvoiceServiceException;
+
     List<String> getPdfFields() throws InvoiceServiceException;
 }

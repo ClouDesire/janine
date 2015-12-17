@@ -49,6 +49,14 @@ public class InvoiceController
         return ResponseEntity.created( uri ).build();
     }
 
+    @RequestMapping( value = "/{prefix}/{id}", method = RequestMethod.GET )
+    ResponseEntity<byte[]> download( @PathVariable String prefix, @PathVariable Long id ) throws InvoiceServiceException
+    {
+        byte[] pdf = service.download( prefix, id );
+
+        return new ResponseEntity<>( pdf, HttpStatus.OK );
+    }
+
     @RequestMapping( value  = "/fields", method = RequestMethod.GET )
     ResponseEntity<List<String>> getFields() throws InvoiceServiceException
     {

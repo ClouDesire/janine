@@ -4,6 +4,7 @@ import com.liberologico.invoice_api.entities.Invoice;
 import com.liberologico.invoice_api.exceptions.InvoiceServiceException;
 import com.liberologico.invoice_api.pdf.PdfService;
 import com.liberologico.invoice_api.upload.BlobStoreService;
+import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Component;
@@ -11,9 +12,11 @@ import redis.clients.jedis.Jedis;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -69,6 +72,20 @@ public class InvoiceServiceImpl implements InvoiceService
         catch ( IOException | URISyntaxException e )
         {
             jedis.decr( prefix );
+            throw new InvoiceServiceException( e );
+        }
+    }
+
+    @Override
+    public byte[] download( String prefix, Long id ) throws InvoiceServiceException
+    {
+        try
+        {
+            InputStream in = blobStoreService.downloadFile( MessageFormat.format( "{0}.pdf", id ), prefix );
+            return IOUtils.toByteArray( in );
+        }
+        catch ( IOException e )
+        {
             throw new InvoiceServiceException( e );
         }
     }
