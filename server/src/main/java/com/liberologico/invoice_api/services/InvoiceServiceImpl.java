@@ -11,6 +11,8 @@ import redis.clients.jedis.Jedis;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -54,16 +56,17 @@ public class InvoiceServiceImpl implements InvoiceService
     }
 
     @Override
-    public synchronized URL generateAndUpload( String prefix, Invoice invoice ) throws InvoiceServiceException
+    public synchronized URI generateAndUpload( String prefix, Invoice invoice ) throws InvoiceServiceException
     {
         Long id = jedis.incr( prefix );
 
         try
         {
             ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
-            return blobStoreService.uploadFile( out.toByteArray(), id, prefix );
+            URL url = blobStoreService.uploadFile( out.toByteArray(), id, prefix );
+            return url.toURI();
         }
-        catch ( IOException e )
+        catch ( IOException | URISyntaxException e )
         {
             jedis.decr( prefix );
             throw new InvoiceServiceException( e );

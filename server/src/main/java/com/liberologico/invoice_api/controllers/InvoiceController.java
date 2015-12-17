@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -43,11 +42,11 @@ public class InvoiceController
 
     @RequestMapping( value = "/{prefix}", method = RequestMethod.POST )
     ResponseEntity<Void> generateAndUpload( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
-            throws InvoiceServiceException, URISyntaxException
+            throws InvoiceServiceException
     {
-        URL url = service.generateAndUpload( prefix, invoice );
+        URI uri = service.generateAndUpload( prefix, invoice );
 
-        return ResponseEntity.created( url.toURI() ).build();
+        return ResponseEntity.created( uri ).build();
     }
 
     @RequestMapping( value  = "/fields", method = RequestMethod.GET )
