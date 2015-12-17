@@ -16,9 +16,9 @@ public interface BlobStoreService
 
     URL getCdnURL( String container );
 
-    URL uploadFile( byte[] pdf, Long id, String prefix ) throws IOException;
+    URL uploadFile( byte[] pdf, BlobStoreFile file ) throws IOException;
 
-    InputStream downloadFile( String filename, String container ) throws IOException;
+    InputStream downloadFile( BlobStoreFile file ) throws IOException;
 
     URL getFileURL( String filename, String container ) throws IOException;
 

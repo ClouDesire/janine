@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -119,10 +118,10 @@ public class BlobStoreServiceImpl implements BlobStoreService
     }
 
     @Override
-    public synchronized URL uploadFile( byte[] pdf, Long id, String prefix ) throws IOException
+    public synchronized URL uploadFile( byte[] pdf, BlobStoreFile file ) throws IOException
     {
-        final String filename = MessageFormat.format( "{0}.pdf", id );
-        final String container = containersPrefix + prefix;
+        final String filename = file.getFilename();
+        final String container = file.getContainer( containersPrefix );
 
         if ( api.getContainerApi( REGION ).get( container ) == null )
         {
@@ -146,7 +145,12 @@ public class BlobStoreServiceImpl implements BlobStoreService
     }
 
     @Override
-    public InputStream downloadFile( String filename, String container ) throws IOException
+    public InputStream downloadFile( BlobStoreFile file ) throws IOException
+    {
+        return downloadFile( file.getFilename(), file.getContainer( containersPrefix ) );
+    }
+
+    private InputStream downloadFile( String filename, String container ) throws IOException
     {
         ObjectApi objectApi = api.getObjectApi( REGION, container );
 

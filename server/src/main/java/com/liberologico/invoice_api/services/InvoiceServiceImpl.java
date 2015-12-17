@@ -3,6 +3,7 @@ package com.liberologico.invoice_api.services;
 import com.liberologico.invoice_api.entities.Invoice;
 import com.liberologico.invoice_api.exceptions.InvoiceServiceException;
 import com.liberologico.invoice_api.pdf.PdfService;
+import com.liberologico.invoice_api.upload.BlobStoreFile;
 import com.liberologico.invoice_api.upload.BlobStoreService;
 import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Component
@@ -66,7 +66,7 @@ public class InvoiceServiceImpl implements InvoiceService
         try
         {
             ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
-            URL url = blobStoreService.uploadFile( out.toByteArray(), id, prefix );
+            URL url = blobStoreService.uploadFile( out.toByteArray(), new BlobStoreFile( prefix, id ) );
             return url.toURI();
         }
         catch ( IOException | URISyntaxException e )
@@ -81,7 +81,7 @@ public class InvoiceServiceImpl implements InvoiceService
     {
         try
         {
-            InputStream in = blobStoreService.downloadFile( MessageFormat.format( "{0}.pdf", id ), prefix );
+            InputStream in = blobStoreService.downloadFile( new BlobStoreFile( prefix, id ) );
             return IOUtils.toByteArray( in );
         }
         catch ( IOException e )
