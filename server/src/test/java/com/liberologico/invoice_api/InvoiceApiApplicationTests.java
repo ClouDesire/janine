@@ -1,5 +1,6 @@
 package com.liberologico.invoice_api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.liberologico.invoice_api.entities.Address;
 import com.liberologico.invoice_api.entities.Invoice;
@@ -54,6 +55,9 @@ public class InvoiceApiApplicationTests
     @Autowired
     private BlobStoreService blobStoreService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Value( "${blob.containers-prefix}" )
     protected String containersPrefix;
 
@@ -107,7 +111,7 @@ public class InvoiceApiApplicationTests
         testPdfResponse( call );
     }
 
-    public void testPdfResponse( Call<ResponseBody> call ) throws IOException
+    private void testPdfResponse( Call<ResponseBody> call ) throws IOException
     {
         Response<ResponseBody> response = call.execute();
         assertTrue( response.isSuccess() );
@@ -121,6 +125,24 @@ public class InvoiceApiApplicationTests
         catch ( IOException e )
         {
             fail( e.getMessage() );
+        }
+    }
+
+    private Invoice testJsonResponse( Call<ResponseBody> call ) throws IOException
+    {
+        Response<ResponseBody> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( 200, response.code() );
+        assertNotNull( response.body() );
+
+        try
+        {
+            return objectMapper.readValue( response.body().bytes(), Invoice.class );
+        }
+        catch ( IOException e )
+        {
+            fail( e.getMessage() );
+            throw e;
         }
     }
 
@@ -144,7 +166,8 @@ public class InvoiceApiApplicationTests
         assertNotNull( location );
         assertEquals( baseUrl + PREFIX + "/1.pdf", location );
 
-        testPdfResponse( service.download( PREFIX, 1L ) );
+        testPdfResponse( service.downloadPdf( PREFIX, 1L ) );
+        assertEquals( invoice.getDate(), testJsonResponse( service.downloadJson( PREFIX, 1L ) ).getDate() );
     }
 
     @Test

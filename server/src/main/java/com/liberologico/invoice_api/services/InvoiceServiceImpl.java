@@ -92,11 +92,11 @@ public class InvoiceServiceImpl implements InvoiceService
     }
 
     @Override
-    public byte[] download( String prefix, Long id ) throws InvoiceServiceException
+    public byte[] download( String prefix, Long id, String format ) throws InvoiceServiceException
     {
         try
         {
-            InputStream in = blobStoreService.downloadFile( blobStoreFileFactory.producePdf( prefix, id ) );
+            InputStream in = blobStoreService.downloadFile( blobStoreFileFactory.produce( format, prefix, id ) );
             return IOUtils.toByteArray( in );
         }
         catch ( IOException e )

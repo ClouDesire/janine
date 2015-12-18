@@ -17,6 +17,9 @@ import static org.junit.Assert.assertEquals;
 @SpringApplicationConfiguration( classes = InvoiceApiApplication.class )
 public class BlobStoreFileFactoryTest
 {
+    private static final String OWNER = "malte";
+    private static final Long ID = 1L;
+
     @Autowired
     BlobStoreFileFactory factory;
 
@@ -27,11 +30,21 @@ public class BlobStoreFileFactoryTest
     String containersPrefix;
 
     @Test
+    public void testProducePdf() throws Exception
+    {
+        assertEquals( new BlobStorePdf( baseUrl, containersPrefix, OWNER, ID ), factory.producePdf( OWNER, ID ) );
+    }
+
+    @Test
+    public void testProduceJson() throws Exception
+    {
+        assertEquals( new BlobStoreJson( baseUrl, containersPrefix, OWNER, ID ), factory.produceJson( OWNER, ID ) );
+    }
+
+    @Test
     public void testProduce() throws Exception
     {
-        final String owner = "malte";
-        final Long id = 1L;
-        assertEquals( new BlobStorePdf( baseUrl, containersPrefix, owner, id ), factory.producePdf( owner, id ) );
-        assertEquals( new BlobStoreJson( baseUrl, containersPrefix, owner, id ), factory.produceJson( owner, id ) );
+        assertEquals( BlobStorePdf.class, factory.produce( "pdf", OWNER, ID ).getClass() );
+        assertEquals( BlobStoreJson.class, factory.produce( "json", OWNER, ID ).getClass() );
     }
 }

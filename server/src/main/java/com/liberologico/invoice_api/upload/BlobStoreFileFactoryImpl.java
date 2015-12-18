@@ -13,6 +13,17 @@ public class BlobStoreFileFactoryImpl implements BlobStoreFileFactory
     protected String containersPrefix;
 
     @Override
+    public BlobStoreFile produce( String format, String prefix, Long id )
+    {
+        switch ( format )
+        {
+            case "pdf": return producePdf( prefix, id );
+            case "json": return produceJson( prefix, id );
+            default: throw new IllegalArgumentException( format );
+        }
+    }
+
+    @Override
     public BlobStorePdf producePdf( String owner, Long id )
     {
         return new BlobStorePdf( baseUrl, containersPrefix, owner, id );
