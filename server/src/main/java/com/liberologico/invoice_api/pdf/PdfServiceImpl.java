@@ -58,6 +58,7 @@ public class PdfServiceImpl implements PdfService
             acroForm.setCacheFields( true );
 
             setFields( invoice, acroForm );
+            acroForm.getFieldIterator().forEachRemaining( pdField -> pdField.setReadOnly( true ) );
 
             AccessPermission ap = new AccessPermission();
             ap.setCanModify( false );
@@ -109,7 +110,6 @@ public class PdfServiceImpl implements PdfService
         if ( field == null ) throw new RuntimeException( "No field found with name:" + name );
 
         field.setValue( value );
-        field.setReadOnly( true );
         return acroForm;
     }
 }
