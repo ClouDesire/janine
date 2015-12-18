@@ -49,7 +49,7 @@ public class InvoiceController
         return ResponseEntity.created( uri ).build();
     }
 
-    @RequestMapping( value = "/{prefix}/{id}.{format:pdf|json}", method = RequestMethod.GET )
+    @RequestMapping( value = "/{prefix}/{id:\\d+}.{format:pdf|json}", method = RequestMethod.GET )
     ResponseEntity<byte[]> download( @PathVariable String prefix, @PathVariable Long id, @PathVariable String format )
             throws InvoiceServiceException
     {
