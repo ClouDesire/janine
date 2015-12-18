@@ -1,8 +1,9 @@
 package com.liberologico.invoice_api.component;
 
 import com.liberologico.invoice_api.InvoiceApiApplication;
-import com.liberologico.invoice_api.upload.BlobStoreFile;
 import com.liberologico.invoice_api.upload.BlobStoreFileFactory;
+import com.liberologico.invoice_api.upload.BlobStoreJson;
+import com.liberologico.invoice_api.upload.BlobStorePdf;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class BlobStoreFileFactoryTest
     {
         final String owner = "malte";
         final Long id = 1L;
-        assertEquals( new BlobStoreFile( baseUrl, containersPrefix, owner, id ), factory.produce( owner, id ) );
+        assertEquals( new BlobStorePdf( baseUrl, containersPrefix, owner, id ), factory.producePdf( owner, id ) );
+        assertEquals( new BlobStoreJson( baseUrl, containersPrefix, owner, id ), factory.produceJson( owner, id ) );
     }
 }

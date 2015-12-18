@@ -1,10 +1,12 @@
 package com.liberologico.invoice_api.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liberologico.invoice_api.entities.Invoice;
 import com.liberologico.invoice_api.exceptions.InvoiceServiceException;
 import com.liberologico.invoice_api.pdf.PdfService;
-import com.liberologico.invoice_api.upload.BlobStoreFile;
 import com.liberologico.invoice_api.upload.BlobStoreFileFactory;
+import com.liberologico.invoice_api.upload.BlobStoreJson;
+import com.liberologico.invoice_api.upload.BlobStorePdf;
 import com.liberologico.invoice_api.upload.BlobStoreService;
 import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class InvoiceServiceImpl implements InvoiceService
 
     @Autowired
     private BlobStoreService blobStoreService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private PdfService pdfService;
@@ -70,9 +75,14 @@ public class InvoiceServiceImpl implements InvoiceService
         try
         {
             ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
-            final BlobStoreFile file = blobStoreFileFactory.produce( prefix, id );
-            blobStoreService.uploadFile( out.toByteArray(), file );
-            return file.getURI();
+
+            final BlobStorePdf pdf = blobStoreFileFactory.producePdf( prefix, id );
+            blobStoreService.uploadFile( out.toByteArray(), pdf );
+
+            final BlobStoreJson json = blobStoreFileFactory.produceJson( prefix, id );
+            blobStoreService.uploadFile( objectMapper.writeValueAsBytes( invoice ), json );
+
+            return pdf.getURI();
         }
         catch ( IOException e )
         {
@@ -86,7 +96,7 @@ public class InvoiceServiceImpl implements InvoiceService
     {
         try
         {
-            InputStream in = blobStoreService.downloadFile( blobStoreFileFactory.produce( prefix, id ) );
+            InputStream in = blobStoreService.downloadFile( blobStoreFileFactory.producePdf( prefix, id ) );
             return IOUtils.toByteArray( in );
         }
         catch ( IOException e )

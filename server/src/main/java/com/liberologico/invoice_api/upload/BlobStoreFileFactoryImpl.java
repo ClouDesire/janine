@@ -13,8 +13,14 @@ public class BlobStoreFileFactoryImpl implements BlobStoreFileFactory
     protected String containersPrefix;
 
     @Override
-    public BlobStoreFile produce( String owner, Long id )
+    public BlobStorePdf producePdf( String owner, Long id )
     {
-        return new BlobStoreFile( baseUrl, containersPrefix, owner, id );
+        return new BlobStorePdf( baseUrl, containersPrefix, owner, id );
+    }
+
+    @Override
+    public BlobStoreJson produceJson( String owner, Long id )
+    {
+        return new BlobStoreJson( baseUrl, containersPrefix, owner, id );
     }
 }

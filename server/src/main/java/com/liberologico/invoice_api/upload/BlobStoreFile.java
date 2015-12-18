@@ -4,10 +4,8 @@ import java.net.URI;
 import java.text.MessageFormat;
 import java.util.Objects;
 
-public class BlobStoreFile
+public abstract class BlobStoreFile
 {
-    public static final String PATTERN = "{0}.pdf";
-
     private String baseUrl;
 
     private String prefix;
@@ -24,9 +22,11 @@ public class BlobStoreFile
         this.id = id;
     }
 
+    abstract String getPattern();
+
     public String getFilename()
     {
-        return MessageFormat.format( PATTERN, id );
+        return MessageFormat.format( getPattern(), id );
     }
 
     public String getContainer()
