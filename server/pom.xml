@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.liberologico</groupId>
-	<artifactId>invoice-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>janine</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>invoice-api</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Janine</name>
+	<description>Janine is a sexy generator for your applications' invoices</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -49,8 +49,8 @@
 
 		<dependency>
 			<groupId>com.liberologico</groupId>
-			<artifactId>invoice-api-client</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>janine-client</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

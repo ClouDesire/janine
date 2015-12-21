@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.liberologico</groupId>
-	<artifactId>invoice-api-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>janine-client</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>invoice-api-client</name>
-	<description>Invoice API client</description>
+	<name>janine-client</name>
+	<description>Client for Janine invoice generator</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
