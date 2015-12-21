@@ -156,11 +156,13 @@ public class InvoiceApiApplicationTests
                         .setPrice( new Price().setPrice( BigDecimal.ONE ).setCurrency( "EUR" ) )
         );
 
-        Call<ResponseBody> call = service.generateAndUpload( PREFIX, invoice );
+        Call<Long> call = service.generateAndUpload( PREFIX, invoice );
 
-        Response<ResponseBody> response = call.execute();
+        Response<Long> response = call.execute();
         assertTrue( response.isSuccess() );
         assertEquals( 201, response.code() );
+
+        assertEquals( 1L, response.body().longValue() );
 
         final String location = response.headers().get( "Location" );
         assertNotNull( location );

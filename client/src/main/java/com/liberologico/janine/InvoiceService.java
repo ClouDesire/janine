@@ -19,7 +19,7 @@ public interface InvoiceService
     Call<ResponseBody> generate( @Path( "prefix" ) String prefix, @Body Invoice invoice );
 
     @POST( "/{prefix}" )
-    Call<ResponseBody> generateAndUpload( @Path( "prefix" ) String prefix, @Body Invoice invoice );
+    Call<Long> generateAndUpload( @Path( "prefix" ) String prefix, @Body Invoice invoice );
 
     @GET( "/{prefix}/{id}.pdf" )
     Call<ResponseBody> downloadPdf( @Path( "prefix" ) String prefix, @Path( "id" ) Long id );

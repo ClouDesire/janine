@@ -24,6 +24,11 @@ public abstract class BlobStoreFile
 
     abstract String getPattern();
 
+    public Long getId()
+    {
+        return id;
+    }
+
     public String getFilename()
     {
         return MessageFormat.format( getPattern(), id );

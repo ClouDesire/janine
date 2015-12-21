@@ -17,7 +17,6 @@ import redis.clients.jedis.Jedis;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +67,7 @@ public class InvoiceServiceImpl implements InvoiceService
     }
 
     @Override
-    public synchronized URI generateAndUpload( String prefix, Invoice invoice ) throws InvoiceServiceException
+    public synchronized BlobStorePdf generateAndUpload( String prefix, Invoice invoice ) throws InvoiceServiceException
     {
         Long id = jedis.incr( prefix );
 
@@ -82,7 +81,7 @@ public class InvoiceServiceImpl implements InvoiceService
             final BlobStoreJson json = blobStoreFileFactory.produceJson( prefix, id );
             blobStoreService.uploadFile( objectMapper.writeValueAsBytes( invoice ), json );
 
-            return pdf.getURI();
+            return pdf;
         }
         catch ( IOException e )
         {

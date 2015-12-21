@@ -3,6 +3,7 @@ package com.liberologico.janine.controllers;
 import com.liberologico.janine.entities.Invoice;
 import com.liberologico.janine.exceptions.InvoiceServiceException;
 import com.liberologico.janine.services.InvoiceService;
+import com.liberologico.janine.upload.BlobStorePdf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -41,12 +41,12 @@ public class InvoiceController
     }
 
     @RequestMapping( value = "/{prefix}", method = RequestMethod.POST )
-    ResponseEntity<Void> generateAndUpload( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
+    ResponseEntity<Long> generateAndUpload( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
             throws InvoiceServiceException
     {
-        URI uri = service.generateAndUpload( prefix, invoice );
+        BlobStorePdf pdf = service.generateAndUpload( prefix, invoice );
 
-        return ResponseEntity.created( uri ).build();
+        return ResponseEntity.created( pdf.getURI() ).body( pdf.getId() );
     }
 
     @RequestMapping( value = "/{prefix}/{id:\\d+}.{format:pdf|json}", method = RequestMethod.GET )
