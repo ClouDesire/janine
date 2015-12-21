@@ -17,7 +17,6 @@ public class Invoice
     @Expose( deserialize = false )
     private String number;
 
-    @Expose( deserialize = false )
     private Date date = new Date();
 
     @Length( max = 64 )
