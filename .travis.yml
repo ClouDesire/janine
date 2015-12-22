@@ -5,4 +5,8 @@ jdk:
 env:
 - TEST_DIR=client
 - TEST_DIR=server
-script: cd $TEST_DIR && mvn install
+install: cd $TEST_DIR && mvn install -Dmaven.test.skip=true
+script: cd $TEST_DIR && mvn test
+cache:
+  directories:
+  - $HOME/.m2
