@@ -40,7 +40,12 @@ public class Invoice
     @ExposeMethodResult( "total" )
     public BigDecimal getTotal()
     {
-        return lines.stream().map( Line::calculateTotalPrice ).reduce( BigDecimal.ZERO, BigDecimal::add );
+        BigDecimal total = BigDecimal.ZERO;
+        for ( Line line : lines )
+        {
+            total = total.add( line.calculateTotalPrice() );
+        }
+        return total;
     }
 
     public String getNumber()
