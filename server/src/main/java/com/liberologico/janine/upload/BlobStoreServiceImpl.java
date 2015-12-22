@@ -58,13 +58,6 @@ public class BlobStoreServiceImpl implements BlobStoreService
     }
 
     @Override
-    public void deleteContainer( String container )
-    {
-        log.info( "Deleting container {}", container );
-        api.getContainerApi( REGION ).deleteIfEmpty( container );
-    }
-
-    @Override
     public void flushContainer( String container )
     {
         log.info( "Flushing container {}", container );

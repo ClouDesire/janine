@@ -44,7 +44,7 @@ public class InvoiceServiceImpl implements InvoiceService
     }
 
     @Override
-    public synchronized Long getCurrent( String prefix )
+    public synchronized Long getCurrentId( String prefix )
     {
         Optional<String> current = Optional.ofNullable( jedis.get( prefix ) );
         return Long.parseLong( current.orElse( "0" ) );

@@ -10,8 +10,6 @@ public interface BlobStoreService
 
     URL createPublicContainer( String container );
 
-    void deleteContainer( String container );
-
     void flushContainer( String container );
 
     URL getCdnURL( String container );

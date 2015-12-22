@@ -38,7 +38,7 @@ public class BlobStoreConfiguration
         Properties overrides = new Properties();
 
         if ( StringUtils.isEmpty( identity ) || StringUtils.isEmpty( credential ) )
-            log.warn( "Blank credentials, may not work everything" );
+            log.warn( "Blank credentials, upload won't work!" );
 
         overrides.put( PROPERTY_CONNECTION_TIMEOUT, connectionTimeout );
         overrides.put( PROPERTY_SO_TIMEOUT, soTimeout );

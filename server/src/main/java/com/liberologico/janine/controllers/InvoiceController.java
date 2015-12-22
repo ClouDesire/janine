@@ -26,7 +26,7 @@ public class InvoiceController
     @RequestMapping( value = "/{prefix}/validate", method = RequestMethod.POST )
     Invoice validate( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
     {
-        Long id = service.getCurrent( prefix );
+        Long id = service.getCurrentId( prefix );
 
         return invoice.setNumber( prefix + String.valueOf( id + 1 ) );
     }
