@@ -1,21 +1,26 @@
 sudo: required
 services:
-  - docker
+- docker
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 env:
-- TEST_DIR=client
-- TEST_DIR=server
-- REGISTRY_USERNAME=gionn
-- DOCKER_COMPOSE_VERSION=1.4.2
+  matrix:
+  - TEST_DIR=client
+  - TEST_DIR=server
+  global:
+    - REGISTRY_USERNAME=gionn
+    - DOCKER_COMPOSE_VERSION=1.4.2
+    - secure: lYNsDfdJKJ1+uoWZhOMqyDhqycdcWujt8VsJXcx27s60HNbjTvnZKJ5gWJImU2tDTGN49Ge25/G/M9tDb7vOXGKgBH3KSwFzWMUrx+7sL7L+zZq25bPAxrrigC7gofuci9ZUx2n+0y0JOQTnD9QHP2B9FLcxxTJOfMg2cyygO7MB++XjjdjwjNZvvhJQQd6IvdL1VclfSWjvkt7zZDEQ/Z73XCY7o0T8M4H8m2a9p5N5C0cEWt0MPUOraTIX3OuOYyiLt0X8U204wjEkfMW28kZvnD0GmU1RSB1MmLf/CjrtdEJQEFaRRaQOlH+Pd8XeOYIf9dLHB0fmQcsuvzl9EdPLQTc972Xafy8TebzTSPqRiREZT4NZSWLa/v0sqQcmgLcl9fsSQrsef++Ovjint8NRYagjyTn2ZMPFN7hc8mNqtYr0rdNzP4aV1iXF5nFeM/7kONaR/DO3k61zGETbUYLxQfW0fuGzfCdBVFLyeUEp2HnbnSS0Z4nziNPK6EGKlVZkkTIYiftBk1f+WSg7AMAJ88fQCA4J8BfLgvY8ltu2SCStfFlmESTrJdB217RUZijqO1Sc1vrcj6cAj8Y7tf/9g7gn2NpbCOODwFLkRk4LwW5+5j95wWMn+zZlNkbL+D9OxzN805Pxs7EMizrEoK8FY6dZJOqubJHMGMbDSFI=
 before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
 install: cd $TEST_DIR && mvn install -Dmaven.test.skip=true
-script:  docker-compose up -d -f ../docker-compose.yml && mvn test
+script: docker-compose up -d -f ../docker-compose.yml && mvn test
+after_success: "./dockerbuild.sh"
 cache:
   directories:
-  - $HOME/.m2
+  - "$HOME/.m2"

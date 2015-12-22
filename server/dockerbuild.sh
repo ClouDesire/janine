@@ -1,12 +1,12 @@
 #!/bin/bash -ex
-if [ -z $BUILD_NUMBER ]; then
-    echo This should run under jenkins only
+if [ -z $TRAVIS ]; then
+    echo This should run under CI only
     exit 1
 fi
-docker login --email="jenkins@cloudesire.com" --password=$REGISTRY_PASSWORD --username=$REGISTRY_USERNAME $REGISTRY_HOST
+docker login --email="dev@cloudesire.com" --password=$REGISTRY_PASSWORD --username=$REGISTRY_USERNAME
 
-BASE_NAME=$REGISTRY_HOST"/invoice-api"
-BUILD_VERSION=$BASE_NAME:$BUILD_NUMBER
+BASE_NAME=cloudesire/janine
+BUILD_VERSION=$BASE_NAME:$TRAVIS_BUILD_NUMBER
 BUILD_LATEST=$BASE_NAME:latest
 
 docker build --pull --no-cache --force-rm -t $BUILD_VERSION .
