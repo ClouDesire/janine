@@ -6,7 +6,7 @@ env:
 - TEST_DIR=client
 - TEST_DIR=server
 install: cd $TEST_DIR && mvn install -Dmaven.test.skip=true
-script: cd $TEST_DIR && mvn test
+script: mvn test
 cache:
   directories:
   - $HOME/.m2
