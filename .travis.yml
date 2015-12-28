@@ -16,7 +16,7 @@ env:
   - secure: GjEZzKw05UxIc/3+ykBWJdlbVB8zK7RZT0PI2xd4+ecyodiybobBf2ILLS5ao+Kn71wl1VgB7xz0EMh4zoJYRiehdN+2yKcoY1KCgvvTSYTHEjvlgPGjmB1VMEcqZZmd5NFE2rHeJpSHqS3tE7dJeWlSOHUeeKJT3RTaIUiGFpA3HnL1mPf8T2hir7ys+LHUsM/0eF8ry18fvYKqs5x0gag8pLrZaIU+AbGVgLtAsLJkjAettzjes/ivfkLeWNj6dlcGS4AuSb5uNbpBa8vFzryQhugXohni8iHyPLNRe2KRpbHZuC39FPUZdPwZ86JaHNa4zoyjLPm8+9fcV4LEVU6CPTeBl/TvL4oF51BnCus+F6oP/KHt2NncbOJR2NeC4nzxpJj9euPiPx6H8qDqsZLjZyaB52R755RRjwjbMCSGKbfQZmXHi+P2g+uWYISVhTkjVJ3Wk1UPRqg8BZbwUHSfk+ev3yjHcnv2Gdvk428Y7mw7RaQdVSJaODds1daqdfBMsn+3nBivLTG4iM04HLfThFQvbZ+FNawz8W8A1HWNTfReYIPm7bltDV8vi7iPW4uYafcx+Dp5A78kzV5GYTk/avWBXKTo5HyBZ7vW1cfjLe+Dy/SGdwf+DhOTGgo2Z3dCwxt12+y4zlV1N4u66H2uJPqVggZtJQB/QhfoCek=
 before_install:
 - openssl aes-256-cbc -K $encrypted_aafaeab20519_key -iv $encrypted_aafaeab20519_iv
-  -in private.gpg.enc -out private.gpg -d
+  -in ./.travis/private.gpg.enc -out ./.travis/private.gpg -d
 - sudo rm /usr/local/bin/docker-compose
 - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
   -s`-`uname -m` > docker-compose
