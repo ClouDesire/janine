@@ -6,6 +6,7 @@ A spring boot application that expose a REST API, use Redis to maintain counters
 
 ```
 docker run \
+  -e BLOB_PROVIDER=rackspace-cloudfiles-uk \
   -e BLOB_IDENTITY=username \
   -e BLOB_CREDENTIAL=apiKey \
   -e SPRING_REDIS_HOST=localhost \

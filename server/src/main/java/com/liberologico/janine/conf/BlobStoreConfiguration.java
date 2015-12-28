@@ -2,7 +2,7 @@ package com.liberologico.janine.conf;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.ContextBuilder;
-import org.jclouds.rackspace.cloudfiles.v1.CloudFilesApi;
+import org.jclouds.blobstore.BlobStoreContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +19,9 @@ import static org.jclouds.Constants.PROPERTY_SO_TIMEOUT;
 public class BlobStoreConfiguration
 {
     private static final Logger log = LoggerFactory.getLogger( BlobStoreConfiguration.class );
-    private static final String API = "rackspace-cloudfiles-uk";
 
+    @Value ( "${blob.provider}" )
+    private String provider;
     @Value ( "${blob.identity}" )
     private String identity;
     @Value ( "${blob.credential}" )
@@ -33,7 +34,7 @@ public class BlobStoreConfiguration
     private int maxRetries;
 
     @Bean
-    public CloudFilesApi cloudFilesApi()
+    public BlobStoreContext blobStoreContext()
     {
         Properties overrides = new Properties();
 
@@ -44,9 +45,9 @@ public class BlobStoreConfiguration
         overrides.put( PROPERTY_SO_TIMEOUT, soTimeout );
         overrides.put( PROPERTY_MAX_RETRIES, maxRetries );
 
-        return ContextBuilder.newBuilder( API )
+        return ContextBuilder.newBuilder( provider )
                 .credentials( identity, credential )
                 .overrides( overrides )
-                .buildApi( CloudFilesApi.class );
+                .buildApi( BlobStoreContext.class );
     }
 }
