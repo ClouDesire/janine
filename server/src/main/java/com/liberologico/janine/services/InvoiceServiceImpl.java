@@ -2,6 +2,7 @@ package com.liberologico.janine.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liberologico.janine.entities.Invoice;
+import com.liberologico.janine.exceptions.InvoiceMissingException;
 import com.liberologico.janine.exceptions.InvoiceServiceException;
 import com.liberologico.janine.pdf.PdfService;
 import com.liberologico.janine.upload.BlobStoreFileFactory;
@@ -91,11 +92,15 @@ public class InvoiceServiceImpl implements InvoiceService
     }
 
     @Override
-    public byte[] download( String prefix, Long id, String format ) throws InvoiceServiceException
+    public byte[] download( String prefix, Long id, String format ) throws InvoiceServiceException,
+            InvoiceMissingException
     {
         try
         {
             InputStream in = blobStoreService.downloadFile( blobStoreFileFactory.produce( format, prefix, id ) );
+
+            if ( in == null ) throw new InvoiceMissingException();
+
             return IOUtils.toByteArray( in );
         }
         catch ( IOException e )

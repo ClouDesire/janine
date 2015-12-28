@@ -1,6 +1,7 @@
 package com.liberologico.janine.controllers;
 
 import com.liberologico.janine.entities.Invoice;
+import com.liberologico.janine.exceptions.InvoiceMissingException;
 import com.liberologico.janine.exceptions.InvoiceServiceException;
 import com.liberologico.janine.services.InvoiceService;
 import com.liberologico.janine.upload.BlobStorePdf;
@@ -51,7 +52,7 @@ public class InvoiceController
 
     @RequestMapping( value = "/{prefix}/{id:\\d+}.{format:pdf|json}", method = RequestMethod.GET )
     ResponseEntity<byte[]> download( @PathVariable String prefix, @PathVariable Long id, @PathVariable String format )
-            throws InvoiceServiceException
+            throws InvoiceServiceException, InvoiceMissingException
     {
         byte[] file = service.download( prefix, id, format );
 

@@ -147,7 +147,11 @@ public class BlobStoreServiceImpl implements BlobStoreService
 
         log.info( "Downloading file {} on {}", filename, container );
 
-        return objectApi.get( filename ).getPayload().openStream();
+        final SwiftObject object = objectApi.get( filename );
+
+        if ( object == null ) return null;
+
+        return object.getPayload().openStream();
     }
 
     @Override

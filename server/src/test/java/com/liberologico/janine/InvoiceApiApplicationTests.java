@@ -173,6 +173,24 @@ public class InvoiceApiApplicationTests
     }
 
     @Test
+    public void fourOhFourPdf() throws IOException
+    {
+        Call<ResponseBody> call = service.downloadPdf( PREFIX, 1L );
+        Response<ResponseBody> response = call.execute();
+        assertFalse( response.isSuccess() );
+        assertEquals( 404, response.code() );
+    }
+
+    @Test
+    public void fourOhFourJson() throws IOException
+    {
+        Call<ResponseBody> call = service.downloadJson( PREFIX, 1L );
+        Response<ResponseBody> response = call.execute();
+        assertFalse( response.isSuccess() );
+        assertEquals( 404, response.code() );
+    }
+
+    @Test
     public void getFields() throws IOException
     {
         Call<List<String>> call = service.getFields();

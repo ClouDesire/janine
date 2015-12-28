@@ -1,6 +1,7 @@
 package com.liberologico.janine.services;
 
 import com.liberologico.janine.entities.Invoice;
+import com.liberologico.janine.exceptions.InvoiceMissingException;
 import com.liberologico.janine.exceptions.InvoiceServiceException;
 import com.liberologico.janine.upload.BlobStorePdf;
 
@@ -40,9 +41,10 @@ public interface InvoiceService
      * @param id the identifier of the invoice
      * @param format pdf or json output
      * @return the binary payload of the requested invoice in the requested format
+     * @throws InvoiceMissingException if invoice with provided ID was not found
      * @throws InvoiceServiceException if problems occurred while retrieving object
      */
-    byte[] download( String prefix, Long id, String format ) throws InvoiceServiceException;
+    byte[] download( String prefix, Long id, String format ) throws InvoiceServiceException, InvoiceMissingException;
 
     /**
      * List fields of the current PDF template - useful for debug
