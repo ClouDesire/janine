@@ -19,7 +19,7 @@ before_install:
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
 install: cd $TEST_DIR && mvn install -Dmaven.test.skip=true
-script: docker-compose up -d -f ../docker-compose.yml && mvn test
+script: /usr/local/bin/docker-compose up -d -f ../docker-compose.yml && mvn test
 after_success: "./dockerbuild.sh"
 cache:
   directories:
