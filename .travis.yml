@@ -12,15 +12,19 @@ env:
     - REGISTRY_USERNAME=gionn
     - DOCKER_COMPOSE_VERSION=1.5.2
     - secure: lYNsDfdJKJ1+uoWZhOMqyDhqycdcWujt8VsJXcx27s60HNbjTvnZKJ5gWJImU2tDTGN49Ge25/G/M9tDb7vOXGKgBH3KSwFzWMUrx+7sL7L+zZq25bPAxrrigC7gofuci9ZUx2n+0y0JOQTnD9QHP2B9FLcxxTJOfMg2cyygO7MB++XjjdjwjNZvvhJQQd6IvdL1VclfSWjvkt7zZDEQ/Z73XCY7o0T8M4H8m2a9p5N5C0cEWt0MPUOraTIX3OuOYyiLt0X8U204wjEkfMW28kZvnD0GmU1RSB1MmLf/CjrtdEJQEFaRRaQOlH+Pd8XeOYIf9dLHB0fmQcsuvzl9EdPLQTc972Xafy8TebzTSPqRiREZT4NZSWLa/v0sqQcmgLcl9fsSQrsef++Ovjint8NRYagjyTn2ZMPFN7hc8mNqtYr0rdNzP4aV1iXF5nFeM/7kONaR/DO3k61zGETbUYLxQfW0fuGzfCdBVFLyeUEp2HnbnSS0Z4nziNPK6EGKlVZkkTIYiftBk1f+WSg7AMAJ88fQCA4J8BfLgvY8ltu2SCStfFlmESTrJdB217RUZijqO1Sc1vrcj6cAj8Y7tf/9g7gn2NpbCOODwFLkRk4LwW5+5j95wWMn+zZlNkbL+D9OxzN805Pxs7EMizrEoK8FY6dZJOqubJHMGMbDSFI=
+    - secure: hXkloyKGSYi+s79MXnQYHyU06RkuyxxuJkrq4bynlQay/RAt+Ix++IZz3L0Q13SstJty1KVoANfWlPCLE0vrOi7dLtJDMgZ7UU1MeJYQePmb0kkN/54y12L75iwgaQT6PpA7+tfVhjCW3q1jjJL5yNRMbBmqDn6yiphB0lLvfVY=
+    - secure: PH4ULTgurwYJPD44bkfuz+NCg0hTrT3T2YQ2S2WM52hq8ssiaVu2XJvFgVBLDhbm9NDzqZJgEXJzsT99RZLRpBgYXSIkqt6VrhV1a6ZdY+mUZCXvCJXhYBGgjWTB67W5lgBVA47fKDteuMTpfHgyi1EzVPN5OlSs17hjThuVCNg=
 before_install:
 - sudo rm /usr/local/bin/docker-compose
 - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
   -s`-`uname -m` > docker-compose
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
+- openssl aes-256-cbc -K $encrypted_ba615eb2faa8_key -iv $encrypted_ba615eb2faa8_iv
+  -in ./.travis/private.gpg.enc -out ./.travis/private.gpg -d
 install: cd $TEST_DIR && mvn install -Dmaven.test.skip=true
 script: /usr/local/bin/docker-compose -f ../docker-compose.yml up -d && mvn test
-after_success: "./dockerbuild.sh"
+after_script: "../deploy.sh"
 cache:
   directories:
   - "$HOME/.m2"

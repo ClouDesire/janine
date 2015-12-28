@@ -10,6 +10,7 @@
 
 	<name>Janine</name>
 	<description>Janine is a sexy generator for your applications' invoices</description>
+	<url>https://github.com/ClouDesire/janine</url>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -18,8 +19,39 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Matteo Giordano</name>
+			<email>matteo.giordano@cloudesire.com</email>
+			<organization>ClouDesire</organization>
+			<organizationUrl>http://www.cloudesire.com</organizationUrl>
+		</developer>
+		<developer>
+			<name>Giovanni Toraldo</name>
+			<email>giovanni.toraldo@cloudesire.com</email>
+			<organization>ClouDesire</organization>
+			<organizationUrl>http://www.cloudesire.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:ssh://git@github.com/ClouDesire/janine.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/ClouDesire/janine.git</developerConnection>
+		<url>https://github.com/ClouDesire/janine</url>
+		<tag>HEAD</tag>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<gpg.skip>true</gpg.skip>
 		<java.version>1.8</java.version>
 		<jclouds.version>1.9.1</jclouds.version>
 	</properties>
@@ -79,9 +111,68 @@
 			<version>1.44</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.3</version>
+				<extensions>true</extensions>
+				<configuration>
+					 <serverId>ossrh</serverId>
+					 <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					 <autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.9.4</version>
+				<configuration>
+					<tag>${project.artifactId}-${project.version}</tag>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -95,6 +186,16 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
