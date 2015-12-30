@@ -2,7 +2,7 @@
 Janine is your sexy generator and archiver of PDF invoices.
 
 ## server
-A spring boot application that expose a REST API, use Redis to maintain counters of the generated invoices, and upload them to Rackspace CloudFiles via JClouds.
+A spring boot application that expose a REST API, use Redis to maintain counters of the generated invoices, and upload them to a jclouds-supported object storage (tested with Rackspace CloudFiles, but AWS S3, Azure Blob, OpenStack Swift, Atmos should work too).
 
 ```
 docker run \
