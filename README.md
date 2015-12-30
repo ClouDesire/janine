@@ -1,4 +1,4 @@
-# janine [![Build Status](https://travis-ci.org/ClouDesire/janine.svg)](https://travis-ci.org/ClouDesire/janine)
+# janine [![Build Status](https://travis-ci.org/ClouDesire/janine.svg)](https://travis-ci.org/ClouDesire/janine) [![license](https://img.shields.io/badge/license-AGPL-brightgreen.svg)](LICENSE.txt) [![docker image](https://img.shields.io/docker/pulls/cloudesire/janine.svg)](https://hub.docker.com/r/cloudesire/janine/) [![gitter](https://img.shields.io/gitter/room/ClouDesire/janine.svg)](https://gitter.im/ClouDesire/janine)
 Janine is your sexy generator and archiver of PDF invoices.
 
 ## server
