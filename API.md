@@ -2,7 +2,7 @@
 
 ### Authentication (lack of)
 
-Any authentication or authorization feature is implemented, and never will be.
+No authentication or authorization feature is implemented, and never will be.
 
 ### validate
 
