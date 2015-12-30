@@ -1,5 +1,11 @@
 # API
 
+* [validate](#validate)
+* [generate](#generate)
+* [download pdf](#download-pdf)
+* [generate and download pdf](#generateanddownload)
+* [download json](#download-json)
+
 ### Authentication (lack of)
 
 No authentication or authorization feature is implemented, and never will be.
@@ -260,7 +266,7 @@ No authentication or authorization feature is implemented, and never will be.
 
   `$ http POST :8080/TEST < invoice.json`
 
-### download
+### download pdf
 
   Downloads an already generated invoice
 
@@ -338,7 +344,7 @@ No authentication or authorization feature is implemented, and never will be.
 
   `$ http POST :8080/TEST/download < invoice.json`
 
-### download
+### download json
 
   Downloads an already generated invoice in JSON format
 
