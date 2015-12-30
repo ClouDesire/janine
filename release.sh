@@ -1,4 +1,4 @@
-#!/bin/bash -exu
+#!/bin/bash -eu
 echo Releasing $VERSION and updating $NEXT_VERSION
 mvn versions:set -DnewVersion=${VERSION} scm:checkin -Dmessage="Release $VERSION" -DgenerateBackupPoms=false
 mvn scm:tag

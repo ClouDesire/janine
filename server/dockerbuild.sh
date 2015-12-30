@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 if [ -z $TRAVIS ]; then
     echo This should run under CI only
     exit 1
