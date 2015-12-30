@@ -10,7 +10,7 @@ docker run \
   -e BLOB_IDENTITY=username \
   -e BLOB_CREDENTIAL=apiKey \
   -e SPRING_REDIS_HOST=localhost \
-  -e SPRING_REDIS_PORT=6379
+  -e SPRING_REDIS_PORT=6379 \
   -e SERVER_PORT=8080 -p 8080:8080 \
   cloudesire/janine
 ```
