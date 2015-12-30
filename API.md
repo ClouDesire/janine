@@ -20,7 +20,7 @@
 
 * **Request Body**
 
-  ```
+  ```json
   {
       "header": "ClouDesire.com",
       "holder": {
@@ -80,7 +80,7 @@
   * **Code:** 200 OK
   * **Content:**
 
-    ```
+    ```json
     {
         "date": 1451488888354,
         "header": "ClouDesire.com",
@@ -151,7 +151,7 @@
   * **Code:** 400 Bad Request
   * **Content:**
 
-  ```
+  ```json
     {
         "error": "Bad Request",
         "errors": [
@@ -288,7 +288,7 @@
   * **Code:** 404 Not Found
   * **Content:**
 
-  ```
+  ```json
   {
     "error": "Not Found",
     "exception": "com.liberologico.janine.exceptions.InvoiceMissingException",
@@ -365,7 +365,7 @@
   * **Code:** 404 Not Found
   * **Content:**
 
-  ```
+  ```json
   {
     "error": "Not Found",
     "exception": "com.liberologico.janine.exceptions.InvoiceMissingException",
