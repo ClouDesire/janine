@@ -15,7 +15,7 @@ docker run \
   cloudesire/janine
 ```
 
-A new version is pushed after each build: [available versions](https://hub.docker.com/r/cloudesire/janine/tags/)
+A new docker image tag is pushed after each build: [available versions](https://hub.docker.com/r/cloudesire/janine/tags/)
 
 ## client
 A simple java library to consume the server REST API.
