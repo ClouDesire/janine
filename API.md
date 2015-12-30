@@ -1,5 +1,9 @@
 # API
 
+### Authentication (lack of)
+
+Any authentication or authorization feature is implemented, and never will be.
+
 ### validate
 
   Validates an invoice body
