@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.text.MessageFormat;
 
-public class Person
+abstract public class Person
 {
     @NotNull
     private String firstName;
@@ -21,6 +21,14 @@ public class Person
 
     @NotNull
     private Address address;
+
+    abstract public String getTaxCode();
+    abstract public Person setTaxCode( String taxCode );
+
+    abstract public String getCompanyName();
+    abstract public Person setCompanyName( String companyName );
+
+    abstract public String getCompanyLine();
 
     @Override
     public String toString()

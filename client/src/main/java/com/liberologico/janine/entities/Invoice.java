@@ -27,11 +27,11 @@ public class Invoice
 
     @NotNull
     @Valid
-    private Person holder;
+    private Holder holder;
 
     @NotNull
     @Valid
-    private Person recipient;
+    private Recipient recipient;
 
     @NotEmpty
     @Valid
@@ -101,23 +101,23 @@ public class Invoice
         return this;
     }
 
-    public Person getHolder()
+    public Holder getHolder()
     {
         return holder;
     }
 
-    public Invoice setHolder( Person holder )
+    public Invoice setHolder( Holder holder )
     {
         this.holder = holder;
         return this;
     }
 
-    public Person getRecipient()
+    public Recipient getRecipient()
     {
         return recipient;
     }
 
-    public Invoice setRecipient( Person recipient )
+    public Invoice setRecipient( Recipient recipient )
     {
         this.recipient = recipient;
         return this;
