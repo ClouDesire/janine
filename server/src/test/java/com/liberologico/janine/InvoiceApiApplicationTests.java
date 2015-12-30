@@ -3,10 +3,12 @@ package com.liberologico.janine;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.liberologico.janine.entities.Address;
+import com.liberologico.janine.entities.Holder;
 import com.liberologico.janine.entities.Invoice;
 import com.liberologico.janine.entities.Line;
 import com.liberologico.janine.entities.Person;
 import com.liberologico.janine.entities.Price;
+import com.liberologico.janine.entities.Recipient;
 import com.liberologico.janine.upload.BlobStoreService;
 import com.squareup.okhttp.ResponseBody;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -204,19 +206,21 @@ public class InvoiceApiApplicationTests
 
     public Invoice getInvoice( Line... lines )
     {
-        final Person holder = new Person()
+        final Person holder = new Holder()
                 .setFirstName( "Antanio" )
                 .setLastName( "Divani" )
                 .setEmail( "bu@del.lo" )
-                .setAddress( new Address( "address", "city", "country", "state", "zip" ) );
-        final Person recipient = new Person()
+                .setAddress( new Address( "address", "city", "country", "state", "zip" ) )
+                .setCompanyName( "Caffè Toraldo" )
+                .setTaxCode( "CFTGNN" );
+        final Person recipient = new Recipient()
                 .setFirstName( "Brebuzio" )
                 .setLastName( "Sfanti" )
                 .setEmail( "di@tu.ma" )
                 .setAddress( new Address( "address", "city", "country", "state", "zip" ) );
         return new Invoice()
-                .setHolder( holder )
-                .setRecipient( recipient )
+                .setHolder( (Holder) holder )
+                .setRecipient( (Recipient) recipient )
                 .setLines( Arrays.asList( lines ) );
     }
 }
