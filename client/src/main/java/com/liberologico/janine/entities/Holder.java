@@ -2,6 +2,8 @@ package com.liberologico.janine.entities;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.text.MessageFormat;
+
 public class Holder extends Person
 {
     @NotEmpty
@@ -9,6 +11,12 @@ public class Holder extends Person
 
     @NotEmpty
     private String companyName;
+
+    @Override
+    public String getCompanyLine()
+    {
+        return MessageFormat.format( "{0} - {1}", companyName, taxCode );
+    }
 
     @Override
     public String getTaxCode()

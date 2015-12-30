@@ -25,6 +25,11 @@ public class Address
         this.zip = zip;
     }
 
+    public String getShortLine()
+    {
+        return MessageFormat.format( "{0} - {1} ({2})", address, city, country );
+    }
+
     public String getLineOne()
     {
         return MessageFormat.format( "{0} - {1}", address, city );
