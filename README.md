@@ -19,3 +19,13 @@ A new docker image tag is pushed after each build: [available versions](https://
 
 ## client
 A simple java library to consume the server [REST API](API.md).
+
+## invoice preview
+
+We mentioned that the generator is sexy, while the actual invoice may not (De gustibus non est disputandu):
+
+[![Invoice PDF preview](invoice-preview-thumb.png)](invoice-preview.pdf)
+
+## credits
+
+* ClouDesire.com (https://cloudesire.com)
