@@ -223,6 +223,165 @@ Janine is your sexy generator and archiver of PDF invoices.
 
   `$ http POST :8080/TEST/validate < invoice.json`
 
+###generate
+
+  Generates a PDF for the given invoice, and upload it to a remote object storage
+
+* **URL:**
+
+  `/{prefix}`
+
+* **Method:**
+
+  `POST`
+
+*  **URL Params**
+
+   **Required:**
+
+   `prefix=[string]` - The invoice numeration prefix
+
+* **Request Body**
+
+  *See validate request body*
+  
+* **Success Response:**
+
+  Returns the ID of the generated invoice in the response body and the URL of the generated
+  PDF in the Location header.
+
+
+  * **Code:** 201 Created
+  * **Headers:** Location: http://localhost:8080/TEST/1.pdf
+  * **Content:** `1`
+
+* **Sample Call:**
+
+  `$ http POST :8080/TEST < invoice.json`
+
+###download
+
+  Downloads an already generated invoice
+
+* **URL:**
+
+  `/{prefix}/{id}.pdf`
+
+* **Method:**
+
+  `GET`
+
+*  **URL Params**
+
+   **Required:**
+
+   `prefix=[string]` - The invoice numeration prefix
+   
+   `id=[integer]` - The ID of the genereated invoice
+  
+* **Success Response:**
+
+  * **Code:** 200 OK
+  * **Content:** `***BINARY DATA***`
+
+* **Error Response:**
+
+  When providing a wrong ID:
+
+  * **Code:** 404 Not Found
+  * **Content:**
+  
+  ```
+  {
+    "error": "Not Found",
+    "exception": "com.liberologico.janine.exceptions.InvoiceMissingException",
+    "message": "No message available",
+    "path": "/TEST/999.json",
+    "status": 404,
+    "timestamp": 1451492908671
+  }
+  ```
+
+* **Sample Call:**
+
+  `$ http :8080/TEST/1.pdf`
+
+###generateAndDownload
+
+  Downloads an already generated invoice
+
+* **URL:**
+
+  `/{prefix}/download`
+
+* **Method:**
+
+  `POST`
+
+*  **URL Params**
+
+   **Required:**
+
+   `prefix=[string]` - The invoice numeration prefix
+
+* **Request Body**
+
+  *See validate request body*
+
+* **Success Response:**
+
+  * **Code:** 200 OK
+  * **Content:** `***BINARY DATA***`
+
+* **Sample Call:**
+
+  `$ http POST :8080/TEST/download < invoice.json`
+
+###download
+
+  Downloads an already generated invoice in JSON format
+
+* **URL:**
+
+  `/{prefix}/{id}.json`
+
+* **Method:**
+
+  `GET`
+
+*  **URL Params**
+
+   **Required:**
+
+   `prefix=[string]` - The invoice numeration prefix
+   
+   `id=[integer]` - The ID of the genereated invoice
+  
+* **Success Response:**
+
+  *See validate response*
+
+* **Error Response:**
+
+  When providing a wrong ID:
+
+  * **Code:** 404 Not Found
+  * **Content:**
+  
+  ```
+  {
+    "error": "Not Found",
+    "exception": "com.liberologico.janine.exceptions.InvoiceMissingException",
+    "message": "No message available",
+    "path": "/TEST/999.json",
+    "status": 404,
+    "timestamp": 1451492908671
+  }
+  ```
+
+* **Sample Call:**
+
+  `$ http GET :8080/TEST/1.json`
 
 ## server
 A spring boot application that expose a REST API, use Redis to maintain counters of the generated invoices, and upload them to a jclouds-supported object storage (tested with Rackspace CloudFiles, but AWS S3, Azure Blob, OpenStack Swift, Atmos should work too).
