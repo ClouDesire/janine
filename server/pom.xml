@@ -91,8 +91,8 @@
 			<version>3.4</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.jclouds.provider</groupId>
-			<artifactId>rackspace-cloudfiles-uk</artifactId>
+			<groupId>org.apache.jclouds</groupId>
+			<artifactId>jclouds-allblobstore</artifactId>
 			<version>${jclouds.version}</version>
 		</dependency>
 		<dependency>
