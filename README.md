@@ -22,7 +22,7 @@ A simple java library to consume the server [REST API](API.md).
 
 ## invoice preview
 
-We mentioned that the generator is sexy, while the actual invoice may not (De gustibus non est disputandu):
+We mentioned that the generator is sexy, while the actual invoice may not (de gustibus non est disputandu), but we are happy to accept your contribute if you are a designer with a great invoice template.
 
 [![Invoice PDF preview](invoice-preview-thumb.png)](invoice-preview.pdf)
 
