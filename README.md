@@ -20,6 +20,8 @@ A new docker image tag is pushed after each build: [available versions](https://
 ## client
 A simple java library to consume the server [REST API](API.md).
 
+(not yet released on maven central)
+
 ## invoice preview
 
 We mentioned that the generator is sexy, while the actual invoice may not (de gustibus non est disputandu), but we are happy to accept your contribute if you are a designer with a great invoice template.
