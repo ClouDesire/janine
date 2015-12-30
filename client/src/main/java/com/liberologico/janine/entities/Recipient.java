@@ -9,7 +9,7 @@ public class Recipient extends Person
     private String companyName;
 
     @Override
-    public String getCompanyLine()
+    public String toCompanyLine()
     {
         if ( ( taxCode == null || taxCode.isEmpty() ) && ( companyName == null || companyName.isEmpty() ) ) return "";
         if ( taxCode == null || taxCode.isEmpty() ) return companyName;

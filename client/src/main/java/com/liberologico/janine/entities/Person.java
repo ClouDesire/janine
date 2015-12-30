@@ -28,7 +28,7 @@ abstract public class Person
     abstract public String getCompanyName();
     abstract public Person setCompanyName( String companyName );
 
-    abstract public String getCompanyLine();
+    abstract public String toCompanyLine();
 
     @Override
     public String toString()

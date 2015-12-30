@@ -13,7 +13,7 @@ public class Holder extends Person
     private String companyName;
 
     @Override
-    public String getCompanyLine()
+    public String toCompanyLine()
     {
         return MessageFormat.format( "{0} - {1}", companyName, taxCode );
     }
