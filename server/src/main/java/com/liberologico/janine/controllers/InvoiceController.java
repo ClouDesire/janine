@@ -1,5 +1,6 @@
 package com.liberologico.janine.controllers;
 
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.liberologico.janine.entities.Invoice;
 import com.liberologico.janine.exceptions.InvoiceMissingException;
 import com.liberologico.janine.exceptions.InvoiceServiceException;
@@ -63,5 +64,11 @@ public class InvoiceController
     ResponseEntity<List<String>> getFields() throws InvoiceServiceException
     {
         return new ResponseEntity<>( service.getPdfFields(), HttpStatus.OK );
+    }
+
+    @RequestMapping( value  = "/schema", method = RequestMethod.GET )
+    ResponseEntity<JsonSchema> getSchema() throws InvoiceServiceException
+    {
+        return new ResponseEntity<>( service.getInvoiceSchema(), HttpStatus.OK );
     }
 }

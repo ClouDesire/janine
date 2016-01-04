@@ -1,5 +1,6 @@
 package com.liberologico.janine.services;
 
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.liberologico.janine.entities.Invoice;
 import com.liberologico.janine.exceptions.InvoiceMissingException;
 import com.liberologico.janine.exceptions.InvoiceServiceException;
@@ -52,4 +53,11 @@ public interface InvoiceService
      * @throws InvoiceServiceException if problems occurred while processing the PDF template
      */
     List<String> getPdfFields() throws InvoiceServiceException;
+
+    /**
+     * Get a JsonSchema representing the Invoice object
+     * @return Constructed JSON schema.
+     * @throws InvoiceServiceException
+     */
+    JsonSchema getInvoiceSchema() throws InvoiceServiceException;
 }
