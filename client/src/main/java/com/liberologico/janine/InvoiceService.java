@@ -29,4 +29,7 @@ public interface InvoiceService
 
     @GET( "/fields" )
     Call<List<String>> getFields();
+
+    @GET( "/schema" )
+    Call<Object> getInvoiceSchema();
 }
