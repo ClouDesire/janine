@@ -1,5 +1,6 @@
 package com.liberologico.janine.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liberologico.janine.MathConfiguration;
 import io.gsonfire.annotations.ExposeMethodResult;
 import org.hibernate.validator.constraints.Length;
@@ -11,16 +12,20 @@ import java.util.Objects;
 
 public class Line
 {
+    @JsonProperty( required = true )
     @NotNull
     private Price price;
 
     @DecimalMin( "0.01" )
+    @JsonProperty( required = true )
     @NotNull
     private BigDecimal quantity = BigDecimal.ONE;
 
+    @JsonProperty( required = true )
     @NotNull
     private String unit = "un";
 
+    @JsonProperty( required = true )
     @Length( max = 1024 )
     private String description;
 

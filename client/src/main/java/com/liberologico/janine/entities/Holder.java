@@ -1,14 +1,17 @@
 package com.liberologico.janine.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.text.MessageFormat;
 
 public class Holder extends Person
 {
+    @JsonProperty( required = true )
     @NotEmpty
     private String taxCode;
 
+    @JsonProperty( required = true )
     @NotEmpty
     private String companyName;
 

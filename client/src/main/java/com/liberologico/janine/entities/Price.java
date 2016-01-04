@@ -1,5 +1,6 @@
 package com.liberologico.janine.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liberologico.janine.MathConfiguration;
 import io.gsonfire.annotations.ExposeMethodResult;
 
@@ -11,11 +12,13 @@ import java.util.Objects;
 
 public class Price
 {
+    @JsonProperty( required = true )
     @NotNull
     private BigDecimal price;
 
     @DecimalMax( "99.99" )
     @DecimalMin( "0.00" )
+    @JsonProperty( required = true )
     @NotNull
     private BigDecimal VAT = BigDecimal.ZERO;
 
