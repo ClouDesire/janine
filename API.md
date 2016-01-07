@@ -5,6 +5,7 @@
 * [download pdf](#download-pdf)
 * [generate and download pdf](#generateanddownload)
 * [download json](#download-json)
+* [JSON Schema](#json-schema)
 
 ### Authentication (lack of)
 
@@ -389,3 +390,187 @@ No authentication or authorization feature is implemented, and never will be.
 * **Sample Call:**
 
   `$ http GET :8080/TEST/1.json`
+
+### JSON Schema
+
+  Gets a [JSON Schema](http://json-schema.org/) of the invoice object
+
+* **URL:**
+
+  `/schema`
+
+* **Method:**
+
+  `GET`
+
+* **Success Response:**
+
+  ```json
+  {
+    "id": "urn:jsonschema:com:liberologico:janine:entities:Invoice",
+    "properties": {
+        "date": {
+            "format": "UTC_MILLISEC",
+            "type": "integer"
+        },
+        "header": {
+            "required": true,
+            "type": "string"
+        },
+        "holder": {
+            "id": "urn:jsonschema:com:liberologico:janine:entities:Holder",
+            "properties": {
+                "address": {
+                    "id": "urn:jsonschema:com:liberologico:janine:entities:Address",
+                    "properties": {
+                        "address": {
+                            "required": true,
+                            "type": "string"
+                        },
+                        "city": {
+                            "required": true,
+                            "type": "string"
+                        },
+                        "country": {
+                            "required": true,
+                            "type": "string"
+                        },
+                        "state": {
+                            "required": true,
+                            "type": "string"
+                        },
+                        "zip": {
+                            "required": true,
+                            "type": "string"
+                        }
+                    },
+                    "required": true,
+                    "type": "object"
+                },
+                "companyName": {
+                    "required": true,
+                    "type": "string"
+                },
+                "email": {
+                    "required": true,
+                    "type": "string"
+                },
+                "firstName": {
+                    "required": true,
+                    "type": "string"
+                },
+                "lastName": {
+                    "required": true,
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "taxCode": {
+                    "required": true,
+                    "type": "string"
+                }
+            },
+            "required": true,
+            "type": "object"
+        },
+        "lines": {
+            "items": {
+                "id": "urn:jsonschema:com:liberologico:janine:entities:Line",
+                "properties": {
+                    "description": {
+                        "required": true,
+                        "type": "string"
+                    },
+                    "price": {
+                        "id": "urn:jsonschema:com:liberologico:janine:entities:Price",
+                        "properties": {
+                            "VAT": {
+                                "maximum": 99.99,
+                                "required": true,
+                                "type": "number"
+                            },
+                            "currency": {
+                                "type": "string"
+                            },
+                            "price": {
+                                "required": true,
+                                "type": "number"
+                            },
+                            "total": {
+                                "type": "number"
+                            },
+                            "vat": {
+                                "type": "number"
+                            }
+                        },
+                        "required": true,
+                        "type": "object"
+                    },
+                    "quantity": {
+                        "minimum": 0.01,
+                        "required": true,
+                        "type": "number"
+                    },
+                    "unit": {
+                        "required": true,
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "required": true,
+            "type": "array"
+        },
+        "notes": {
+            "required": true,
+            "type": "string"
+        },
+        "number": {
+            "type": "string"
+        },
+        "recipient": {
+            "id": "urn:jsonschema:com:liberologico:janine:entities:Recipient",
+            "properties": {
+                "address": {
+                    "$ref": "urn:jsonschema:com:liberologico:janine:entities:Address",
+                    "required": true,
+                    "type": "object"
+                },
+                "companyName": {
+                    "type": "string"
+                },
+                "email": {
+                    "required": true,
+                    "type": "string"
+                },
+                "firstName": {
+                    "required": true,
+                    "type": "string"
+                },
+                "lastName": {
+                    "required": true,
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "taxCode": {
+                    "type": "string"
+                }
+            },
+            "required": true,
+            "type": "object"
+        },
+        "total": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+  }
+  ```
+
+* **Sample Call:**
+
+  `$ http GET :8080/schema`
+
