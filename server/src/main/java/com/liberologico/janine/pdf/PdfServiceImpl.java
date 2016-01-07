@@ -9,6 +9,7 @@ import org.apache.pdfbox.pdmodel.encryption.StandardProtectionPolicy;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -25,16 +26,18 @@ import java.util.stream.Collectors;
 @Component
 public class PdfServiceImpl implements PdfService
 {
-    private final static String TEMPLATE = "Invoice_Template.pdf";
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat( "dd/MM/yyyy" );
 
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @Value( "${template.location}" )
+    private String templateLocation;
+
     @Override
     public List<String> getFields() throws IOException
     {
-        Resource resource = resourceLoader.getResource( "classpath:" + TEMPLATE );
+        Resource resource = resourceLoader.getResource( templateLocation );
 
         try ( PDDocument pdfDocument = PDDocument.load( resource.getInputStream() ) )
         {
@@ -49,7 +52,7 @@ public class PdfServiceImpl implements PdfService
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        Resource resource = resourceLoader.getResource( "classpath:" + TEMPLATE );
+        Resource resource = resourceLoader.getResource( templateLocation );
 
         try ( PDDocument pdfDocument = PDDocument.load( resource.getInputStream() ) )
         {
