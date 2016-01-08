@@ -1,6 +1,10 @@
 package com.liberologico.janine.services;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
+import com.fasterxml.jackson.module.jsonSchema.customProperties.ValidationSchemaFactoryWrapper;
+import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import com.liberologico.janine.entities.Invoice;
 import com.liberologico.janine.exceptions.InvoiceMissingException;
 import com.liberologico.janine.exceptions.InvoiceServiceException;
@@ -117,6 +121,21 @@ public class InvoiceServiceImpl implements InvoiceService
             return pdfService.getFields();
         }
         catch ( IOException e )
+        {
+            throw new InvoiceServiceException( e );
+        }
+    }
+
+    @Override
+    public JsonSchema getInvoiceSchema() throws InvoiceServiceException
+    {
+        try
+        {
+            SchemaFactoryWrapper visitor = new ValidationSchemaFactoryWrapper();
+            objectMapper.acceptJsonFormatVisitor( objectMapper.constructType( Invoice.class ), visitor );
+            return visitor.finalSchema();
+        }
+        catch ( JsonMappingException e )
         {
             throw new InvoiceServiceException( e );
         }

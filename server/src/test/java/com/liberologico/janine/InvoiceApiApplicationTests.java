@@ -204,6 +204,17 @@ public class InvoiceApiApplicationTests
         assertFalse( fields.isEmpty() );
     }
 
+    @Test
+    public void getInvoiceSchema() throws IOException
+    {
+        Call<Object> call = service.getInvoiceSchema();
+        Response<Object> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( 200, response.code() );
+        final Object schema = response.body();
+        assertNotNull( schema );
+    }
+
     public Invoice getInvoice( Line... lines )
     {
         final Person holder = new Holder()

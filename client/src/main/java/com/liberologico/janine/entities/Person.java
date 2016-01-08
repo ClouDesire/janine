@@ -1,5 +1,6 @@
 package com.liberologico.janine.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
@@ -7,18 +8,22 @@ import java.text.MessageFormat;
 
 abstract public class Person
 {
+    @JsonProperty( required = true )
     @NotNull
     private String firstName;
 
+    @JsonProperty( required = true )
     @NotNull
     private String lastName;
 
+    @JsonProperty( required = true )
     @Email
     @NotNull
     private String email;
 
     private String phoneNumber;
 
+    @JsonProperty( required = true )
     @NotNull
     private Address address;
 

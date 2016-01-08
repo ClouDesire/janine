@@ -1,5 +1,6 @@
 package com.liberologico.janine.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import io.gsonfire.annotations.ExposeMethodResult;
 import org.hibernate.validator.constraints.Length;
@@ -19,20 +20,25 @@ public class Invoice
 
     private Date date = new Date();
 
+    @JsonProperty( required = true )
     @Length( max = 64 )
     private String header;
 
+    @JsonProperty( required = true )
     @Length( max = 1024 )
     private String notes;
 
+    @JsonProperty( required = true )
     @NotNull
     @Valid
     private Holder holder;
 
+    @JsonProperty( required = true )
     @NotNull
     @Valid
     private Recipient recipient;
 
+    @JsonProperty( required = true )
     @NotEmpty
     @Valid
     private List<Line> lines = new ArrayList<>();

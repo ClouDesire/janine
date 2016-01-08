@@ -1,18 +1,25 @@
 package com.liberologico.janine.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 import java.text.MessageFormat;
 
 public class Address
 {
+    @JsonProperty( required = true )
     @NotNull
     private String address;
+    @JsonProperty( required = true )
     @NotNull
     private String city;
+    @JsonProperty( required = true )
     @NotNull
     private String country;
+    @JsonProperty( required = true )
     @NotNull
     private String state;
+    @JsonProperty( required = true )
     @NotNull
     private String zip;
 
