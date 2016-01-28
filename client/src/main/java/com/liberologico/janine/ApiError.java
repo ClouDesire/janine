@@ -20,7 +20,7 @@ public class ApiError
         String defaultMessage;
         String objectName;
         String field;
-        Object rejectedValue;
+        List<Object> rejectedValue;
         Boolean bindingFailure;
         String code;
 
@@ -31,5 +31,25 @@ public class ApiError
             String defaultMessage;
             String code;
         }
+
+        @Override
+        public String toString()
+        {
+            return "Error{" + "defaultMessage='" + defaultMessage + '\'' +
+                            ", objectName='" + objectName + '\'' +
+                            ", field='" + field + '\'' +
+                            ", code='" + code + '\'' +
+                            '}';
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return "ApiError{" + "error='" + error + '\'' +
+                           ", exception='" + exception + '\'' +
+                           ", message='" + message + '\'' +
+                           ", errors=" + errors +
+                           '}';
     }
 }
