@@ -175,6 +175,21 @@ public class InvoiceApiApplicationTests
     }
 
     @Test
+    public void badInvoice() throws IOException
+    {
+        Invoice invoice = new Invoice();
+
+        Call<ResponseBody> call = service.generate( PREFIX, invoice );
+        Response<ResponseBody> response = call.execute();
+        assertFalse(response.isSuccess());
+
+        Gson gson = InvoiceClient.getGsonBuilder().create();
+        ApiError apiError = gson.fromJson( response.errorBody().string(), ApiError.class );
+        assertEquals( new Integer(400), apiError.status );
+        assertTrue( apiError.errors.size() == 3);
+    }
+
+    @Test
     public void fourOhFourPdf() throws IOException
     {
         Call<ResponseBody> call = service.downloadPdf( PREFIX, 1L );
