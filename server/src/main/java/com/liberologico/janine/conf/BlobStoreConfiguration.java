@@ -1,5 +1,8 @@
 package com.liberologico.janine.conf;
 
+import com.liberologico.janine.upload.BlobStoreServiceImpl;
+import com.liberologico.janine.upload.NoStoreServiceImpl;
+import com.liberologico.janine.upload.StoreService;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.ContextBuilder;
 import org.jclouds.blobstore.BlobStoreContext;
@@ -32,15 +35,13 @@ public class BlobStoreConfiguration
     private int soTimeout;
     @Value ( "${blob.max-retries}" )
     private int maxRetries;
+    @Value ( "${blob.enabled}" )
+    private Boolean blobUploadEnabled;
 
     @Bean
     public BlobStoreContext blobStoreContext()
     {
         Properties overrides = new Properties();
-
-        if ( StringUtils.isEmpty( identity ) || StringUtils.isEmpty( credential ) )
-            log.warn( "Blank credentials, upload won't work!" );
-
         overrides.put( PROPERTY_CONNECTION_TIMEOUT, connectionTimeout );
         overrides.put( PROPERTY_SO_TIMEOUT, soTimeout );
         overrides.put( PROPERTY_MAX_RETRIES, maxRetries );
@@ -49,5 +50,17 @@ public class BlobStoreConfiguration
                 .credentials( identity, credential )
                 .overrides( overrides )
                 .buildApi( BlobStoreContext.class );
+    }
+
+    @Bean
+    public StoreService storeService()
+    {
+        if ( StringUtils.isEmpty( identity ) || StringUtils.isEmpty( credential ) || ! blobUploadEnabled )
+        {
+            log.warn( "Blank credentials, upload won't work!" );
+            return new NoStoreServiceImpl();
+        }
+
+        return new BlobStoreServiceImpl();
     }
 }

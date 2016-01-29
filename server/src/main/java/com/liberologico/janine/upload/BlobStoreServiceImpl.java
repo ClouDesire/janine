@@ -8,22 +8,18 @@ import org.jclouds.io.Payloads;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 @Component
-public class BlobStoreServiceImpl implements BlobStoreService
+public class BlobStoreServiceImpl implements StoreService
 {
     private static final Logger log = LoggerFactory.getLogger( BlobStoreServiceImpl.class );
 
     @Autowired
     private BlobStoreContext api;
-
-    @Value ( "${blob.enabled}" )
-    private Boolean blobUploadEnabled;
 
     @Override
     public boolean createContainer( String container )
