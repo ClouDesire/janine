@@ -48,11 +48,11 @@ No authentication or authorization feature is implemented, and never will be.
           "lastName": "Divani",
           "taxCode": "123CLOUDESIRE"
       },
+      "currency": "EUR",
       "lines": [
           {
               "description": "Custom vendor fee",
               "price": {
-                  "currency": "EUR",
                   "price": "100.0000",
                   "vat": 22.0
               },
@@ -62,7 +62,6 @@ No authentication or authorization feature is implemented, and never will be.
           {
               "description": "Another custom vendor fee",
               "price": {
-                  "currency": "EUR",
                   "price": "23.4567",
                   "vat": 22.0
               },
@@ -110,11 +109,11 @@ No authentication or authorization feature is implemented, and never will be.
             "phoneNumber": null,
             "taxCode": "123CLOUDESIRE"
         },
+        "currency": "EUR",
         "lines": [
             {
                 "description": "Custom vendor fee",
                 "price": {
-                    "currency": "EUR",
                     "price": 100.0,
                     "total": 122.0,
                     "vat": 22.0
@@ -125,7 +124,6 @@ No authentication or authorization feature is implemented, and never will be.
             {
                 "description": "Another custom vendor fee",
                 "price": {
-                    "currency": "EUR",
                     "price": 23.4567,
                     "total": 28.6172,
                     "vat": 22.0
@@ -409,6 +407,11 @@ No authentication or authorization feature is implemented, and never will be.
   {
     "id": "urn:jsonschema:com:liberologico:janine:entities:Invoice",
     "properties": {
+        "currency": {
+            "pattern": "[\\w]{3}",
+            "required": true,
+            "type": "string"
+        },
         "date": {
             "format": "UTC_MILLISEC",
             "type": "integer"
@@ -489,9 +492,6 @@ No authentication or authorization feature is implemented, and never will be.
                                 "maximum": 99.99,
                                 "required": true,
                                 "type": "number"
-                            },
-                            "currency": {
-                                "type": "string"
                             },
                             "price": {
                                 "required": true,
