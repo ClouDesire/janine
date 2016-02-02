@@ -94,13 +94,13 @@ public class PdfServiceImpl implements PdfService
             int itemIndex = it.nextIndex() + 1;
             Line line = it.next();
             setField( acroForm, "description" + itemIndex, line.getDescription() );
-            setField( acroForm, "vat" + itemIndex, line.getPrice().getVAT().toPlainString() + "%" );
+            setField( acroForm, "vat" + itemIndex, line.printVAT() );
             setField( acroForm, "quantity" + itemIndex, line.getQuantity().toPlainString() );
-            setField( acroForm, "price" + itemIndex, line.getPrice().getPrice().toPlainString() );
-            setField( acroForm, "total" + itemIndex, line.calculateTotalPrice().toPlainString() );
+            setField( acroForm, "price" + itemIndex, line.printPrice( invoice.getCurrency() ) );
+            setField( acroForm, "total" + itemIndex, line.printTotal( invoice.getCurrency() ) );
         }
 
-        setField( acroForm, "total", invoice.getTotal().toPlainString() );
+        setField( acroForm, "total", invoice.printTotal() );
         setField( acroForm, "notes", invoice.getNotes() );
 
         return acroForm;

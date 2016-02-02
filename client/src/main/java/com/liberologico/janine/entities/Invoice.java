@@ -144,4 +144,9 @@ public class Invoice
         this.recipient = recipient;
         return this;
     }
+
+    public String printTotal()
+    {
+        return getCurrency() + ' ' + getTotal().toPlainString();
+    }
 }
