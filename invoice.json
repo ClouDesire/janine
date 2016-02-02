@@ -30,12 +30,12 @@
             "zip": "zip"
         }
     },
+    "currency": "EUR",
     "lines":
     [
         {
             "description": "Custom vendor fee",
             "price": {
-                "currency": "EUR",
                 "price": "100.0000",
                 "vat": 22.0
             },
@@ -45,7 +45,6 @@
         {
             "description": "Another custom vendor fee",
             "price": {
-                "currency": "EUR",
                 "price": "23.4567",
                 "vat": 22.0
             },

@@ -22,8 +22,6 @@ public class Price
     @NotNull
     private BigDecimal VAT = BigDecimal.ZERO;
 
-    private String currency;
-
     @ExposeMethodResult( "total" )
     public BigDecimal getTotal()
     {
@@ -58,21 +56,10 @@ public class Price
         return this;
     }
 
-    public String getCurrency()
-    {
-        return currency;
-    }
-
-    public Price setCurrency( String currency )
-    {
-        this.currency = currency;
-        return this;
-    }
-
     @Override
     public String toString()
     {
-        return "Price [price=" + price + ", VAT=" + VAT + "%, currency=" + currency + "]";
+        return "Price [price=" + price + ", VAT=" + VAT + "%]";
     }
 
     @Override
@@ -82,13 +69,12 @@ public class Price
         if ( o == null || getClass() != o.getClass() ) return false;
         Price price = (Price) o;
         return Objects.equals( this.price, price.price ) &&
-                Objects.equals( VAT, price.VAT ) &&
-                Objects.equals( currency, price.currency );
+                Objects.equals( VAT, price.VAT );
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash( price, VAT, currency );
+        return Objects.hash( price, VAT );
     }
 }

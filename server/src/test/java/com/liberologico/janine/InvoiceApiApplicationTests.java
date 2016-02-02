@@ -102,10 +102,8 @@ public class InvoiceApiApplicationTests
     public void simpleInvoice() throws IOException
     {
         Invoice invoice = getInvoice(
-                new Line().setDescription( "Riga 1" )
-                          .setPrice( new Price().setPrice( BigDecimal.TEN ).setCurrency( "EUR" ) ),
-                new Line().setDescription( "Riga 2" )
-                          .setPrice( new Price().setPrice( BigDecimal.ONE ).setCurrency( "EUR" ) )
+                new Line().setDescription( "Riga 1" ).setPrice( new Price().setPrice( BigDecimal.TEN ) ),
+                new Line().setDescription( "Riga 2" ).setPrice( new Price().setPrice( BigDecimal.ONE ) )
         );
 
         Call<ResponseBody> call = service.generate( PREFIX, invoice );
@@ -152,10 +150,8 @@ public class InvoiceApiApplicationTests
     public void simpleInvoiceUrl() throws IOException
     {
         Invoice invoice = getInvoice(
-                new Line().setDescription( "Riga 1" )
-                        .setPrice( new Price().setPrice( BigDecimal.TEN ).setCurrency( "EUR" ) ),
-                new Line().setDescription( "Riga 2" )
-                        .setPrice( new Price().setPrice( BigDecimal.ONE ).setCurrency( "EUR" ) )
+                new Line().setDescription( "Riga 1" ).setPrice( new Price().setPrice( BigDecimal.TEN ) ),
+                new Line().setDescription( "Riga 2" ).setPrice( new Price().setPrice( BigDecimal.ONE ) )
         );
 
         Call<Long> call = service.generateAndUpload( PREFIX, invoice );
@@ -247,6 +243,7 @@ public class InvoiceApiApplicationTests
         return new Invoice()
                 .setHolder( (Holder) holder )
                 .setRecipient( (Recipient) recipient )
+                .setCurrency( "EUR" )
                 .setLines( Arrays.asList( lines ) );
     }
 }

@@ -81,6 +81,25 @@ public class Line
         return this;
     }
 
+    public String printPrice( String currency )
+    {
+        if ( currency == null ) throw new IllegalArgumentException( "please provide a currency" );
+        assert price != null;
+        return currency + ' ' + price.getPrice().toPlainString();
+    }
+
+    public String printTotal( String currency )
+    {
+        if ( currency == null ) throw new IllegalArgumentException( "please provide a currency" );
+        return currency + ' ' + calculateTotalPrice().toPlainString();
+    }
+
+    public String printVAT()
+    {
+        assert price != null;
+        return price.getVAT().toPlainString() + '%';
+    }
+
     @Override
     public boolean equals( Object o )
     {
