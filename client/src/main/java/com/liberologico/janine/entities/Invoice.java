@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +40,10 @@ public class Invoice
     private Recipient recipient;
 
     @JsonProperty( required = true )
+    @Pattern( regexp = "[\\w]{3}" )
+    private String currency;
+
+    @JsonProperty( required = true )
     @NotEmpty
     @Valid
     private List<Line> lines = new ArrayList<>();
@@ -52,6 +57,17 @@ public class Invoice
             total = total.add( line.calculateTotalPrice() );
         }
         return total;
+    }
+
+    public String getCurrency()
+    {
+        return currency.toUpperCase();
+    }
+
+    public Invoice setCurrency( String currency )
+    {
+        this.currency = currency;
+        return this;
     }
 
     public String getNumber()
