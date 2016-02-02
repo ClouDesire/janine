@@ -61,7 +61,7 @@ public class Line
 
     public BigDecimal getQuantity()
     {
-        return quantity;
+        return quantity.stripTrailingZeros();
     }
 
     public Line setQuantity( BigDecimal quantity )

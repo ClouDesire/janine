@@ -42,7 +42,7 @@ public class Price
 
     public BigDecimal getVAT()
     {
-        return VAT;
+        return VAT.stripTrailingZeros();
     }
 
     public Price setVAT( BigDecimal VAT )
