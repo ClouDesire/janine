@@ -9,7 +9,7 @@ import com.liberologico.janine.entities.Line;
 import com.liberologico.janine.entities.Person;
 import com.liberologico.janine.entities.Price;
 import com.liberologico.janine.entities.Recipient;
-import com.liberologico.janine.upload.BlobStoreService;
+import com.liberologico.janine.upload.StoreService;
 import com.squareup.okhttp.ResponseBody;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.After;
@@ -55,7 +55,7 @@ public class InvoiceApiApplicationTests
     private JedisConnectionFactory jedisConnectionFactory;
 
     @Autowired
-    private BlobStoreService blobStoreService;
+    private StoreService storeService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -77,7 +77,7 @@ public class InvoiceApiApplicationTests
         jedis.close();
 
         final String container = containersPrefix + PREFIX;
-        blobStoreService.flushContainer( container );
+        storeService.flushContainer( container );
     }
 
     @Test

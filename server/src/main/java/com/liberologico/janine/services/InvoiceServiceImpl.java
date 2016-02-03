@@ -12,7 +12,7 @@ import com.liberologico.janine.pdf.PdfService;
 import com.liberologico.janine.upload.BlobStoreFileFactory;
 import com.liberologico.janine.upload.BlobStoreJson;
 import com.liberologico.janine.upload.BlobStorePdf;
-import com.liberologico.janine.upload.BlobStoreService;
+import com.liberologico.janine.upload.StoreService;
 import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -32,7 +32,7 @@ public class InvoiceServiceImpl implements InvoiceService
     private BlobStoreFileFactory blobStoreFileFactory;
 
     @Autowired
-    private BlobStoreService blobStoreService;
+    private StoreService storeService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -81,10 +81,10 @@ public class InvoiceServiceImpl implements InvoiceService
             ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
 
             final BlobStorePdf pdf = blobStoreFileFactory.producePdf( prefix, id );
-            blobStoreService.uploadFile( out.toByteArray(), pdf );
+            storeService.uploadFile( out.toByteArray(), pdf );
 
             final BlobStoreJson json = blobStoreFileFactory.produceJson( prefix, id );
-            blobStoreService.uploadFile( objectMapper.writeValueAsBytes( invoice ), json );
+            storeService.uploadFile( objectMapper.writeValueAsBytes( invoice ), json );
 
             return pdf;
         }
@@ -101,7 +101,7 @@ public class InvoiceServiceImpl implements InvoiceService
     {
         try
         {
-            InputStream in = blobStoreService.downloadFile( blobStoreFileFactory.produce( format, prefix, id ) );
+            InputStream in = storeService.downloadFile( blobStoreFileFactory.produce( format, prefix, id ) );
 
             if ( in == null ) throw new InvoiceMissingException();
 

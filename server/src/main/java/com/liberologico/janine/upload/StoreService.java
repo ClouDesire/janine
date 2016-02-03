@@ -3,7 +3,7 @@ package com.liberologico.janine.upload;
 import java.io.IOException;
 import java.io.InputStream;
 
-public interface BlobStoreService
+public interface StoreService
 {
     boolean createContainer( String container );
 
