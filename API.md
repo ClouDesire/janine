@@ -495,7 +495,7 @@ No authentication or authorization feature is implemented, and never will be.
                         "type": "object"
                     },
                     "quantity": {
-                        "minimum": 0.01,
+                        "minimum": 0.00,
                         "required": true,
                         "type": "number"
                     },

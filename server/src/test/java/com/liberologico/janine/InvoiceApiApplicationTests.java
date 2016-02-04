@@ -116,6 +116,19 @@ public class InvoiceApiApplicationTests
     }
 
     @Test
+    public void zeroQuantity() throws IOException
+    {
+        Invoice invoice = getInvoice( new Line().setDescription( "Riga 0" )
+                                                .setPrice( new Price().setPrice( BigDecimal.ZERO ) )
+                                                .setQuantity( BigDecimal.ZERO ) );
+
+        Call<Invoice> call = service.validate( PREFIX, invoice );
+
+        Response<Invoice> response = call.execute();
+        assertTrue( response.isSuccess() );
+    }
+
+    @Test
     public void simpleInvoice() throws IOException
     {
         Invoice invoice = getInvoice(

@@ -16,7 +16,7 @@ public class Line
     @NotNull
     private Price price;
 
-    @DecimalMin( "0.01" )
+    @DecimalMin( "0.00" )
     @JsonProperty( required = true )
     @NotNull
     private BigDecimal quantity = BigDecimal.ONE;
