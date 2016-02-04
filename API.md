@@ -43,9 +43,6 @@ No authentication or authorization feature is implemented, and never will be.
               "zip": "zip"
           },
           "companyName": "ClouDesire",
-          "email": "antanio@divani.me",
-          "firstName": "Antanio",
-          "lastName": "Divani",
           "taxCode": "123CLOUDESIRE"
       },
       "currency": "EUR",
@@ -71,16 +68,16 @@ No authentication or authorization feature is implemented, and never will be.
       ],
       "notes": "Lorem invoice",
       "recipient": {
+          "email": "antanio@divani.me",
+          "firstName": "Antanio",
+          "lastName": "Divani",
           "address": {
               "address": "address",
               "city": "city",
               "country": "country",
               "state": "state",
               "zip": "zip"
-          },
-          "email": "brebuzio@sfanti.me",
-          "firstName": "Brebuzio",
-          "lastName": "Sfanti"
+          }
       }
   }
   ```
@@ -103,10 +100,6 @@ No authentication or authorization feature is implemented, and never will be.
                 "zip": "zip"
             },
             "companyName": "ClouDesire",
-            "email": "antanio@divani.me",
-            "firstName": "Antanio",
-            "lastName": "Divani",
-            "phoneNumber": null,
             "taxCode": "123CLOUDESIRE"
         },
         "currency": "EUR",
@@ -142,12 +135,9 @@ No authentication or authorization feature is implemented, and never will be.
                 "state": "state",
                 "zip": "zip"
             },
-            "companyName": null,
-            "email": "brebuzio@sfanti.me",
-            "firstName": "Brebuzio",
-            "lastName": "Sfanti",
-            "phoneNumber": null,
-            "taxCode": null
+            "email": "antanio@divani.me",
+            "firstName": "Antanio",
+            "lastName": "Divani"
         },
         "total": 272.62
     }
@@ -455,15 +445,12 @@ No authentication or authorization feature is implemented, and never will be.
                     "type": "string"
                 },
                 "email": {
-                    "required": true,
                     "type": "string"
                 },
                 "firstName": {
-                    "required": true,
                     "type": "string"
                 },
                 "lastName": {
-                    "required": true,
                     "type": "string"
                 },
                 "phoneNumber": {
@@ -541,15 +528,12 @@ No authentication or authorization feature is implemented, and never will be.
                     "type": "string"
                 },
                 "email": {
-                    "required": true,
                     "type": "string"
                 },
                 "firstName": {
-                    "required": true,
                     "type": "string"
                 },
                 "lastName": {
-                    "required": true,
                     "type": "string"
                 },
                 "phoneNumber": {
