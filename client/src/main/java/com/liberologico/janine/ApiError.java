@@ -16,21 +16,13 @@ public class ApiError
     class Error
     {
         List<String> codes;
-        List<Argument> arguments;
+        List<Object> arguments;
         String defaultMessage;
         String objectName;
         String field;
         List<Object> rejectedValue;
         Boolean bindingFailure;
         String code;
-
-        class Argument
-        {
-            List<String> codes;
-            Object arguments;
-            String defaultMessage;
-            String code;
-        }
 
         @Override
         public String toString()
