@@ -1,7 +1,10 @@
 package com.liberologico.janine.entities;
 
+import com.liberologico.janine.validation.Identifiable;
+
 import java.text.MessageFormat;
 
+@Identifiable
 public class Recipient extends Person
 {
     private String taxCode;

@@ -2,9 +2,6 @@
     "header": "ClouDesire.com",
     "holder":
     {
-        "firstName": "Antanio",
-        "lastName": "Divani",
-        "email": "antanio@divani.me",
         "address":
         {
             "address": "address",
@@ -18,9 +15,9 @@
     },
     "recipient":
     {
-        "firstName": "Brebuzio",
-        "lastName": "Sfanti",
-        "email": "brebuzio@sfanti.me",
+        "firstName": "Antanio",
+        "lastName": "Divani",
+        "email": "antanio@divani.me",
         "address":
         {
             "address": "address",

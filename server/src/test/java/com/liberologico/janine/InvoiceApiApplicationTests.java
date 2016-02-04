@@ -99,6 +99,23 @@ public class InvoiceApiApplicationTests
     }
 
     @Test
+    public void invalidRecipient() throws IOException
+    {
+        Invoice invoice = getInvoice(
+                new Line().setDescription( "Riga 0" ).setPrice( new Price().setPrice( BigDecimal.ONE ) )
+        );
+        invoice.getRecipient().setFirstName( null );
+        invoice.getRecipient().setLastName( null );
+
+        Call<Invoice> call = service.validate( PREFIX, invoice );
+
+        Response<Invoice> response = call.execute();
+        assertFalse( response.isSuccess() );
+        assertEquals( 400, response.code() );
+        assertNotNull( response.errorBody() );
+    }
+
+    @Test
     public void simpleInvoice() throws IOException
     {
         Invoice invoice = getInvoice(
@@ -229,9 +246,6 @@ public class InvoiceApiApplicationTests
     public Invoice getInvoice( Line... lines )
     {
         final Person holder = new Holder()
-                .setFirstName( "Antanio" )
-                .setLastName( "Divani" )
-                .setEmail( "bu@del.lo" )
                 .setAddress( new Address( "address", "city", "country", "state", "zip" ) )
                 .setCompanyName( "Caffè Toraldo" )
                 .setTaxCode( "CFTGNN" );

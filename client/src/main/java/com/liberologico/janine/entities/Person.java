@@ -8,17 +8,11 @@ import java.text.MessageFormat;
 
 abstract public class Person
 {
-    @JsonProperty( required = true )
-    @NotNull
     private String firstName;
 
-    @JsonProperty( required = true )
-    @NotNull
     private String lastName;
 
-    @JsonProperty( required = true )
     @Email
-    @NotNull
     private String email;
 
     private String phoneNumber;
