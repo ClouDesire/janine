@@ -1,5 +1,6 @@
 package com.liberologico.janine.entities;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.liberologico.janine.validation.Identifiable;
 
 import java.text.MessageFormat;
@@ -7,8 +8,10 @@ import java.text.MessageFormat;
 @Identifiable
 public class Recipient extends Person
 {
+    @JsonInclude( JsonInclude.Include.NON_NULL )
     private String taxCode;
 
+    @JsonInclude( JsonInclude.Include.NON_NULL )
     private String companyName;
 
     @Override
