@@ -17,7 +17,11 @@ public class Recipient extends Person
     @Override
     public String toCompanyLine()
     {
-        if ( ( taxCode == null || taxCode.isEmpty() ) && ( companyName == null || companyName.isEmpty() ) ) return "";
+        if ( ( taxCode == null || taxCode.isEmpty() ) && ( companyName == null || companyName.isEmpty() ) )
+        {
+            return super.toString();
+        }
+
         if ( taxCode == null || taxCode.isEmpty() ) return companyName;
         if ( companyName == null || companyName.isEmpty() ) return taxCode;
         return MessageFormat.format( "{0} - {1}", companyName, taxCode );

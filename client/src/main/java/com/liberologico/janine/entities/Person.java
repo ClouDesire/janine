@@ -37,6 +37,8 @@ abstract public class Person
     @Override
     public String toString()
     {
+        if ( email == null || email.isEmpty() ) return MessageFormat.format( "{0} {1}", firstName, lastName );
+
         return MessageFormat.format( "{0} {1} <{2}>", firstName, lastName, email );
     }
 
