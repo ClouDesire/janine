@@ -9,7 +9,7 @@ env:
   - TEST_DIR=client
   - TEST_DIR=server
   global:
-  - REGISTRY_USERNAME=gionn
+  - REGISTRY_USERNAME=cloudesirejenkins
   - BLOB_IDENTITY=cloudesire-deployer
   - DOCKER_COMPOSE_VERSION=1.5.2
   - CI_DEPLOY_GPG_KEYID=2B9E8D20
