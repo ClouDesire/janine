@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,7 @@ public class Invoice
 
     @JsonProperty( required = true )
     @NotEmpty
+    @Size( max = 9 )
     @Valid
     private List<Line> lines = new ArrayList<>();
 
