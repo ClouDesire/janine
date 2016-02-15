@@ -46,6 +46,7 @@ No authentication or authorization feature is implemented, and never will be.
           "taxCode": "123CLOUDESIRE"
       },
       "currency": "EUR",
+      "vat": 22,
       "lines": [
           {
               "description": "Custom vendor fee",
@@ -125,7 +126,7 @@ No authentication or authorization feature is implemented, and never will be.
                 "unit": "sm"
             }
         ],
-        "notes": "Lorem invoice",
+        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nMauris ultricies arcu in risus iaculis porttitor.",
         "number": "TEST1",
         "recipient": {
             "address": {
@@ -139,7 +140,10 @@ No authentication or authorization feature is implemented, and never will be.
             "firstName": "Antanio",
             "lastName": "Divani"
         },
-        "total": 272.62
+        "subTotal": 223.46,
+        "total": 272.62,
+        "vat": 22,
+        "vatPercentage": 49.16
     }
   ```
 
@@ -546,7 +550,8 @@ No authentication or authorization feature is implemented, and never will be.
             "required": true,
             "type": "object"
         },
-        "total": {
+        "vat": {
+            "required": true,
             "type": "number"
         }
     },
