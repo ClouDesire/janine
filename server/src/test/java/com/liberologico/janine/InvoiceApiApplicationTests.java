@@ -212,7 +212,7 @@ public class InvoiceApiApplicationTests
         Gson gson = InvoiceClient.getGsonBuilder().create();
         ApiError apiError = gson.fromJson( response.errorBody().string(), ApiError.class );
         assertEquals( new Integer(400), apiError.status );
-        assertTrue( apiError.errors.size() == 3);
+        assertEquals( 4, apiError.errors.size() );
     }
 
     @Test
@@ -271,6 +271,7 @@ public class InvoiceApiApplicationTests
                 .setHolder( (Holder) holder )
                 .setRecipient( (Recipient) recipient )
                 .setCurrency( "EUR" )
+                .setVat( new BigDecimal( 22 ) )
                 .setLines( Arrays.asList( lines ) );
     }
 }

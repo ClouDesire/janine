@@ -25,8 +25,10 @@ public class Price
     @ExposeMethodResult( "total" )
     public BigDecimal getTotal()
     {
-        final BigDecimal value = price.add( price.divide( new BigDecimal( 100 ) ).multiply( VAT ) );
-        return value.setScale( MathConfiguration.computationPrecision, MathConfiguration.roundingMode );
+        final BigDecimal percentage = MathConfiguration.calculatePercentage( price, VAT );
+
+        return price.add( percentage )
+                    .setScale( MathConfiguration.computationPrecision, MathConfiguration.roundingMode );
     }
 
     public BigDecimal getPrice()
@@ -47,7 +49,7 @@ public class Price
 
     public Price setVAT( BigDecimal VAT )
     {
-        if ( VAT.compareTo( BigDecimal.ZERO ) < 0 || VAT.compareTo( new BigDecimal( 100 ) ) > 0 )
+        if ( VAT.compareTo( BigDecimal.ZERO ) < 0 || VAT.compareTo( MathConfiguration.ONE_HUNDRED ) > 0 )
         {
             throw new IllegalArgumentException( "VAT should be a percentage between 0.00 and 99.99" );
         }

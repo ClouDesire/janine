@@ -37,6 +37,13 @@ public class Line
                 .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
     }
 
+    public BigDecimal calculatePrice()
+    {
+        if ( price == null ) return BigDecimal.ZERO;
+        return price.getPrice().multiply( quantity )
+                .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
+    }
+
     public String getDescription()
     {
         return description;

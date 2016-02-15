@@ -28,6 +28,7 @@
         }
     },
     "currency": "EUR",
+    "vat": "22",
     "lines":
     [
         {

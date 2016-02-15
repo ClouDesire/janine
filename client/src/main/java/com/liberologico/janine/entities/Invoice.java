@@ -2,6 +2,7 @@ package com.liberologico.janine.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
+import com.liberologico.janine.MathConfiguration;
 import io.gsonfire.annotations.ExposeMethodResult;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -45,20 +46,47 @@ public class Invoice
     private String currency;
 
     @JsonProperty( required = true )
+    @NotNull
+    private BigDecimal vat;
+
+    @JsonProperty( required = true )
     @NotEmpty
     @Size( max = 9 )
     @Valid
     private List<Line> lines = new ArrayList<>();
 
-    @ExposeMethodResult( "total" )
-    public BigDecimal getTotal()
+    @ExposeMethodResult( "vatPercentage" )
+    public BigDecimal getVatPercentage()
+    {
+        final BigDecimal subTotal = getSubTotal();
+
+        if ( subTotal.equals( BigDecimal.ZERO ) ) return subTotal;
+
+        final BigDecimal percentage = MathConfiguration.calculatePercentage( subTotal, vat );
+
+        return percentage.setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
+    }
+
+    @ExposeMethodResult( "subTotal" )
+    public BigDecimal getSubTotal()
     {
         BigDecimal total = BigDecimal.ZERO;
         for ( Line line : lines )
         {
-            total = total.add( line.calculateTotalPrice() );
+            total = total.add( line.calculatePrice() );
         }
         return total;
+    }
+
+    @ExposeMethodResult( "total" )
+    public BigDecimal getTotal()
+    {
+        final BigDecimal subTotal = getSubTotal();
+
+        if ( subTotal.equals( BigDecimal.ZERO ) ) return subTotal;
+
+        return subTotal.add( getVatPercentage() )
+                       .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
     }
 
     public String getCurrency()
@@ -145,6 +173,32 @@ public class Invoice
     {
         this.recipient = recipient;
         return this;
+    }
+
+    public BigDecimal getVat()
+    {
+        return vat;
+    }
+
+    public Invoice setVat( BigDecimal vat )
+    {
+        this.vat = vat;
+        return this;
+    }
+
+    public String printSubTotal()
+    {
+        return getCurrency() + ' ' + getSubTotal().toPlainString();
+    }
+
+    public String printVAT()
+    {
+        return vat.stripTrailingZeros().toPlainString() + '%';
+    }
+
+    public String printVATPercentage()
+    {
+        return getCurrency() + ' ' + getVatPercentage().toPlainString();
     }
 
     public String printTotal()
