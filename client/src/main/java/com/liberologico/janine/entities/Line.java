@@ -44,6 +44,13 @@ public class Line
                 .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
     }
 
+    public BigDecimal calculateVAT()
+    {
+        if ( price == null ) return BigDecimal.ZERO;
+        return price.getVATTotal().multiply( quantity )
+                .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
+    }
+
     public String getDescription()
     {
         return description;

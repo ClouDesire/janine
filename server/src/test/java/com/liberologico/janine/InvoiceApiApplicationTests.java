@@ -35,6 +35,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -129,6 +130,40 @@ public class InvoiceApiApplicationTests
     }
 
     @Test
+    public void vat() throws IOException
+    {
+        Invoice invoice = getInvoice( new Line().setDescription( "Riga 0" )
+                .setPrice( new Price().setPrice( new BigDecimal( 100 ) ).setVAT( new BigDecimal( 20 ) ) )
+                .setQuantity( BigDecimal.ONE ) );
+
+        Call<Invoice> call = service.validate( PREFIX, invoice );
+
+        Response<Invoice> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( new BigDecimal( "20.00" ), response.body().getVatPercentage() ); // €
+        assertEquals( new BigDecimal( "20.00" ), response.body().getVatPercentageNumber() ); // %
+    }
+
+    @Test
+    public void vatMixed() throws IOException
+    {
+        Invoice invoice = getInvoice(
+                new Line().setDescription( "Riga 0" )
+                        .setPrice( new Price().setPrice( new BigDecimal( 100 ) ).setVAT( new BigDecimal( 20 ) ) )
+                        .setQuantity( BigDecimal.ONE ),
+                new Line().setDescription( "Riga 1" )
+                        .setPrice( new Price().setPrice( new BigDecimal( 100 ) ).setVAT( new BigDecimal( 10 ) ) )
+                        .setQuantity( BigDecimal.ONE ));
+
+        Call<Invoice> call = service.validate( PREFIX, invoice );
+
+        Response<Invoice> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( new BigDecimal( "30.00" ), response.body().getVatPercentage() ); // €
+        assertNull( response.body().getVatPercentageNumber() ); // %
+    }
+
+    @Test
     public void simpleInvoice() throws IOException
     {
         Invoice invoice = getInvoice(
@@ -212,7 +247,7 @@ public class InvoiceApiApplicationTests
         Gson gson = InvoiceClient.getGsonBuilder().create();
         ApiError apiError = gson.fromJson( response.errorBody().string(), ApiError.class );
         assertEquals( new Integer(400), apiError.status );
-        assertEquals( 4, apiError.errors.size() );
+        assertEquals( 3, apiError.errors.size() );
     }
 
     @Test
@@ -271,7 +306,6 @@ public class InvoiceApiApplicationTests
                 .setHolder( (Holder) holder )
                 .setRecipient( (Recipient) recipient )
                 .setCurrency( "EUR" )
-                .setVat( new BigDecimal( 22 ) )
                 .setLines( Arrays.asList( lines ) );
     }
 }

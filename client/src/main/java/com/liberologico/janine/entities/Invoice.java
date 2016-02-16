@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 public class Invoice
@@ -46,10 +47,6 @@ public class Invoice
     private String currency;
 
     @JsonProperty( required = true )
-    @NotNull
-    private BigDecimal vat;
-
-    @JsonProperty( required = true )
     @NotEmpty
     @Size( max = 9 )
     @Valid
@@ -62,9 +59,32 @@ public class Invoice
 
         if ( subTotal.equals( BigDecimal.ZERO ) ) return subTotal;
 
-        final BigDecimal percentage = MathConfiguration.calculatePercentage( subTotal, vat );
+        BigDecimal percentage = BigDecimal.ZERO;
+
+        for ( Line line : lines )
+        {
+            percentage = percentage.add( line.calculateVAT() );
+        }
 
         return percentage.setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
+    }
+
+    /**
+     * Return null if VAT % is not homogeneous
+     * otherwise the VAT %
+     */
+    public BigDecimal getVatPercentageNumber()
+    {
+        final HashSet<BigDecimal> bigDecimals = new HashSet<>();
+
+        for ( Line line : lines )
+        {
+            bigDecimals.add( line.getPrice().getVAT() );
+        }
+
+        if ( bigDecimals.size() > 1) return null;
+
+        return bigDecimals.iterator().next().setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
     }
 
     @ExposeMethodResult( "subTotal" )
@@ -175,17 +195,6 @@ public class Invoice
         return this;
     }
 
-    public BigDecimal getVat()
-    {
-        return vat;
-    }
-
-    public Invoice setVat( BigDecimal vat )
-    {
-        this.vat = vat;
-        return this;
-    }
-
     public String printSubTotal()
     {
         return getCurrency() + ' ' + getSubTotal().toPlainString();
@@ -193,7 +202,10 @@ public class Invoice
 
     public String printVAT()
     {
-        return vat.stripTrailingZeros().toPlainString() + '%';
+        final BigDecimal vatPercentageNumber = getVatPercentageNumber();
+        if ( vatPercentageNumber == null)
+            return "";
+        return vatPercentageNumber.stripTrailingZeros().toPlainString() + '%';
     }
 
     public String printVATPercentage()
