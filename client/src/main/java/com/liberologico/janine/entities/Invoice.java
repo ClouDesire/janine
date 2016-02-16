@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Invoice
 {
@@ -75,16 +76,16 @@ public class Invoice
      */
     public BigDecimal getVatPercentageNumber()
     {
-        final HashSet<BigDecimal> bigDecimals = new HashSet<>();
+        final Set<BigDecimal> vats = new HashSet<>();
 
         for ( Line line : lines )
         {
-            bigDecimals.add( line.getPrice().getVAT() );
+            vats.add( line.getPrice().getVAT() );
         }
 
-        if ( bigDecimals.size() > 1) return null;
+        if ( vats.size() > 1 ) return null;
 
-        return bigDecimals.iterator().next().setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
+        return vats.iterator().next().setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
     }
 
     @ExposeMethodResult( "subTotal" )
@@ -203,8 +204,9 @@ public class Invoice
     public String printVAT()
     {
         final BigDecimal vatPercentageNumber = getVatPercentageNumber();
-        if ( vatPercentageNumber == null)
-            return "";
+
+        if ( vatPercentageNumber == null) return "";
+
         return vatPercentageNumber.stripTrailingZeros().toPlainString() + '%';
     }
 

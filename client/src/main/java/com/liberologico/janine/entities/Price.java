@@ -31,10 +31,10 @@ public class Price
                     .setScale( MathConfiguration.computationPrecision, MathConfiguration.roundingMode );
     }
 
-    @ExposeMethodResult( "vat_total" )
+    @ExposeMethodResult( "vatTotal" )
     public BigDecimal getVATTotal()
     {
-        return  MathConfiguration.calculatePercentage( price, VAT );
+        return MathConfiguration.calculatePercentage( price, VAT );
     }
 
     public BigDecimal getPrice()
