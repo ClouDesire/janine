@@ -23,7 +23,7 @@ public class MathConfiguration
     public final static BigDecimal ONE_HUNDRED = new BigDecimal( 100 );
 
     /**
-     * Return value + percentage%
+     * Return percentage value
      */
     public static BigDecimal calculatePercentage( BigDecimal value, BigDecimal percentage )
     {

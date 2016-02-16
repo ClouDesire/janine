@@ -291,7 +291,7 @@ public class InvoiceApiApplicationTests
         assertNotNull( schema );
     }
 
-    public Invoice getInvoice( Line... lines )
+    private Invoice getInvoice( Line... lines )
     {
         final Person holder = new Holder()
                 .setAddress( new Address( "address", "city", "country", "state", "zip" ) )
