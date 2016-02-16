@@ -215,8 +215,8 @@ public class InvoiceApiApplicationTests
     public void simpleInvoiceUrl() throws IOException
     {
         Invoice invoice = getInvoice(
-                new Line().setDescription( "Riga 1" ).setPrice( new Price().setPrice( BigDecimal.TEN ) ),
-                new Line().setDescription( "Riga 2" ).setPrice( new Price().setPrice( BigDecimal.ONE ) )
+                new Line().setDescription( "Riga 1" ).setPrice( new Price().setPrice( BigDecimal.TEN ).setVAT( BigDecimal.ONE ) ),
+                new Line().setDescription( "Riga 2" ).setPrice( new Price().setPrice( BigDecimal.ONE ).setVAT( BigDecimal.ONE ) )
         );
 
         Call<Long> call = service.generateAndUpload( PREFIX, invoice );
