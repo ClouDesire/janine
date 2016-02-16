@@ -46,7 +46,6 @@ No authentication or authorization feature is implemented, and never will be.
           "taxCode": "123CLOUDESIRE"
       },
       "currency": "EUR",
-      "vat": 22,
       "lines": [
           {
               "description": "Custom vendor fee",
@@ -110,7 +109,8 @@ No authentication or authorization feature is implemented, and never will be.
                 "price": {
                     "price": 100.0,
                     "total": 122.0,
-                    "vat": 22.0
+                    "vat": 22,
+                    "vatTotal": 22.0
                 },
                 "quantity": 2.0,
                 "unit": "un"
@@ -120,7 +120,8 @@ No authentication or authorization feature is implemented, and never will be.
                 "price": {
                     "price": 23.4567,
                     "total": 28.6172,
-                    "vat": 22.0
+                    "vat": 22,
+                    "vatTotal": 5.1612
                 },
                 "quantity": 1.0,
                 "unit": "sm"
@@ -142,8 +143,8 @@ No authentication or authorization feature is implemented, and never will be.
         },
         "subTotal": 223.46,
         "total": 272.62,
-        "vat": 22,
-        "vatPercentage": 49.16
+        "vatPercentage": 49.16,
+        "vatPercentageNumber": 22.0
     }
   ```
 
@@ -549,10 +550,6 @@ No authentication or authorization feature is implemented, and never will be.
             },
             "required": true,
             "type": "object"
-        },
-        "vat": {
-            "required": true,
-            "type": "number"
         }
     },
     "type": "object"
