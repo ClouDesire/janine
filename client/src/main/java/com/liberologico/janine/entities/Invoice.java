@@ -2,6 +2,7 @@ package com.liberologico.janine.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
+import com.liberologico.janine.MathConfiguration;
 import io.gsonfire.annotations.ExposeMethodResult;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -13,7 +14,9 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Invoice
 {
@@ -50,15 +53,61 @@ public class Invoice
     @Valid
     private List<Line> lines = new ArrayList<>();
 
-    @ExposeMethodResult( "total" )
-    public BigDecimal getTotal()
+    @ExposeMethodResult( "vatPercentage" )
+    public BigDecimal getVatPercentage()
+    {
+        final BigDecimal subTotal = getSubTotal();
+
+        if ( subTotal.equals( BigDecimal.ZERO ) ) return subTotal;
+
+        BigDecimal percentage = BigDecimal.ZERO;
+
+        for ( Line line : lines )
+        {
+            percentage = percentage.add( line.calculateVAT() );
+        }
+
+        return percentage.setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
+    }
+
+    /**
+     * Return null if VAT % is not homogeneous
+     * otherwise the VAT %
+     */
+    public BigDecimal getVatPercentageNumber()
+    {
+        final Set<BigDecimal> vats = new HashSet<>();
+
+        for ( Line line : lines )
+        {
+            vats.add( line.getPrice().getVAT() );
+        }
+
+        if ( vats.size() > 1 ) return null;
+
+        return vats.iterator().next().setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
+    }
+
+    @ExposeMethodResult( "subTotal" )
+    public BigDecimal getSubTotal()
     {
         BigDecimal total = BigDecimal.ZERO;
         for ( Line line : lines )
         {
-            total = total.add( line.calculateTotalPrice() );
+            total = total.add( line.calculatePrice() );
         }
         return total;
+    }
+
+    @ExposeMethodResult( "total" )
+    public BigDecimal getTotal()
+    {
+        final BigDecimal subTotal = getSubTotal();
+
+        if ( subTotal.equals( BigDecimal.ZERO ) ) return subTotal;
+
+        return subTotal.add( getVatPercentage() )
+                       .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
     }
 
     public String getCurrency()
@@ -145,6 +194,25 @@ public class Invoice
     {
         this.recipient = recipient;
         return this;
+    }
+
+    public String printSubTotal()
+    {
+        return getCurrency() + ' ' + getSubTotal().toPlainString();
+    }
+
+    public String printVAT()
+    {
+        final BigDecimal vatPercentageNumber = getVatPercentageNumber();
+
+        if ( vatPercentageNumber == null) return "";
+
+        return vatPercentageNumber.stripTrailingZeros().toPlainString() + '%';
+    }
+
+    public String printVATPercentage()
+    {
+        return getCurrency() + ' ' + getVatPercentage().toPlainString();
     }
 
     public String printTotal()

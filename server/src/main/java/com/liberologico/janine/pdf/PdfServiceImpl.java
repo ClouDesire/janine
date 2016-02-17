@@ -100,6 +100,9 @@ public class PdfServiceImpl implements PdfService
             setField( acroForm, "total" + itemIndex, line.printTotal( invoice.getCurrency() ) );
         }
 
+        setField( acroForm, "subTotal", invoice.printSubTotal() );
+        setField( acroForm, "vat", invoice.printVAT() );
+        setField( acroForm, "vatPercentage", invoice.printVATPercentage() );
         setField( acroForm, "total", invoice.printTotal() );
         setField( acroForm, "notes", invoice.getNotes() );
 

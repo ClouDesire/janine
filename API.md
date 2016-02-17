@@ -109,7 +109,8 @@ No authentication or authorization feature is implemented, and never will be.
                 "price": {
                     "price": 100.0,
                     "total": 122.0,
-                    "vat": 22.0
+                    "vat": 22,
+                    "vatTotal": 22.0
                 },
                 "quantity": 2.0,
                 "unit": "un"
@@ -119,13 +120,14 @@ No authentication or authorization feature is implemented, and never will be.
                 "price": {
                     "price": 23.4567,
                     "total": 28.6172,
-                    "vat": 22.0
+                    "vat": 22,
+                    "vatTotal": 5.1612
                 },
                 "quantity": 1.0,
                 "unit": "sm"
             }
         ],
-        "notes": "Lorem invoice",
+        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nMauris ultricies arcu in risus iaculis porttitor.",
         "number": "TEST1",
         "recipient": {
             "address": {
@@ -139,7 +141,10 @@ No authentication or authorization feature is implemented, and never will be.
             "firstName": "Antanio",
             "lastName": "Divani"
         },
-        "total": 272.62
+        "subTotal": 223.46,
+        "total": 272.62,
+        "vatPercentage": 49.16,
+        "vatPercentageNumber": 22.0
     }
   ```
 
@@ -545,9 +550,6 @@ No authentication or authorization feature is implemented, and never will be.
             },
             "required": true,
             "type": "object"
-        },
-        "total": {
-            "type": "number"
         }
     },
     "type": "object"
