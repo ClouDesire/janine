@@ -42,6 +42,15 @@ public class InvoiceController
         return new ResponseEntity<>( out.toByteArray(), HttpStatus.OK );
     }
 
+    @RequestMapping( value = "/{prefix}/{id}/download", method = RequestMethod.POST )
+    ResponseEntity<byte[]> generateWithId( @PathVariable String prefix, @PathVariable Long id,
+            @RequestBody @Valid Invoice invoice ) throws InvoiceServiceException
+    {
+        ByteArrayOutputStream out = service.generate( prefix, id, invoice );
+
+        return new ResponseEntity<>( out.toByteArray(), HttpStatus.OK );
+    }
+
     @RequestMapping( value = "/{prefix}", method = RequestMethod.POST )
     ResponseEntity<Long> generateAndUpload( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
             throws InvoiceServiceException

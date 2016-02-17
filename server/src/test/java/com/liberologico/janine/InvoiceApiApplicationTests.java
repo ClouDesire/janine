@@ -212,6 +212,16 @@ public class InvoiceApiApplicationTests
     }
 
     @Test
+    public void simpleInvoiceDownloadProvidingId() throws IOException
+    {
+        Invoice invoice = getInvoice();
+
+        Call<ResponseBody> call = service.generate( PREFIX, 42L, invoice );
+
+        testPdfResponse( call );
+    }
+
+    @Test
     public void simpleInvoiceUrl() throws IOException
     {
         Invoice invoice = getInvoice();

@@ -376,6 +376,12 @@ No authentication or authorization feature is implemented, and never will be.
 
   `/{prefix}/download`
 
+  or
+
+  `/{prefix}/{id}/download`
+
+  to provide own invoice ID
+
 * **Method:**
 
   `POST`
@@ -385,6 +391,10 @@ No authentication or authorization feature is implemented, and never will be.
    **Required:**
 
    `prefix=[string]` - The invoice numeration prefix
+
+   **Optional:**
+
+   `id=[integer]` - The ID of the invoice to be generated
 
 * **Request Body**
 

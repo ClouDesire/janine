@@ -64,11 +64,24 @@ public class InvoiceServiceImpl implements InvoiceService
 
         try
         {
+            return generate( prefix, id, invoice );
+        }
+        catch ( InvoiceServiceException e )
+        {
+            jedis.decr( prefix );
+            throw e;
+        }
+    }
+
+    @Override
+    public synchronized ByteArrayOutputStream generate( String prefix, Long id, Invoice invoice ) throws InvoiceServiceException
+    {
+        try
+        {
             return pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
         }
         catch ( IOException e )
         {
-            jedis.decr( prefix );
             throw new InvoiceServiceException( e );
         }
     }

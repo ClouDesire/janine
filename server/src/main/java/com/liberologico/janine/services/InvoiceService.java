@@ -27,6 +27,15 @@ public interface InvoiceService
     ByteArrayOutputStream generate( String prefix, Invoice invoice ) throws InvoiceServiceException;
 
     /**
+     * Generates a PDF for the given invoice providing your own id
+     * @param prefix the namespace of this invoice
+     * @param invoice object holding all the invoice information
+     * @return A stream representing the PDF bytes
+     * @throws InvoiceServiceException if problems occurred during PDF generation
+     */
+    ByteArrayOutputStream generate( String prefix, Long id, Invoice invoice ) throws InvoiceServiceException;
+
+    /**
      * Generates a PDF for the given invoice, and upload it to a remote object storage
      * @param prefix the namespace of this invoice
      * @param invoice object holding all the invoice information
