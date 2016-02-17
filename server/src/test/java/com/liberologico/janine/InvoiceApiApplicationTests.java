@@ -257,6 +257,20 @@ public class InvoiceApiApplicationTests
     }
 
     @Test
+    public void simpleInvoiceRegenerate() throws IOException
+    {
+        simpleInvoiceProvidingId();
+
+        Invoice invoice = getInvoice();
+        Call<Long> call = service.regenerate( PREFIX, 42L, invoice );
+
+        Response<Long> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( 201, response.code() );
+        assertEquals( 42L, response.body().longValue() );
+    }
+
+    @Test
     public void badInvoice() throws IOException
     {
         Invoice invoice = new Invoice();

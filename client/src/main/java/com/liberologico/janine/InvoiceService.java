@@ -24,6 +24,9 @@ public interface InvoiceService
     @POST( "/{prefix}/{id}" )
     Call<Long> generateAndUpload( @Path( "prefix" ) String prefix, @Path( "id" ) Long id, @Body Invoice invoice );
 
+    @POST( "/{prefix}/{id}?regenerate=true" )
+    Call<Long> regenerate( @Path( "prefix" ) String prefix, @Path( "id" ) Long id, @Body Invoice invoice );
+
     @GET( "/{prefix}/{id}.pdf" )
     Call<ResponseBody> downloadPdf( @Path( "prefix" ) String prefix, @Path( "id" ) Long id );
 

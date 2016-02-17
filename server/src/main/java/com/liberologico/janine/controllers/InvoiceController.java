@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -52,9 +53,10 @@ public class InvoiceController
 
     @RequestMapping( value = "/{prefix}/{id}", method = RequestMethod.POST )
     ResponseEntity<Long> generateAndUploadWithId( @PathVariable String prefix, @PathVariable Long id,
-            @RequestBody @Valid Invoice invoice ) throws InvoiceServiceException
+            @RequestParam( defaultValue = "false" ) boolean regenerate, @RequestBody @Valid Invoice invoice )
+            throws InvoiceServiceException
     {
-        BlobStorePdf pdf = service.generateAndUpload( prefix, id, invoice );
+        BlobStorePdf pdf = service.generateAndUpload( prefix, id, invoice, regenerate );
 
         return ResponseEntity.created( pdf.getURI() ).body( pdf.getId() );
     }

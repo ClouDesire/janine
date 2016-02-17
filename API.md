@@ -281,6 +281,10 @@ No authentication or authorization feature is implemented, and never will be.
 
    `id=[integer]` - The ID of the invoice to be generated
 
+   **Optional:**
+
+   `regenerate=[boolean]` - whether to override an eventually already generated invoice (defaults to false)
+
 * **Request Body**
 
   *See validate request body*
@@ -297,7 +301,7 @@ No authentication or authorization feature is implemented, and never will be.
 
 * **Error Response:**
 
-  When providing the ID of an already generated invoice:
+  When providing the ID of an already generated invoice, if not regenerating:
 
   * **Code:** 409 Conflict
   * **Content:**

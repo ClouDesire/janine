@@ -80,7 +80,7 @@ public class InvoiceServiceImpl implements InvoiceService
 
         try
         {
-            return generateAndUpload( prefix, id, invoice );
+            return generateAndUpload( prefix, id, invoice, false );
         }
         catch ( InvoiceServiceException e )
         {
@@ -90,14 +90,14 @@ public class InvoiceServiceImpl implements InvoiceService
     }
 
     @Override
-    public synchronized BlobStorePdf generateAndUpload( String prefix, Long id, Invoice invoice )
+    public synchronized BlobStorePdf generateAndUpload( String prefix, Long id, Invoice invoice, boolean regenerate )
             throws InvoiceServiceException
     {
         try
         {
             final BlobStorePdf pdf = blobStoreFileFactory.producePdf( prefix, id );
 
-            if ( storeService.exists( pdf ) )
+            if ( ! regenerate && storeService.exists( pdf ) )
             {
                 String message = MessageFormat.format( "Invoice {0}{1} already exists", prefix, id );
                 throw new InvoiceExistingException( message );
