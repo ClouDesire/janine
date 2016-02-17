@@ -79,7 +79,8 @@ public class PdfServiceImpl implements PdfService
     private PDAcroForm setFields( Invoice invoice, PDAcroForm acroForm ) throws IOException
     {
         setField( acroForm, "header", invoice.getHeader() );
-        setField( acroForm, "holderName", invoice.getHolder().toCompanyLine() );
+        setField( acroForm, "holderName", invoice.getHolder().getCompanyName() );
+        setField( acroForm, "holderVat", "VAT: " + invoice.getHolder().getTaxCode() );
         setField( acroForm, "holderAddress1", invoice.getHolder().getAddress().toLineOne() );
         setField( acroForm, "holderAddress2", invoice.getHolder().getAddress().toLineTwo() );
         setField( acroForm, "recipientName", invoice.getRecipient().toCompanyLine() );
