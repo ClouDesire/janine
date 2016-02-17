@@ -214,11 +214,7 @@ public class InvoiceApiApplicationTests
     @Test
     public void simpleInvoiceUrl() throws IOException
     {
-        Invoice invoice = getInvoice(
-                new Line().setDescription( "Riga 1" ).setPrice( new Price().setPrice( BigDecimal.TEN ).setVAT( BigDecimal.ONE ) ),
-                new Line().setDescription( "Riga 2" ).setPrice( new Price().setPrice( BigDecimal.ONE ).setVAT( BigDecimal.ONE ) )
-        );
-
+        Invoice invoice = getInvoice();
         Call<Long> call = service.generateAndUpload( PREFIX, invoice );
 
         Response<Long> response = call.execute();
@@ -233,6 +229,31 @@ public class InvoiceApiApplicationTests
 
         testPdfResponse( service.downloadPdf( PREFIX, 1L ) );
         assertEquals( invoice.getDate(), testJsonResponse( service.downloadJson( PREFIX, 1L ) ).getDate() );
+    }
+
+    @Test
+    public void simpleInvoiceProvidingId() throws IOException
+    {
+        Invoice invoice = getInvoice();
+        Call<Long> call = service.generateAndUpload( PREFIX, 42L, invoice );
+
+        Response<Long> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( 201, response.code() );
+        assertEquals( 42L, response.body().longValue() );
+    }
+
+    @Test
+    public void simpleInvoiceProvidingSameId() throws IOException
+    {
+        simpleInvoiceProvidingId();
+
+        Invoice invoice = getInvoice();
+        Call<Long> call = service.generateAndUpload( PREFIX, 42L, invoice );
+
+        Response<Long> response = call.execute();
+        assertFalse( response.isSuccess() );
+        assertEquals( 409, response.code() );
     }
 
     @Test
@@ -289,6 +310,17 @@ public class InvoiceApiApplicationTests
         assertEquals( 200, response.code() );
         final Object schema = response.body();
         assertNotNull( schema );
+    }
+
+    private Invoice getInvoice()
+    {
+        return getInvoice(
+                new Line()
+                        .setDescription( "Riga 1" )
+                        .setPrice( new Price().setPrice( BigDecimal.TEN ).setVAT( BigDecimal.ONE ) ),
+                new Line()
+                        .setDescription( "Riga 2" )
+                        .setPrice( new Price().setPrice( BigDecimal.ONE ).setVAT( BigDecimal.ONE ) ) );
     }
 
     private Invoice getInvoice( Line... lines )
