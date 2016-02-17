@@ -2,6 +2,7 @@
 
 * [validate](#validate)
 * [generate](#generate)
+* [generate with id](#generate-with-id)
 * [download pdf](#download-pdf)
 * [generate and download pdf](#generateanddownload)
 * [download json](#download-json)
@@ -259,6 +260,62 @@ No authentication or authorization feature is implemented, and never will be.
 * **Sample Call:**
 
   `$ http POST :8080/TEST < invoice.json`
+
+### generate with id
+
+  Generates a PDF for the given invoice and upload it to a remote object storage providing your own id
+
+* **URL:**
+
+  `/{prefix}/{id}`
+
+* **Method:**
+
+  `POST`
+
+*  **URL Params**
+
+   **Required:**
+
+   `prefix=[string]` - The invoice numeration prefix
+
+   `id=[integer]` - The ID of the invoice to be generated
+
+* **Request Body**
+
+  *See validate request body*
+
+* **Success Response:**
+
+  Returns the ID of the generated invoice in the response body and the URL of the generated
+  PDF in the Location header.
+
+
+  * **Code:** 201 Created
+  * **Headers:** Location: http://localhost:8080/TEST/1.pdf
+  * **Content:** `1`
+
+* **Error Response:**
+
+  When providing the ID of an already generated invoice:
+
+  * **Code:** 409 Conflict
+  * **Content:**
+
+  ```json
+  {
+    "error": "Conflict",
+    "exception": "com.liberologico.janine.exceptions.InvoiceExistingException",
+    "message": "Invoice TEST1 already exists",
+    "path": "/TEST/1",
+    "status": 409,
+    "timestamp": 1455721477374
+  }
+  ```
+
+* **Sample Call:**
+
+  `$ http POST :8080/TEST/1 < invoice.json`
 
 ### download pdf
 

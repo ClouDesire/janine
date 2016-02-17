@@ -11,5 +11,7 @@ public interface StoreService
 
     void uploadFile( byte[] pdf, BlobStoreFile file ) throws IOException;
 
+    boolean exists( BlobStoreFile file ) throws IOException;
+
     InputStream downloadFile( BlobStoreFile file ) throws IOException;
 }

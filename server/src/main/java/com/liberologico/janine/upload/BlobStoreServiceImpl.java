@@ -2,6 +2,7 @@ package com.liberologico.janine.upload;
 
 import com.google.common.io.ByteSource;
 import org.jclouds.blobstore.BlobStoreContext;
+import org.jclouds.blobstore.ContainerNotFoundException;
 import org.jclouds.blobstore.domain.Blob;
 import org.jclouds.io.Payload;
 import org.jclouds.io.Payloads;
@@ -57,6 +58,19 @@ public class BlobStoreServiceImpl implements StoreService
         log.info( "Uploading file {} on {}", filename, container );
         Payload payload = Payloads.newByteSourcePayload( ByteSource.wrap( object ) );
         api.getBlobStore().putBlob( container, api.getBlobStore().blobBuilder( filename ).payload( payload ).build() );
+    }
+
+    @Override
+    public boolean exists( BlobStoreFile file ) throws IOException
+    {
+        try
+        {
+            return api.getBlobStore().getBlob( file.getContainer(), file.getFilename() ) != null;
+        }
+        catch ( ContainerNotFoundException e )
+        {
+            return false;
+        }
     }
 
     @Override
