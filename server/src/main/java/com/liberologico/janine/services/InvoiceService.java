@@ -36,6 +36,18 @@ public interface InvoiceService
     BlobStorePdf generateAndUpload( String prefix, Invoice invoice ) throws InvoiceServiceException;
 
     /**
+     * Generates a PDF for the given invoice and upload it to a remote
+     * object storage providing your own id
+     *
+     * @param prefix the namespace of this invoice
+     * @param id the provided identifier of the invoice
+     * @param invoice object holding all the invoice information
+     * @return An object holding the reference to the uploaded object
+     * @throws InvoiceServiceException if problems occurred during PDF generation or object upload
+     */
+    BlobStorePdf generateAndUpload( String prefix, Long id, Invoice invoice ) throws InvoiceServiceException;
+
+    /**
      * Downloads an already generated invoice
      * @param prefix the namespace of the invoice
      * @param id the identifier of the invoice

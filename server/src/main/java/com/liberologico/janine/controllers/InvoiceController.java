@@ -50,6 +50,15 @@ public class InvoiceController
         return ResponseEntity.created( pdf.getURI() ).body( pdf.getId() );
     }
 
+    @RequestMapping( value = "/{prefix}/{id}", method = RequestMethod.POST )
+    ResponseEntity<Long> generateAndUploadWithId( @PathVariable String prefix, @PathVariable Long id,
+            @RequestBody @Valid Invoice invoice ) throws InvoiceServiceException
+    {
+        BlobStorePdf pdf = service.generateAndUpload( prefix, id, invoice );
+
+        return ResponseEntity.created( pdf.getURI() ).body( pdf.getId() );
+    }
+
     @RequestMapping( value = "/{prefix}/{id:\\d+}.{format:pdf|json}", method = RequestMethod.GET )
     ResponseEntity<byte[]> download( @PathVariable String prefix, @PathVariable Long id, @PathVariable String format )
             throws InvoiceServiceException

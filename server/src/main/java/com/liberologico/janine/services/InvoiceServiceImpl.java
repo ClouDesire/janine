@@ -80,7 +80,21 @@ public class InvoiceServiceImpl implements InvoiceService
 
         try
         {
+            return generateAndUpload( prefix, id, invoice );
+        }
+        catch ( InvoiceServiceException e )
+        {
+            jedis.decr( prefix );
+            throw e;
+        }
+    }
 
+    @Override
+    public synchronized BlobStorePdf generateAndUpload( String prefix, Long id, Invoice invoice )
+            throws InvoiceServiceException
+    {
+        try
+        {
             final BlobStorePdf pdf = blobStoreFileFactory.producePdf( prefix, id );
 
             if ( storeService.exists( pdf ) )
@@ -99,7 +113,6 @@ public class InvoiceServiceImpl implements InvoiceService
         }
         catch ( IOException e )
         {
-            jedis.decr( prefix );
             throw new InvoiceServiceException( e );
         }
     }
