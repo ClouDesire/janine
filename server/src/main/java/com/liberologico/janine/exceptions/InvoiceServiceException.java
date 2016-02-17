@@ -15,4 +15,8 @@ public class InvoiceServiceException extends Exception
         super( e );
         log.error( e.getMessage() );
     }
+
+    public InvoiceServiceException()
+    {
+    }
 }

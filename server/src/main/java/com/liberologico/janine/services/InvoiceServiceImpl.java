@@ -96,8 +96,7 @@ public class InvoiceServiceImpl implements InvoiceService
     }
 
     @Override
-    public byte[] download( String prefix, Long id, String format ) throws InvoiceServiceException,
-            InvoiceMissingException
+    public byte[] download( String prefix, Long id, String format ) throws InvoiceServiceException
     {
         try
         {
