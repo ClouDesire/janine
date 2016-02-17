@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.customProperties.ValidationSchemaFactoryWrapper;
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import com.liberologico.janine.entities.Invoice;
+import com.liberologico.janine.exceptions.InvoiceExistingException;
 import com.liberologico.janine.exceptions.InvoiceMissingException;
 import com.liberologico.janine.exceptions.InvoiceServiceException;
 import com.liberologico.janine.pdf.PdfService;
@@ -22,6 +23,7 @@ import redis.clients.jedis.Jedis;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,9 +80,16 @@ public class InvoiceServiceImpl implements InvoiceService
 
         try
         {
-            ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
 
             final BlobStorePdf pdf = blobStoreFileFactory.producePdf( prefix, id );
+
+            if ( storeService.exists( pdf ) )
+            {
+                String message = MessageFormat.format( "Invoice {0}{1} already exists", prefix, id );
+                throw new InvoiceExistingException( message );
+            }
+
+            ByteArrayOutputStream out = pdfService.generate( invoice.setNumber( prefix + id.toString() ) );
             storeService.uploadFile( out.toByteArray(), pdf );
 
             final BlobStoreJson json = blobStoreFileFactory.produceJson( prefix, id );

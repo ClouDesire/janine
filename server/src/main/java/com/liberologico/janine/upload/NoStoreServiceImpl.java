@@ -25,6 +25,12 @@ public class NoStoreServiceImpl implements StoreService
     }
 
     @Override
+    public boolean exists( BlobStoreFile file ) throws IOException
+    {
+        return false;
+    }
+
+    @Override
     public InputStream downloadFile( BlobStoreFile file ) throws IOException
     {
         return null;
