@@ -86,6 +86,7 @@ public class PdfServiceImpl implements PdfService
         setField( acroForm, "recipientName", invoice.getRecipient().toCompanyLine() );
         setField( acroForm, "recipientAddress1", invoice.getRecipient().getAddress().toLineOne() );
         setField( acroForm, "recipientAddress2", invoice.getRecipient().getAddress().toLineTwo() );
+        setField( acroForm, "recipientVat", invoice.getRecipient().getTaxCode() );
         setField( acroForm, "number", invoice.getNumber() );
         setField( acroForm, "date", DATE_FORMAT.format( invoice.getDate() ) );
 

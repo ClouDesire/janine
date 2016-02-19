@@ -18,6 +18,7 @@
         "firstName": "Antanio",
         "lastName": "Divani",
         "email": "antanio@divani.me",
+        "taxCode": "NTNDVN83",
         "address":
         {
             "address": "address",
