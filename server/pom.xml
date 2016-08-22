@@ -8,7 +8,7 @@
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Janine</name>
+	<name>janine</name>
 	<description>Janine is a sexy generator for your applications' invoices</description>
 	<url>https://github.com/ClouDesire/janine</url>
 
@@ -82,7 +82,7 @@
 		<dependency>
 			<groupId>com.cloudesire</groupId>
 			<artifactId>janine-client</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
+			<version>0.1.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
