@@ -14,8 +14,10 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Invoice
@@ -56,18 +58,23 @@ public class Invoice
     @ExposeMethodResult( "vatPercentage" )
     public BigDecimal getVatPercentage()
     {
-        final BigDecimal subTotal = getSubTotal();
-
-        if ( subTotal.equals( BigDecimal.ZERO ) ) return subTotal;
-
-        BigDecimal percentage = BigDecimal.ZERO;
+        Map<BigDecimal, BigDecimal> subTotals = new HashMap<>();
 
         for ( Line line : lines )
         {
-            percentage = percentage.add( line.calculateVAT() );
+            BigDecimal vat = line.getPrice().getVAT();
+            BigDecimal cumulator = subTotals.get( vat ) != null ? subTotals.get( vat ) : BigDecimal.ZERO;
+            subTotals.put( vat, cumulator.add( line.getPrice().getPrice() ) );
         }
 
-        return percentage.setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
+        BigDecimal subTotal = BigDecimal.ZERO;
+
+        for ( Map.Entry<BigDecimal, BigDecimal> entry : subTotals.entrySet() )
+        {
+            subTotal = subTotal.add( MathConfiguration.calculatePercentage( entry.getValue(), entry.getKey() ) );
+        }
+
+        return subTotal.setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
     }
 
     /**

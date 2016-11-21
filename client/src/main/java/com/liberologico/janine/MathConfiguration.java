@@ -18,7 +18,7 @@ public class MathConfiguration
     /**
      * BigDecimal roundingMode
      */
-    public final static RoundingMode roundingMode = RoundingMode.HALF_EVEN;
+    public final static RoundingMode roundingMode = RoundingMode.HALF_UP;
 
     public final static BigDecimal ONE_HUNDRED = new BigDecimal( 100 );
 
@@ -28,6 +28,6 @@ public class MathConfiguration
     public static BigDecimal calculatePercentage( BigDecimal value, BigDecimal percentage )
     {
         if ( value == null || percentage == null ) throw new IllegalArgumentException( "arguments can't be null" );
-        return value.divide( ONE_HUNDRED, computationPrecision, roundingMode ).multiply( percentage );
+        return value.multiply( percentage ).divide( ONE_HUNDRED, computationPrecision, roundingMode );
     }
 }

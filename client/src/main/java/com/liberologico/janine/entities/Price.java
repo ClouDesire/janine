@@ -22,15 +22,14 @@ public class Price
     @NotNull
     private BigDecimal VAT = BigDecimal.ZERO;
 
+    @Deprecated
     @ExposeMethodResult( "total" )
     public BigDecimal getTotal()
     {
-        final BigDecimal percentage = MathConfiguration.calculatePercentage( price, VAT );
-
-        return price.add( percentage )
-                    .setScale( MathConfiguration.computationPrecision, MathConfiguration.roundingMode );
+        return getPrice();
     }
 
+    @Deprecated
     @ExposeMethodResult( "vatTotal" )
     public BigDecimal getVATTotal()
     {

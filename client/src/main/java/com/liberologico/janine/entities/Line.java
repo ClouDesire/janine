@@ -30,24 +30,10 @@ public class Line
     private String description;
 
     @ExposeMethodResult( "totalPrice" )
-    public BigDecimal calculateTotalPrice()
-    {
-        if ( price == null ) return BigDecimal.ZERO;
-        return price.getTotal().multiply( quantity )
-                .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
-    }
-
     public BigDecimal calculatePrice()
     {
         if ( price == null ) return BigDecimal.ZERO;
         return price.getPrice().multiply( quantity )
-                .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
-    }
-
-    public BigDecimal calculateVAT()
-    {
-        if ( price == null ) return BigDecimal.ZERO;
-        return price.getVATTotal().multiply( quantity )
                 .setScale( MathConfiguration.defaultPrecision, MathConfiguration.roundingMode );
     }
 
@@ -105,7 +91,7 @@ public class Line
     public String printTotal( String currency )
     {
         if ( currency == null ) throw new IllegalArgumentException( "please provide a currency" );
-        return currency + ' ' + calculateTotalPrice().toPlainString();
+        return currency + ' ' + calculatePrice().toPlainString();
     }
 
     public String printVAT()
@@ -136,6 +122,6 @@ public class Line
     public String toString()
     {
         return "Line [price=" + price + ", quantity=" + quantity + ", unit=" + unit + ", description=" + description
-                + ", total=" + calculateTotalPrice() + "]";
+                + ", total=" + calculatePrice() + "]";
     }
 }
