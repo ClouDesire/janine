@@ -4,6 +4,9 @@ services:
 language: java
 jdk:
 - oraclejdk8
+branches:
+  only:
+    - master
 env:
   matrix:
   - TEST_DIR=client
