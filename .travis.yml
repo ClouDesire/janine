@@ -27,8 +27,8 @@ before_install:
   -s`-`uname -m` > docker-compose
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
-install: cd $TEST_DIR && mvn install -Dmaven.test.skip=true
-script: "/usr/local/bin/docker-compose -f ../docker-compose.yml up -d && mvn test"
+install: /usr/local/bin/docker-compose -f docker-compose.yml up -d
+script: cd $TEST_DIR && mvn install --settings ../.travis/settings.xml
 after_script: "../deploy.sh"
 cache:
   directories:
