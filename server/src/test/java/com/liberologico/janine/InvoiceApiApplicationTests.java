@@ -164,6 +164,21 @@ public class InvoiceApiApplicationTests
     }
 
     @Test
+    public void vatMultipleQuantity() throws IOException
+    {
+        Invoice invoice = getInvoice( new Line().setDescription( "Riga 0" )
+                .setPrice( new Price().setPrice( new BigDecimal( "0.06" ) ).setVAT( new BigDecimal("22" ) ) )
+                .setQuantity( new BigDecimal( "100" ) ) );
+
+        Call<Invoice> call = service.validate( PREFIX, invoice );
+
+        Response<Invoice> response = call.execute();
+        assertTrue( response.isSuccess() );
+        assertEquals( new BigDecimal( "1.32" ), response.body().getVatPercentage() );
+        assertEquals( new BigDecimal( "7.32" ), response.body().getTotal() );
+    }
+
+    @Test
     public void simpleInvoice() throws IOException
     {
         Invoice invoice = getInvoice(

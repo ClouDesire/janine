@@ -64,7 +64,7 @@ public class Invoice
         {
             BigDecimal vat = line.getPrice().getVAT();
             BigDecimal cumulator = subTotals.get( vat ) != null ? subTotals.get( vat ) : BigDecimal.ZERO;
-            subTotals.put( vat, cumulator.add( line.getPrice().getPrice() ) );
+            subTotals.put( vat, cumulator.add( line.calculatePrice() ) );
         }
 
         BigDecimal subTotal = BigDecimal.ZERO;
