@@ -11,7 +11,7 @@ BUILD_LATEST=$BASE_NAME:latest
 
 docker build --pull --no-cache --force-rm -t $BUILD_VERSION .
 docker push $BUILD_VERSION
-docker tag -f $BUILD_VERSION $BUILD_LATEST
+docker tag $BUILD_VERSION $BUILD_LATEST
 docker push $BUILD_LATEST
 docker rmi $BUILD_VERSION $BUILD_LATEST
 exit 0
