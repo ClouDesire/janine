@@ -23,19 +23,19 @@ public class BlobStoreConfiguration
 {
     private static final Logger log = LoggerFactory.getLogger( BlobStoreConfiguration.class );
 
-    @Value ( "${blob.provider}" )
+    @Value( "${blob.provider}" )
     private String provider;
-    @Value ( "${blob.identity}" )
+    @Value( "${blob.identity}" )
     private String identity;
-    @Value ( "${blob.credential}" )
+    @Value( "${blob.credential}" )
     private String credential;
-    @Value ( "${blob.connection-timeout}" )
+    @Value( "${blob.connection-timeout}" )
     private int connectionTimeout;
-    @Value ( "${blob.so-timeout}" )
+    @Value( "${blob.so-timeout}" )
     private int soTimeout;
-    @Value ( "${blob.max-retries}" )
+    @Value( "${blob.max-retries}" )
     private int maxRetries;
-    @Value ( "${blob.enabled}" )
+    @Value( "${blob.enabled}" )
     private Boolean blobUploadEnabled;
 
     @Bean

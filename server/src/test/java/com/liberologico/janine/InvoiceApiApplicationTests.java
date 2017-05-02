@@ -10,7 +10,7 @@ import com.liberologico.janine.entities.Person;
 import com.liberologico.janine.entities.Price;
 import com.liberologico.janine.entities.Recipient;
 import com.liberologico.janine.upload.StoreService;
-import com.squareup.okhttp.ResponseBody;
+import okhttp3.ResponseBody;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.After;
 import org.junit.Before;
@@ -18,13 +18,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
-import retrofit.Call;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Response;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -39,15 +39,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-@RunWith( SpringJUnit4ClassRunner.class )
-@SpringApplicationConfiguration( classes = InvoiceApiApplication.class )
-@WebIntegrationTest ("server.port=0")
+@RunWith(SpringRunner.class)
+@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class InvoiceApiApplicationTests
 {
     private static final String ROOT = "http://localhost";
     private static final String PREFIX = "TEST";
 
-    @Value ("${local.server.port}")
+    @LocalServerPort
     int port;
 
     private InvoiceService service;
@@ -89,7 +88,7 @@ public class InvoiceApiApplicationTests
         Call<Invoice> call = service.validate( PREFIX, new Invoice() );
 
         Response<Invoice> response = call.execute();
-        assertFalse( response.isSuccess() );
+        assertFalse( response.isSuccessful() );
         assertEquals( 400, response.code() );
         assertNotNull( response.errorBody() );
 
@@ -111,7 +110,7 @@ public class InvoiceApiApplicationTests
         Call<Invoice> call = service.validate( PREFIX, invoice );
 
         Response<Invoice> response = call.execute();
-        assertFalse( response.isSuccess() );
+        assertFalse( response.isSuccessful() );
         assertEquals( 400, response.code() );
         assertNotNull( response.errorBody() );
     }
@@ -126,7 +125,7 @@ public class InvoiceApiApplicationTests
         Call<Invoice> call = service.validate( PREFIX, invoice );
 
         Response<Invoice> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
     }
 
     @Test
@@ -139,7 +138,7 @@ public class InvoiceApiApplicationTests
         Call<Invoice> call = service.validate( PREFIX, invoice );
 
         Response<Invoice> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( new BigDecimal( "20.00" ), response.body().getVatPercentage() ); // €
         assertEquals( new BigDecimal( "20.00" ), response.body().getVatPercentageNumber() ); // %
     }
@@ -158,7 +157,7 @@ public class InvoiceApiApplicationTests
         Call<Invoice> call = service.validate( PREFIX, invoice );
 
         Response<Invoice> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( new BigDecimal( "30.00" ), response.body().getVatPercentage() ); // €
         assertNull( response.body().getVatPercentageNumber() ); // %
     }
@@ -173,7 +172,7 @@ public class InvoiceApiApplicationTests
         Call<Invoice> call = service.validate( PREFIX, invoice );
 
         Response<Invoice> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( new BigDecimal( "1.32" ), response.body().getVatPercentage() );
         assertEquals( new BigDecimal( "7.32" ), response.body().getTotal() );
     }
@@ -194,7 +193,7 @@ public class InvoiceApiApplicationTests
     private void testPdfResponse( Call<ResponseBody> call ) throws IOException
     {
         Response<ResponseBody> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( 200, response.code() );
         assertNotNull( response.body() );
 
@@ -211,7 +210,7 @@ public class InvoiceApiApplicationTests
     private Invoice testJsonResponse( Call<ResponseBody> call ) throws IOException
     {
         Response<ResponseBody> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( 200, response.code() );
         assertNotNull( response.body() );
 
@@ -243,7 +242,7 @@ public class InvoiceApiApplicationTests
         Call<Long> call = service.generateAndUpload( PREFIX, invoice );
 
         Response<Long> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( 201, response.code() );
 
         assertEquals( 1L, response.body().longValue() );
@@ -263,7 +262,7 @@ public class InvoiceApiApplicationTests
         Call<Long> call = service.generateAndUpload( PREFIX, 42L, invoice );
 
         Response<Long> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( 201, response.code() );
         assertEquals( 42L, response.body().longValue() );
     }
@@ -277,7 +276,7 @@ public class InvoiceApiApplicationTests
         Call<Long> call = service.generateAndUpload( PREFIX, 42L, invoice );
 
         Response<Long> response = call.execute();
-        assertFalse( response.isSuccess() );
+        assertFalse( response.isSuccessful() );
         assertEquals( 409, response.code() );
     }
 
@@ -290,7 +289,7 @@ public class InvoiceApiApplicationTests
         Call<Long> call = service.regenerate( PREFIX, 42L, invoice );
 
         Response<Long> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( 201, response.code() );
         assertEquals( 42L, response.body().longValue() );
     }
@@ -302,7 +301,7 @@ public class InvoiceApiApplicationTests
 
         Call<ResponseBody> call = service.generate( PREFIX, invoice );
         Response<ResponseBody> response = call.execute();
-        assertFalse(response.isSuccess());
+        assertFalse(response.isSuccessful());
 
         Gson gson = InvoiceClient.getGsonBuilder().create();
         ApiError apiError = gson.fromJson( response.errorBody().string(), ApiError.class );
@@ -315,7 +314,7 @@ public class InvoiceApiApplicationTests
     {
         Call<ResponseBody> call = service.downloadPdf( PREFIX, 1L );
         Response<ResponseBody> response = call.execute();
-        assertFalse( response.isSuccess() );
+        assertFalse( response.isSuccessful() );
         assertEquals( 404, response.code() );
     }
 
@@ -324,7 +323,7 @@ public class InvoiceApiApplicationTests
     {
         Call<ResponseBody> call = service.downloadJson( PREFIX, 1L );
         Response<ResponseBody> response = call.execute();
-        assertFalse( response.isSuccess() );
+        assertFalse( response.isSuccessful() );
         assertEquals( 404, response.code() );
     }
 
@@ -333,7 +332,7 @@ public class InvoiceApiApplicationTests
     {
         Call<List<String>> call = service.getFields();
         Response<List<String>> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( 200, response.code() );
         final List<String> fields = response.body();
         assertNotNull( fields );
@@ -345,7 +344,7 @@ public class InvoiceApiApplicationTests
     {
         Call<Object> call = service.getInvoiceSchema();
         Response<Object> response = call.execute();
-        assertTrue( response.isSuccess() );
+        assertTrue( response.isSuccessful() );
         assertEquals( 200, response.code() );
         final Object schema = response.body();
         assertNotNull( schema );

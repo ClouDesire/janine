@@ -1,11 +1,11 @@
 package com.liberologico.janine;
 
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.OkHttpClient;
 import io.gsonfire.DateSerializationPolicy;
 import io.gsonfire.GsonFireBuilder;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,9 +15,11 @@ public class InvoiceClient
 
     public InvoiceClient( String baseUrl )
     {
-        OkHttpClient client = new OkHttpClient();
-        client.setConnectTimeout( 30, TimeUnit.SECONDS ); // connect timeout
-        client.setReadTimeout( 60, TimeUnit.SECONDS );    // socket timeout
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout( 30, TimeUnit.SECONDS )
+                .readTimeout( 60, TimeUnit.SECONDS )
+                .writeTimeout( 60, TimeUnit.SECONDS )
+                .build();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl( baseUrl )

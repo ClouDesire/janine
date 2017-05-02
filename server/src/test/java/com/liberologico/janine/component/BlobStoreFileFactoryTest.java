@@ -1,6 +1,5 @@
 package com.liberologico.janine.component;
 
-import com.liberologico.janine.InvoiceApiApplication;
 import com.liberologico.janine.upload.BlobStoreFileFactory;
 import com.liberologico.janine.upload.BlobStoreJson;
 import com.liberologico.janine.upload.BlobStorePdf;
@@ -8,13 +7,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith( SpringJUnit4ClassRunner.class )
-@SpringApplicationConfiguration( classes = InvoiceApiApplication.class )
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class BlobStoreFileFactoryTest
 {
     private static final String OWNER = "malte";

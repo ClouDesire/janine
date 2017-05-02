@@ -45,7 +45,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
-		<retrofit.version>2.0.0-beta2</retrofit.version>
+		<retrofit.version>2.2.0</retrofit.version>
 		<gpg.skip>true</gpg.skip>
 	</properties>
 
@@ -61,12 +61,12 @@
 			<version>2.6.7</version>
 		</dependency>
 		<dependency>
-			<groupId>com.squareup.retrofit</groupId>
+			<groupId>com.squareup.retrofit2</groupId>
 			<artifactId>retrofit</artifactId>
 			<version>${retrofit.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.squareup.retrofit</groupId>
+			<groupId>com.squareup.retrofit2</groupId>
 			<artifactId>converter-gson</artifactId>
 			<version>${retrofit.version}</version>
 		</dependency>
