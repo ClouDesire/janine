@@ -29,7 +29,11 @@ before_install:
 - sudo mv docker-compose /usr/local/bin
 install: /usr/local/bin/docker-compose -f docker-compose.yml up -d
 script: cd $TEST_DIR && mvn install --settings ../.travis/settings.xml
-after_script: "../deploy.sh"
 cache:
   directories:
   - "$HOME/.m2"
+deploy:
+  provider: script
+  script: ./deploy.sh
+  on:
+    branch: master
