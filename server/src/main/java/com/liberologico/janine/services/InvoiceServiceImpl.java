@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,34 +43,39 @@ public class InvoiceServiceImpl implements InvoiceService
     @Autowired
     private PdfService pdfService;
 
-    private final Jedis jedis;
+    private final JedisPool jedisPool;
 
     @Autowired
     public InvoiceServiceImpl( JedisConnectionFactory connectionFactory )
     {
-        this.jedis = new Jedis( connectionFactory.getShardInfo() );
+        jedisPool = new JedisPool( connectionFactory.getPoolConfig(), connectionFactory.getHostName() );
     }
 
     @Override
-    public synchronized Long getCurrentId( String prefix )
+    public Long getCurrentId( String prefix )
     {
-        Optional<String> current = Optional.ofNullable( jedis.get( prefix ) );
-        return Long.parseLong( current.orElse( "0" ) );
+        try ( Jedis jedis = jedisPool.getResource() )
+        {
+            Optional<String> current = Optional.ofNullable( jedis.get( prefix ) );
+            return Long.parseLong( current.orElse( "0" ) );
+        }
     }
 
     @Override
     public synchronized ByteArrayOutputStream generate( String prefix, Invoice invoice ) throws InvoiceServiceException
     {
-        Long id = jedis.incr( prefix );
-
-        try
+        try ( Jedis jedis = jedisPool.getResource() )
         {
-            return generate( prefix, id, invoice );
-        }
-        catch ( InvoiceServiceException e )
-        {
-            jedis.decr( prefix );
-            throw e;
+            Long id = jedis.incr( prefix );
+            try
+            {
+                return generate( prefix, id, invoice );
+            }
+            catch ( InvoiceServiceException e )
+            {
+                jedis.decr( prefix );
+                throw e;
+            }
         }
     }
 
@@ -89,16 +95,19 @@ public class InvoiceServiceImpl implements InvoiceService
     @Override
     public synchronized BlobStorePdf generateAndUpload( String prefix, Invoice invoice ) throws InvoiceServiceException
     {
-        Long id = jedis.incr( prefix );
+        try ( Jedis jedis = jedisPool.getResource() )
+        {
+            Long id = jedis.incr( prefix );
 
-        try
-        {
-            return generateAndUpload( prefix, id, invoice, false );
-        }
-        catch ( InvoiceServiceException e )
-        {
-            jedis.decr( prefix );
-            throw e;
+            try
+            {
+                return generateAndUpload( prefix, id, invoice, false );
+            }
+            catch ( InvoiceServiceException e )
+            {
+                jedis.decr( prefix );
+                throw e;
+            }
         }
     }
 
