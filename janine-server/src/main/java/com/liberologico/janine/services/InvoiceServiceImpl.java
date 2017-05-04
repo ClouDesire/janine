@@ -48,6 +48,7 @@ public class InvoiceServiceImpl implements InvoiceService
     @Autowired
     public InvoiceServiceImpl( JedisConnectionFactory connectionFactory )
     {
+        connectionFactory.setTimeout( 10000 );
         jedisPool = new JedisPool( connectionFactory.getPoolConfig(), connectionFactory.getHostName() );
     }
 

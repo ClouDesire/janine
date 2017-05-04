@@ -47,6 +47,7 @@
 		<java.version>1.7</java.version>
 		<retrofit.version>2.2.0</retrofit.version>
 		<gpg.skip>true</gpg.skip>
+		<maven.deploy.skip>false</maven.deploy.skip>
 	</properties>
 
 	<dependencies>
@@ -104,7 +105,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
+				<version>1.6</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>

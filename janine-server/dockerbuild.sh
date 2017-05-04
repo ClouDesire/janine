@@ -1,12 +1,14 @@
 #!/bin/bash -e
-if [ -z $TRAVIS ]; then
+if [ -z $CIRCLECI ]; then
     echo This should run under CI only
     exit 1
 fi
 docker login --email="dev@cloudesire.com" --password=$REGISTRY_PASSWORD --username=$REGISTRY_USERNAME
 
+BUILD_NUMBER=$((200 + $CIRCLE_BUILD_NUM))
+
 BASE_NAME=cloudesire/janine
-BUILD_VERSION=$BASE_NAME:$TRAVIS_BUILD_NUMBER
+BUILD_VERSION=$BASE_NAME:$BUILD_NUMBER
 BUILD_LATEST=$BASE_NAME:latest
 
 docker build --pull --no-cache --force-rm -t $BUILD_VERSION .

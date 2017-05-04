@@ -1,7 +1,7 @@
 #!/bin/bash -e
+echo $PRIVATE_GPG | base64 -d > ./.gpg/private.gpg
+chmod 600 ./.gpg/private.gpg
 echo Running maven deploy
-./mvnw -B deploy -Dmaven.test.skip=true -Dgpg.keyname=$CI_DEPLOY_GPG_KEYID -Dgpg.skip=false -Dgpg.passphrase=$CI_DEPLOY_GPG_SECRET -Dgpg.publicKeyring=../.travis/public.gpg -Dgpg.secretKeyring=../.travis/private.gpg --settings ../.travis/settings.xml
-if [ -x server/dockerbuild.sh ]; then
-  echo Running dockerbuild
-  ./server/dockerbuild.sh
-fi
+./mvnw -B deploy -Dmaven.test.skip=true -Dgpg.skip=false -Dgpg.publicKeyring=./.gpg/public.gpg -Dgpg.secretKeyring=./.gpg/private.gpg
+echo Running dockerbuild
+cd ./janine-server && ./dockerbuild.sh

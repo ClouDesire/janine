@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: openjdk:8-jdk
+      - image: redis
+    working_directory: ~/janine
+    steps:
+      - checkout
+      - restore_cache:
+          key: janine-root
+      - run:
+          name: Configure Maven repository
+          command: mkdir -p ~/.m2 && cp ~/janine/.circleci/settings.xml ~/.m2
+      - run:
+          name: Build
+          command: ./mvnw -B install -Dmaven.test.skip=true
+      - save_cache:
+          key: janine-root
+          paths:
+            - "~/.m2"
+      - run:
+          name: Run Tests
+          command: ./mvnw -B verify
+      - setup_remote_docker
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      - run:
+          name: Deploy client artifact and build docker server image
+          command: if [ "$CIRCLE_BRANCH" == "master" ]; then ./deploy.sh; fi
