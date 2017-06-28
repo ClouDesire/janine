@@ -9,7 +9,7 @@
     </server>
     <server>
       <id>bintray</id>
-      <username>>${env.BINTRAY_USER}</username>
+      <username>${env.BINTRAY_USER}</username>
       <password>${env.BINTRAY_PASS}</password>
     </server>
   </servers>
