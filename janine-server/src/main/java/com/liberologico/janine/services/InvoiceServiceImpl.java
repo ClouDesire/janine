@@ -122,7 +122,7 @@ public class InvoiceServiceImpl implements InvoiceService
 
             if ( ! regenerate && storeService.exists( pdf ) )
             {
-                String message = MessageFormat.format( "Invoice {0}{1} already exists", prefix, id );
+                String message = MessageFormat.format( "Invoice {0}{1} already exists on {2}", prefix, id, pdf.getContainer() );
                 throw new InvoiceExistingException( message );
             }
 
