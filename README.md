@@ -1,5 +1,5 @@
 # janine :woman: :office: :telephone:
-[![Build Status](https://travis-ci.org/ClouDesire/janine.svg)](https://travis-ci.org/ClouDesire/janine) [![license](https://img.shields.io/badge/license-AGPL-brightgreen.svg)](LICENSE.txt) [![docker image](https://img.shields.io/docker/pulls/cloudesire/janine.svg)](https://hub.docker.com/r/cloudesire/janine/) [![](https://badge.imagelayers.io/cloudesire/janine:latest.svg)](https://imagelayers.io/?images=cloudesire/janine:latest 'Get your own badge on imagelayers.io')  [![gitter](https://img.shields.io/gitter/room/ClouDesire/janine.svg)](https://gitter.im/ClouDesire/janine)
+[![CircleCI](https://circleci.com/gh/ClouDesire/janine.svg?style=svg)](https://circleci.com/gh/ClouDesire/janine) [![license](https://img.shields.io/badge/license-AGPL-brightgreen.svg)](LICENSE.txt) [![docker image](https://img.shields.io/docker/pulls/cloudesire/janine.svg)](https://hub.docker.com/r/cloudesire/janine/) [![](https://badge.imagelayers.io/cloudesire/janine:latest.svg)](https://imagelayers.io/?images=cloudesire/janine:latest 'Get your own badge on imagelayers.io')  [![gitter](https://img.shields.io/gitter/room/ClouDesire/janine.svg)](https://gitter.im/ClouDesire/janine)
 
 Your sexy generator and archiver of PDF invoices.
 
