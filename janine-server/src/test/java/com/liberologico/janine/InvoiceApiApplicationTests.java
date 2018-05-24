@@ -18,8 +18,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
@@ -72,7 +72,7 @@ public class InvoiceApiApplicationTests
     {
         service = new InvoiceClient( ROOT + ":" + port ).getService();
 
-        Jedis jedis = new Jedis( jedisConnectionFactory.getShardInfo() );
+        Jedis jedis = new Jedis( jedisConnectionFactory.getHostName(), jedisConnectionFactory.getPort() );
         jedis.flushAll();
         jedis.close();
 
