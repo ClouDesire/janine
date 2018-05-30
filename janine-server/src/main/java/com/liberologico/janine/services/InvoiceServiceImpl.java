@@ -53,7 +53,10 @@ public class InvoiceServiceImpl implements InvoiceService
         poolConfig.setTestOnBorrow( true );
         poolConfig.setTestWhileIdle( true );
         poolConfig.setMaxWaitMillis( 3000 );
-        jedisPool = new JedisPool( poolConfig, jedisConnectionFactory.getHostName() );
+        jedisPool = new JedisPool( poolConfig,
+                jedisConnectionFactory.getHostName(),
+                jedisConnectionFactory.getPort()
+        );
     }
 
     @Override
