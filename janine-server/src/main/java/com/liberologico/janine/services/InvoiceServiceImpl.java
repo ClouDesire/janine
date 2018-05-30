@@ -14,10 +14,8 @@ import com.liberologico.janine.upload.BlobStoreFileFactory;
 import com.liberologico.janine.upload.BlobStoreJson;
 import com.liberologico.janine.upload.BlobStorePdf;
 import com.liberologico.janine.upload.StoreService;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -44,20 +42,8 @@ public class InvoiceServiceImpl implements InvoiceService
     @Autowired
     private PdfService pdfService;
 
-    private final JedisPool jedisPool;
-
     @Autowired
-    public InvoiceServiceImpl( JedisConnectionFactory jedisConnectionFactory )
-    {
-        GenericObjectPoolConfig poolConfig = jedisConnectionFactory.getPoolConfig();
-        poolConfig.setTestOnBorrow( true );
-        poolConfig.setTestWhileIdle( true );
-        poolConfig.setMaxWaitMillis( 3000 );
-        jedisPool = new JedisPool( poolConfig,
-                jedisConnectionFactory.getHostName(),
-                jedisConnectionFactory.getPort()
-        );
-    }
+    private JedisPool jedisPool;
 
     @Override
     public Long getCurrentId( String prefix )
