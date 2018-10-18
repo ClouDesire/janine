@@ -55,7 +55,7 @@
 		<bouncycastle.version>1.54</bouncycastle.version>
 		<gson.version>2.6</gson.version>
 		<jclouds.version>2.1.0</jclouds.version>
-		<pdfbox.version>2.0.9</pdfbox.version>
+		<pdfbox.version>2.0.12</pdfbox.version>
 		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
 
