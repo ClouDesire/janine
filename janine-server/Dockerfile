@@ -10,6 +10,6 @@ VOLUME /tmp
 
 RUN apk add --no-cache --update openssl
 
-ADD target/janine-*.jar   /usr/local/java/janine.jar
+ADD target/janine-0.1.0-SNAPSHOT.jar /usr/local/java/janine.jar
 
 CMD exec java $JAVA_OPTS_REQUIRED $JAVA_OPTS -jar /usr/local/java/janine.jar
