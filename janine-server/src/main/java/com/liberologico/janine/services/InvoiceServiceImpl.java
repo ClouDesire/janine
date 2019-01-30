@@ -16,6 +16,7 @@ import com.liberologico.janine.upload.BlobStorePdf;
 import com.liberologico.janine.upload.StoreService;
 import org.apache.pdfbox.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -30,20 +31,29 @@ import java.util.Optional;
 @Component
 public class InvoiceServiceImpl implements InvoiceService
 {
-    @Autowired
-    private BlobStoreFileFactory blobStoreFileFactory;
+    private final BlobStoreFileFactory blobStoreFileFactory;
+
+    private final StoreService storeService;
+
+    private final ObjectMapper objectMapper;
+
+    private final PdfService pdfService;
+
+    private final JedisPool jedisPool;
+
+    @Value( "${app.alwaysRegenerate}" )
+    private boolean alwaysRegenerate;
 
     @Autowired
-    private StoreService storeService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private PdfService pdfService;
-
-    @Autowired
-    private JedisPool jedisPool;
+    public InvoiceServiceImpl( BlobStoreFileFactory blobStoreFileFactory, StoreService storeService,
+            ObjectMapper objectMapper, PdfService pdfService, JedisPool jedisPool )
+    {
+        this.blobStoreFileFactory = blobStoreFileFactory;
+        this.storeService = storeService;
+        this.objectMapper = objectMapper;
+        this.pdfService = pdfService;
+        this.jedisPool = jedisPool;
+    }
 
     @Override
     public Long getCurrentId( String prefix )
@@ -109,6 +119,8 @@ public class InvoiceServiceImpl implements InvoiceService
     public synchronized BlobStorePdf generateAndUpload( String prefix, Long id, Invoice invoice, boolean regenerate )
             throws InvoiceServiceException
     {
+        if ( alwaysRegenerate ) regenerate = true;
+
         try
         {
             final BlobStorePdf pdf = blobStoreFileFactory.producePdf( prefix, id );

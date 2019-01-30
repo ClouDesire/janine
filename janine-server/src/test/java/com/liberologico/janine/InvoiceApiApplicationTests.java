@@ -2,33 +2,20 @@ package com.liberologico.janine;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.liberologico.janine.entities.Address;
-import com.liberologico.janine.entities.Holder;
 import com.liberologico.janine.entities.Invoice;
 import com.liberologico.janine.entities.Line;
-import com.liberologico.janine.entities.Person;
 import com.liberologico.janine.entities.Price;
-import com.liberologico.janine.entities.Recipient;
-import com.liberologico.janine.upload.StoreService;
 import okhttp3.ResponseBody;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.test.context.junit4.SpringRunner;
-import redis.clients.jedis.Jedis;
 import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,23 +26,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class InvoiceApiApplicationTests
+public class InvoiceApiApplicationTests extends ApplicationTests
 {
-    private static final String ROOT = "http://localhost";
-    private static final String PREFIX = "TEST";
-
     @LocalServerPort
     int port;
-
-    private InvoiceService service;
-
-    @Autowired
-    private JedisConnectionFactory jedisConnectionFactory;
-
-    @Autowired
-    private StoreService storeService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -65,20 +39,6 @@ public class InvoiceApiApplicationTests
 
     @Value( "${app.baseUrl}" )
     protected String baseUrl;
-
-    @Before
-    @After
-    public void reset()
-    {
-        service = new InvoiceClient( ROOT + ":" + port ).getService();
-
-        Jedis jedis = new Jedis( jedisConnectionFactory.getHostName(), jedisConnectionFactory.getPort() );
-        jedis.flushAll();
-        jedis.close();
-
-        final String container = containersPrefix + PREFIX;
-        storeService.flushContainer( container );
-    }
 
     @Test
     public void emptyBody() throws IOException
@@ -348,34 +308,5 @@ public class InvoiceApiApplicationTests
         assertEquals( 200, response.code() );
         final Object schema = response.body();
         assertNotNull( schema );
-    }
-
-    private Invoice getInvoice()
-    {
-        return getInvoice(
-                new Line()
-                        .setDescription( "Riga 1" )
-                        .setPrice( new Price().setPrice( BigDecimal.TEN ).setVAT( BigDecimal.ONE ) ),
-                new Line()
-                        .setDescription( "Riga 2" )
-                        .setPrice( new Price().setPrice( BigDecimal.ONE ).setVAT( BigDecimal.ONE ) ) );
-    }
-
-    private Invoice getInvoice( Line... lines )
-    {
-        final Person holder = new Holder()
-                .setAddress( new Address( "address", "city", "country", "state", "zip" ) )
-                .setCompanyName( "Caffè Toraldo" )
-                .setTaxCode( "CFTGNN" );
-        final Person recipient = new Recipient()
-                .setFirstName( "Brebuzio" )
-                .setLastName( "Sfanti" )
-                .setEmail( "di@tu.ma" )
-                .setAddress( new Address( "address", "city", "country", "state", "zip" ) );
-        return new Invoice()
-                .setHolder( (Holder) holder )
-                .setRecipient( (Recipient) recipient )
-                .setCurrency( "EUR" )
-                .setLines( Arrays.asList( lines ) );
     }
 }

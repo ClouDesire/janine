@@ -61,7 +61,7 @@ public class BlobStoreServiceImpl implements StoreService
     }
 
     @Override
-    public boolean exists( BlobStoreFile file ) throws IOException
+    public boolean exists( BlobStoreFile file )
     {
         try
         {

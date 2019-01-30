@@ -1,6 +1,5 @@
 package com.liberologico.janine.upload;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -17,21 +16,23 @@ public class NoStoreServiceImpl implements StoreService
     @Override
     public void flushContainer( String container )
     {
+        // no flush
     }
 
     @Override
-    public void uploadFile( byte[] pdf, BlobStoreFile file ) throws IOException
+    public void uploadFile( byte[] pdf, BlobStoreFile file )
     {
+        // no upload
     }
 
     @Override
-    public boolean exists( BlobStoreFile file ) throws IOException
+    public boolean exists( BlobStoreFile file )
     {
         return false;
     }
 
     @Override
-    public InputStream downloadFile( BlobStoreFile file ) throws IOException
+    public InputStream downloadFile( BlobStoreFile file )
     {
         return null;
     }

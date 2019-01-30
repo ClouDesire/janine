@@ -2,16 +2,20 @@ version: 2
 jobs:
   build:
     docker:
-      - image: openjdk:8-jdk
+      - image: circleci/openjdk:8u181-jdk
       - image: redis
-    working_directory: ~/janine
     steps:
       - checkout
+      - run:
+          name: Get common configs
+          command: git clone git@github.com:ClouDesire/ci-conf.git ~/repo/conf
       - restore_cache:
-          key: janine-root
+          keys:
+            - m2-{{ checksum "janine-client/pom.xml" }}
+            - m2-
       - run:
           name: Configure Maven repository
-          command: mkdir -p ~/.m2 && cp ~/janine/.circleci/settings.xml ~/.m2
+          command: mkdir -p ~/.m2 && cp ~/repo/conf/mvn/settings.xml ~/.m2
       - run:
           name: Build
           command: ./mvnw -B install -Dmaven.test.skip=true
@@ -26,14 +30,6 @@ jobs:
           name: Deploy client artifacts
           command: ./mvnw -B deploy -Dmaven.test.skip=true
       - setup_remote_docker
-      - run:
-          name: Install Docker client
-          command: |
-            set -x
-            VER="17.03.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
       - run:
           name: Deploy client artifact and build docker server image
           command: if [ "$CIRCLE_BRANCH" == "master" ]; then ./deploy.sh; fi

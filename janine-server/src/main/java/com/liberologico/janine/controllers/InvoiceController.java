@@ -8,10 +8,10 @@ import com.liberologico.janine.upload.BlobStorePdf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,18 +22,23 @@ import java.util.List;
 @RestController
 public class InvoiceController
 {
-    @Autowired
-    private InvoiceService service;
+    private final InvoiceService service;
 
-    @RequestMapping( value = "/{prefix}/validate", method = RequestMethod.POST )
+    @Autowired
+    public InvoiceController( InvoiceService service )
+    {
+        this.service = service;
+    }
+
+    @PostMapping( "/{prefix}/validate" )
     Invoice validate( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
     {
         Long id = service.getCurrentId( prefix );
 
-        return invoice.setNumber( prefix + String.valueOf( id + 1 ) );
+        return invoice.setNumber( prefix + ( id + 1 ) );
     }
 
-    @RequestMapping( value = "/{prefix}/download", method = RequestMethod.POST )
+    @PostMapping( "/{prefix}/download" )
     ResponseEntity<byte[]> generate( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
             throws InvoiceServiceException
     {
@@ -42,7 +47,7 @@ public class InvoiceController
         return new ResponseEntity<>( out.toByteArray(), HttpStatus.OK );
     }
 
-    @RequestMapping( value = "/{prefix}/{id}/download", method = RequestMethod.POST )
+    @PostMapping( "/{prefix}/{id}/download" )
     ResponseEntity<byte[]> generateWithId( @PathVariable String prefix, @PathVariable Long id,
             @RequestBody @Valid Invoice invoice ) throws InvoiceServiceException
     {
@@ -51,7 +56,7 @@ public class InvoiceController
         return new ResponseEntity<>( out.toByteArray(), HttpStatus.OK );
     }
 
-    @RequestMapping( value = "/{prefix}", method = RequestMethod.POST )
+    @PostMapping( "/{prefix}" )
     ResponseEntity<Long> generateAndUpload( @PathVariable String prefix, @RequestBody @Valid Invoice invoice )
             throws InvoiceServiceException
     {
@@ -60,7 +65,7 @@ public class InvoiceController
         return ResponseEntity.created( pdf.getURI() ).body( pdf.getId() );
     }
 
-    @RequestMapping( value = "/{prefix}/{id}", method = RequestMethod.POST )
+    @PostMapping( "/{prefix}/{id}" )
     ResponseEntity<Long> generateAndUploadWithId( @PathVariable String prefix, @PathVariable Long id,
             @RequestParam( defaultValue = "false" ) boolean regenerate, @RequestBody @Valid Invoice invoice )
             throws InvoiceServiceException
@@ -70,7 +75,7 @@ public class InvoiceController
         return ResponseEntity.created( pdf.getURI() ).body( pdf.getId() );
     }
 
-    @RequestMapping( value = "/{prefix}/{id:\\d+}.{format:pdf|json}", method = RequestMethod.GET )
+    @GetMapping( "/{prefix}/{id:\\d+}.{format:pdf|json}" )
     ResponseEntity<byte[]> download( @PathVariable String prefix, @PathVariable Long id, @PathVariable String format )
             throws InvoiceServiceException
     {
@@ -79,13 +84,13 @@ public class InvoiceController
         return new ResponseEntity<>( file, HttpStatus.OK );
     }
 
-    @RequestMapping( value  = "/fields", method = RequestMethod.GET )
+    @GetMapping( "/fields" )
     ResponseEntity<List<String>> getFields() throws InvoiceServiceException
     {
         return new ResponseEntity<>( service.getPdfFields(), HttpStatus.OK );
     }
 
-    @RequestMapping( value  = "/schema", method = RequestMethod.GET )
+    @GetMapping( "/schema" )
     ResponseEntity<JsonSchema> getSchema() throws InvoiceServiceException
     {
         return new ResponseEntity<>( service.getInvoiceSchema(), HttpStatus.OK );

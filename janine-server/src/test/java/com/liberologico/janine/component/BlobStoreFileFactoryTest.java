@@ -29,19 +29,19 @@ public class BlobStoreFileFactoryTest
     String containersPrefix;
 
     @Test
-    public void testProducePdf() throws Exception
+    public void testProducePdf()
     {
         assertEquals( new BlobStorePdf( baseUrl, containersPrefix, OWNER, ID ), factory.producePdf( OWNER, ID ) );
     }
 
     @Test
-    public void testProduceJson() throws Exception
+    public void testProduceJson()
     {
         assertEquals( new BlobStoreJson( baseUrl, containersPrefix, OWNER, ID ), factory.produceJson( OWNER, ID ) );
     }
 
     @Test
-    public void testProduce() throws Exception
+    public void testProduce()
     {
         assertEquals( BlobStorePdf.class, factory.produce( "pdf", OWNER, ID ).getClass() );
         assertEquals( BlobStoreJson.class, factory.produce( "json", OWNER, ID ).getClass() );
