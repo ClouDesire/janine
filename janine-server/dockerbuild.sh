@@ -1,11 +1,13 @@
 #!/bin/bash -e
-if [ -z $CIRCLECI ]; then
+if [ -z "$CIRCLECI" ]; then
     echo This should run under CI only
     exit 1
 fi
-docker login --email="dev@cloudesire.com" --password=$REGISTRY_PASSWORD --username=$REGISTRY_USERNAME
+echo "$REGISTRY_PASSWORD" | docker login \
+    --username "$REGISTRY_USERNAME" \
+    --password-stdin "$REGISTRY_HOST"
 
-BUILD_NUMBER=$((200 + $CIRCLE_BUILD_NUM))
+BUILD_NUMBER=$((200 + CIRCLE_BUILD_NUM))
 
 BASE_NAME=cloudesire/janine
 BUILD_VERSION=$BASE_NAME:$BUILD_NUMBER
@@ -16,4 +18,3 @@ docker push $BUILD_VERSION
 docker tag $BUILD_VERSION $BUILD_LATEST
 docker push $BUILD_LATEST
 docker rmi $BUILD_VERSION $BUILD_LATEST
-exit 0
