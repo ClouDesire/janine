@@ -2,7 +2,7 @@
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/base.xml"/>
 	<logger name="com.liberologico.janine" level="INFO"/>
-
+	<logger name="org.apache.pdfbox.pdmodel.font.PDType1Font" level="ERROR"/>
 
 	<appender name="SENTRY" class="io.sentry.logback.SentryAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
