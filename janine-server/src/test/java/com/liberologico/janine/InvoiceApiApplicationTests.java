@@ -6,6 +6,7 @@ import com.liberologico.janine.entities.Invoice;
 import com.liberologico.janine.entities.Line;
 import com.liberologico.janine.entities.Price;
 import okhttp3.ResponseBody;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import retrofit2.Response;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -212,7 +214,9 @@ public class InvoiceApiApplicationTests extends ApplicationTests
         assertEquals( baseUrl + PREFIX + "/1.pdf", location );
 
         testPdfResponse( service.downloadPdf( PREFIX, 1L ) );
-        assertEquals( invoice.getDate(), testJsonResponse( service.downloadJson( PREFIX, 1L ) ).getDate() );
+
+        Invoice json = testJsonResponse( service.downloadJson( PREFIX, 1L ) );
+        assertTrue( DateUtils.truncatedEquals( invoice.getDate(), json.getDate(), Calendar.MILLISECOND ) );
     }
 
     @Test
