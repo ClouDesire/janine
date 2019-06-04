@@ -173,7 +173,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.9.4</version>
+				<version>1.11.2</version>
 				<configuration>
 					<tag>${project.artifactId}-${project.version}</tag>
 				</configuration>
